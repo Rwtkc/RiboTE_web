@@ -62,39 +62,15 @@
 - Always check old `RiboTE` `ui.R` / `server.R` before changing module behavior.
 - Keep UI style aligned with `RNAmeta/new` patterns.
 - For code edits, preserve current React/Shiny bridge structure.
-- Update or add tests in `tests/` first when practical, but follow the current user preference below.
 - Current user preference for this project:
+  - `tests/` is excluded from the GitHub deployment tree
   - do not run tests unless explicitly requested
   - frontend `pnpm build` is still expected after React/bridge/export changes
 
 ## Verification
-- Common checks:
-  - `Rscript tests/ribote_shell_ui_test.R`
-  - `Rscript tests/ribote_server_wiring_test.R`
-  - `Rscript tests/ribote_data_preprocess_server_test.R`
-  - `Rscript tests/ribote_data_preprocess_export_test.R`
-  - `Rscript tests/ribote_translation_efficiency_server_test.R`
-  - `pnpm build` in `new/frontend/app_shell`
-- Codon-specific checks when touching codon result switching, export visibility, or sidebar sync:
-  - `Rscript tests/ribote_codon_results_active_view_sync_test.R`
-  - `Rscript tests/ribote_codon_controls_state_guard_test.R`
-  - `Rscript tests/ribote_codon_regression_guards_test.R`
-  - `Rscript tests/ribote_codon_sidebar_lock_sync_test.R`
-  - `Rscript tests/ribote_codon_summary_export_shell_test.R`
-  - `python tests/codon_group_switch_regression.py --url http://127.0.0.1:8123`
-  - `python tests/codon_rapid_group_switch_regression.py --url http://127.0.0.1:8123`
-  - `python tests/codon_controls_summary_regression.py --url http://127.0.0.1:8123`
-  - `python tests/codon_export_group_readiness_regression.py --url http://127.0.0.1:8123`
-- On this machine, parallel `Rscript` runs can hit `conda activate base` temp-file conflicts and return nonzero even when test text says `... passed`.
-- If that happens, rerun the affected test sequentially before concluding failure.
-- Browser regressions that drive the same local Shiny instance should also be run sequentially.
-- Do not run multiple Playwright codon regressions against the same `127.0.0.1:8123` app at the same time; they will interfere with each other and produce false failures.
-- Translation Efficiency chart/domain checks when touching TE plots or result-tab rendering:
-  - `Rscript tests/ribote_translation_efficiency_chart_domain_guard_test.R`
-  - `Rscript tests/ribote_translation_efficiency_rice_scatter_domain_test.R`
-  - `Rscript tests/ribote_translation_efficiency_server_test.R`
-  - `Rscript tests/ribote_results_active_tab_sync_test.R`
-  - `Rscript tests/ribote_translation_efficiency_export_test.R`
+- `tests/` is not part of the deployment repository anymore. If regressions are needed, restore or run them from a local development copy.
+- For frontend / bridge / export changes, still run `pnpm build` in `new/frontend/app_shell`.
+- Browser regressions that drive the same local Shiny instance should be run sequentially if a local test copy is available.
 - When investigating TE browser performance, use the real rice test matrix:
   - `TEShinyData/96_99Y.txt`
   - species: `Oryza sativa (IRGSP 1.0)`
@@ -415,9 +391,7 @@
   - `#gsea-results_host`
   - `#enrichment-controls_host`
   - `#enrichment-results_host`
-- A minimal regression script exists at:
-  - `tests/gsea_enrichment_collection_switch_regression.py`
-- Use that regression when touching GSEA/Enrichment collection switching, cached result reuse, or result-host publishing behavior.
+- If a local test copy is available, rerun the collection-switch browser regression when touching GSEA/Enrichment collection switching, cached result reuse, or result-host publishing behavior.
 
 ## Resource Assumptions
 - Human workflow is the current priority.
@@ -482,4 +456,3 @@
   - `new/frontend/app_shell/src/components/enrichmentChart.js`
   - `new/frontend/app_shell/src/bridge/exportBridge.js`
   - `new/frontend/app_shell/src/bridge/analysisActionBridge.js`
-  - `tests/gsea_enrichment_collection_switch_regression.py`

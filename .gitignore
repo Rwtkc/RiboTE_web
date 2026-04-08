@@ -1,0 +1,28 @@
+# Local runtime state
+tmp/
+*.log
+*.tmp
+*.bak
+.Rhistory
+.RData
+.Ruserdata
+
+# Frontend dependencies and local tool caches
+new/frontend/app_shell/node_modules/
+node_modules/
+.vite/
+.cache/
+__pycache__/
+*.py[cod]
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Large local reference resources that should be staged on the server separately.
+# GitHub rejects files over 100 MB and warns for files over 50 MB.
+TEShinyData/orgDB/hsapiens_gene_ensembl__Human.db
+TEShinyData/fa/*.fa
+TEShinyData/txdb/*.sqlite

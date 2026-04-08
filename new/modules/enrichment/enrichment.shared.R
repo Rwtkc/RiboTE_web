@@ -1,0 +1,5 @@
+source(app_path("modules", "enrichment", "enrichment.config.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "enrichment", "enrichment.resources.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "enrichment", "enrichment.ora.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "enrichment", "enrichment.export.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "enrichment", "enrichment.compute.R"), local = TRUE, encoding = "UTF-8")

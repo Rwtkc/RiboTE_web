@@ -1,0 +1,84 @@
+RiboTE gene-set resource sources
+Last updated: 2026-04-08
+
+This file records the download or derivation source for local gene-set annotation
+resources used by GSEA / Enrichment.
+
+Important directory note
+- Human resources are under gene_sets/msigdb/hg38 because they were downloaded
+  from Human MSigDB.
+- Rice resources are under gene_sets/plantgsea/osa_IRGSP_1 because they were
+  downloaded from PlantGSEA, not MSigDB.
+
+Human resources
+Source page:
+- https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp
+
+Local files:
+- gene_sets/msigdb/hg38/h.all.v2026.1.Hs.symbols.gmt
+  Source: MSigDB Human H collection, Gene Symbols GMT, release v2026.1.
+
+- gene_sets/msigdb/hg38/c2.cp.reactome.v2026.1.Hs.symbols.gmt
+  Source: MSigDB Human C2 Canonical Pathways / Reactome subset, Gene Symbols GMT, release v2026.1.
+
+- gene_sets/msigdb/hg38/c2.cp.kegg_medicus.v2026.1.Hs.symbols.gmt
+  Source: MSigDB Human C2 Canonical Pathways / KEGG_MEDICUS subset, Gene Symbols GMT, release v2026.1.
+
+- gene_sets/msigdb/hg38/c5.go.bp.v2026.1.Hs.symbols.gmt
+  Source: MSigDB Human C5 Gene Ontology / Biological Process subset, Gene Symbols GMT, release v2026.1.
+
+- gene_sets/msigdb/hg38/c5.go.mf.v2026.1.Hs.symbols.gmt
+  Source: MSigDB Human C5 Gene Ontology / Molecular Function subset, Gene Symbols GMT, release v2026.1.
+
+- gene_sets/msigdb/hg38/c5.go.cc.v2026.1.Hs.symbols.gmt
+  Source: MSigDB Human C5 Gene Ontology / Cellular Component subset, Gene Symbols GMT, release v2026.1.
+
+Rice resources
+Source page:
+- https://bioinformatics.cau.edu.cn/PlantGSEA/download.php
+
+Raw downloaded files:
+- gene_sets/plantgsea/osa_IRGSP_1/source/Osa_GO.txt
+  Source: PlantGSEA Oryza sativa GO gene sets.
+  Direct source URL used for provenance: https://bioinformatics.cau.edu.cn/PlantGSEA/database/Osa_GO
+  Raw gene ID type: MSU/TIGR-style LOC_Os IDs.
+
+- gene_sets/plantgsea/osa_IRGSP_1/source/Osa_KEGG.txt
+  Source: PlantGSEA Oryza sativa KEGG gene sets.
+  Direct source URL used for provenance: https://bioinformatics.cau.edu.cn/PlantGSEA/database/Osa_KEGG
+  Raw gene ID type: MSU/TIGR-style LOC_Os IDs.
+
+Converted local GMT files:
+- gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.bp.gmt
+  Derived from: source/Osa_GO.txt.
+  Conversion: PlantGSEA comma-separated GO rows converted to standard GMT; GO Biological Process rows retained.
+  Gene ID conversion: LOC_Os IDs converted to RAP/IRGSP Os IDs.
+  Conversion script: ../scripts/convert_plantgsea_rice_gene_sets.R.
+
+- gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.mf.gmt
+  Derived from: source/Osa_GO.txt.
+  Conversion: PlantGSEA comma-separated GO rows converted to standard GMT; GO Molecular Function rows retained.
+  Gene ID conversion: LOC_Os IDs converted to RAP/IRGSP Os IDs.
+  Conversion script: ../scripts/convert_plantgsea_rice_gene_sets.R.
+
+- gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.cc.gmt
+  Derived from: source/Osa_GO.txt.
+  Conversion: PlantGSEA comma-separated GO rows converted to standard GMT; GO Cellular Component rows retained.
+  Gene ID conversion: LOC_Os IDs converted to RAP/IRGSP Os IDs.
+  Conversion script: ../scripts/convert_plantgsea_rice_gene_sets.R.
+
+- gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.kegg.gmt
+  Derived from: source/Osa_KEGG.txt.
+  Conversion: PlantGSEA comma-separated KEGG rows converted to standard GMT.
+  Gene ID conversion: LOC_Os IDs converted to RAP/IRGSP Os IDs.
+  Conversion script: ../scripts/convert_plantgsea_rice_gene_sets.R.
+
+Rice ID conversion source
+- The LOC_Os -> Os mapping used during conversion came from the public CRAN
+  package riceidconverter, version 1.1.1.
+- CRAN package page: https://cran.r-project.org/package=riceidconverter
+- Source tarball used by the conversion script when the package is not installed:
+  https://cran.r-project.org/src/contrib/riceidconverter_1.1.1.tar.gz
+- Runtime dependency note: riceidconverter is not required by RiboTE at app runtime;
+  it is only used by the offline conversion script.
+

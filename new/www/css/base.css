@@ -1,0 +1,104 @@
+:root {
+  --rm-bg: #f3ede4;
+  --rm-surface: #fffdf8;
+  --rm-surface-soft: #f8f2ea;
+  --rm-border: #d8cebf;
+  --rm-text: #2f3930;
+  --rm-muted: #6d7569;
+  --rm-accent: #859b7a;
+  --rm-accent-deep: #65795b;
+  --rm-accent-soft: #e8ede2;
+  --rm-warm: #c98468;
+  --rm-warm-soft: #f2d8cc;
+  --rm-shadow: 0 0.75rem 1.875rem rgba(58, 49, 38, 0.08);
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(133, 155, 122, 0.12), transparent 32%),
+    radial-gradient(circle at top right, rgba(201, 132, 104, 0.08), transparent 26%),
+    linear-gradient(180deg, #fffaf3 0%, var(--rm-bg) 100%);
+  color: var(--rm-text);
+  font-family: "Montserrat", sans-serif !important;
+  min-height: 100vh;
+  padding-bottom: 3.5rem;
+}
+
+body,
+button,
+input,
+select,
+textarea,
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav > li > a,
+.page-title,
+.placeholder-card h2 {
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.page-shell {
+  width: 100%;
+  max-width: none;
+  margin: 0.3125rem 0 1.75rem;
+}
+
+.placeholder-card {
+  background: var(--rm-surface);
+  border: 0.0625rem solid var(--rm-border);
+  border-radius: 1.125rem;
+  padding: 1.75rem;
+  box-shadow: var(--rm-shadow);
+}
+
+.page-title {
+  margin-top: 0;
+  margin-bottom: 0.625rem;
+  color: var(--rm-text);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.page-copy {
+  margin-bottom: 0;
+  color: var(--rm-muted);
+  line-height: 1.7;
+}
+
+.welcome-module {
+  margin-top: 0.25rem;
+}
+
+.app-shell-root {
+  min-height: 100vh;
+}
+
+.shell-fallback {
+  padding: 1rem;
+}
+
+.shell-fallback__card {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.875rem;
+  border: 0.0625rem solid var(--rm-border);
+  border-radius: 1.5rem;
+  background: var(--rm-surface);
+  box-shadow: var(--rm-shadow);
+}
+
+.shell-fallback__eyebrow {
+  display: inline-flex;
+  margin-bottom: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 62.4375rem;
+  background: rgba(133, 155, 122, 0.12);
+  color: var(--rm-accent-deep);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+body[data-shell-ready="true"] .shell-fallback {
+  display: none;
+}

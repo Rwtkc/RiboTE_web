@@ -1,0 +1,5 @@
+source(app_path("modules", "translation_efficiency", "translation_efficiency.export.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "translation_efficiency", "translation_efficiency.payload.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "translation_efficiency", "translation_efficiency.config.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "translation_efficiency", "translation_efficiency.compute.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "translation_efficiency", "translation_efficiency.results.R"), local = TRUE, encoding = "UTF-8")

@@ -1,0 +1,143 @@
+.welcome-layout {
+  margin-bottom: 1.125rem;
+}
+
+.welcome-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 2.125rem 2.25rem 1.875rem;
+  border: 0.0625rem solid var(--rm-border);
+  border-radius: 1.375rem;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(133, 155, 122, 0.16), transparent 24%),
+    radial-gradient(circle at 0% 100%, rgba(201, 132, 104, 0.08), transparent 22%),
+    linear-gradient(180deg, #fffdf8 0%, #f7f1e8 100%);
+  box-shadow: var(--rm-shadow);
+}
+
+.welcome-hero__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 1.05fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.welcome-hero__copy {
+  min-width: 0;
+}
+
+.welcome-hero__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-hero__logo {
+  width: min(100%, 32rem);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0.75rem 1.375rem rgba(16, 34, 26, 0.08));
+}
+
+.welcome-hero::after {
+  content: "";
+  position: absolute;
+  right: -2.5rem;
+  bottom: -2.25rem;
+  width: 15rem;
+  height: 15rem;
+  border-radius: 62.4375rem;
+  background: radial-gradient(circle, rgba(201, 132, 104, 0.1), transparent 68%);
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 0.875rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: 62.4375rem;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eyebrow-light {
+  background: rgba(133, 155, 122, 0.14);
+  color: var(--rm-accent-deep);
+}
+
+.eyebrow-muted {
+  background: rgba(201, 132, 104, 0.12);
+  color: var(--rm-muted);
+}
+
+.welcome-hero h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.75rem;
+  color: var(--rm-text);
+  font-size: 3.25rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.welcome-hero__lead,
+.welcome-hero__supporting {
+  position: relative;
+  z-index: 1;
+  max-width: 78ch;
+  margin: 0;
+  color: var(--rm-muted);
+  line-height: 1.75;
+  font-size: 1.5rem;
+}
+
+.welcome-hero__supporting {
+  margin-top: 0.625rem;
+}
+
+.welcome-badges {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+}
+
+.welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.625rem 0.875rem;
+  border: 0.0625rem solid rgba(201, 132, 104, 0.18);
+  border-radius: 62.4375rem;
+  background: rgba(201, 132, 104, 0.1);
+  color: #9f5e46;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+@media (max-width: 48rem) {
+  .welcome-hero {
+    padding: 1.625rem 1.375rem 1.5rem;
+  }
+
+  .welcome-hero__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-hero__media {
+    justify-content: flex-start;
+  }
+
+  .welcome-hero__logo {
+    width: min(100%, 22rem);
+  }
+
+  .welcome-hero h1 {
+    font-size: 2.5rem;
+  }
+}

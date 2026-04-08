@@ -1,0 +1,5 @@
+source(app_path("modules", "codon", "codon.analysis.base.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "codon", "codon.analysis.input_bias.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "codon", "codon.analysis.shift.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "codon", "codon.analysis.pattern.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "codon", "codon.analysis.runs.R"), local = TRUE, encoding = "UTF-8")

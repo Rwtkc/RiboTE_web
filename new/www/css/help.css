@@ -1,0 +1,232 @@
+.help-shell {
+  font-size: 1.3rem;
+}
+
+.help-workspace {
+  display: grid;
+  grid-template-columns: minmax(24rem, 28rem) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.help-sidebar {
+  position: sticky;
+  top: 1rem;
+}
+
+.help-panel {
+  border: 0.0625rem solid var(--rm-border);
+  border-radius: 1.375rem;
+  background: var(--rm-surface);
+  box-shadow: var(--rm-shadow);
+}
+
+.help-panel--sidebar {
+  padding: 1.4rem 1.2rem 1.2rem;
+}
+
+.help-panel--hero {
+  padding: 1.65rem 1.7rem;
+  background:
+    radial-gradient(circle at top right, rgba(133, 155, 122, 0.18), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(201, 132, 104, 0.14), transparent 30%),
+    var(--rm-surface);
+}
+
+.help-panel--section {
+  padding: 1.35rem 1.35rem 1.25rem;
+}
+
+.help-panel__eyebrow,
+.help-topic__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.42rem 0.75rem;
+  border-radius: 999px;
+  background: var(--rm-accent-soft);
+  color: var(--rm-accent-deep);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.help-panel__eyebrow,
+.help-topic__eyebrow {
+  margin-bottom: 0.35rem;
+}
+
+.help-panel__title,
+.help-hero__title,
+.help-topic__title,
+.help-section-card__title,
+.help-highlight-card__title {
+  margin-top: 0;
+  color: var(--rm-text);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.help-panel__title {
+  margin-bottom: 0.65rem;
+  font-size: 1.75rem;
+}
+
+.help-panel__copy,
+.help-hero__copy,
+.help-topic__summary,
+.help-section-card__copy,
+.help-highlight-card__copy,
+.help-nav__summary,
+.help-list-card__list,
+.help-list-card__title {
+  color: var(--rm-muted);
+  font-size: 1.3rem;
+  line-height: 1.7;
+}
+
+.help-main {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.help-hero__title {
+  margin-bottom: 0.75rem;
+  font-size: 2.25rem;
+}
+
+.help-hero__copy {
+  max-width: none;
+  margin-bottom: 1.25rem;
+}
+
+.help-highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.95rem;
+}
+
+.help-highlight-card {
+  min-height: 100%;
+  padding: 1rem 1rem 0.95rem;
+  border: 0.0625rem solid rgba(133, 155, 122, 0.16);
+  border-radius: 1rem;
+  background: rgba(248, 242, 234, 0.76);
+}
+
+.help-highlight-card__title {
+  margin-bottom: 0.45rem;
+  font-size: 1.3rem;
+}
+
+.help-highlight-card__copy,
+.help-nav__summary,
+.help-list-card__list {
+  margin: 0;
+}
+
+.help-nav {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.help-nav__link {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.95rem 1rem;
+  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border-radius: 1rem;
+  background: var(--rm-surface-soft);
+  text-decoration: none;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.help-nav__link:hover,
+.help-nav__link:focus {
+  transform: translateY(-0.0625rem);
+  border-color: rgba(133, 155, 122, 0.38);
+  box-shadow: 0 0.5rem 1.2rem rgba(58, 49, 38, 0.08);
+  text-decoration: none;
+}
+
+.help-nav__label {
+  color: var(--rm-text);
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.help-topic {
+  scroll-margin-top: 1rem;
+}
+
+.help-topic__head {
+  margin-bottom: 1.1rem;
+  padding: 0 1.35rem;
+  padding-top: 1rem;
+  padding-bottom: 0.95rem;
+  border-left: 0.28rem solid rgba(133, 155, 122, 0.78);
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.94), rgba(248, 242, 234, 0.72));
+}
+
+.help-topic__title {
+  margin-bottom: 0.4rem;
+  font-size: 1.9rem;
+}
+
+.help-topic__summary {
+  max-width: none;
+  margin: 0.35rem 0 0;
+}
+
+.help-topic__stack {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.help-section-card__title {
+  margin-bottom: 0.65rem;
+  font-size: 1.3rem;
+}
+
+.help-section-card__copy {
+  margin: 0 0 0.75rem;
+}
+
+.help-section-card__copy:last-of-type {
+  margin-bottom: 0;
+}
+
+.help-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.help-list-card {
+  min-height: 100%;
+  padding: 0.95rem 1rem;
+  border: 0.0625rem solid rgba(201, 132, 104, 0.2);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(242, 216, 204, 0.36), rgba(255, 253, 248, 0.92));
+}
+
+.help-list-card__title {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--rm-text);
+  font-weight: 800;
+}
+
+.help-list-card__list {
+  margin-left: 0;
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+.help-list-card__list li + li {
+  margin-top: 0.4rem;
+}

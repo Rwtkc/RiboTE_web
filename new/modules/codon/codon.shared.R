@@ -1,0 +1,5 @@
+source(app_path("modules", "codon", "codon.config.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "codon", "codon.resources.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "codon", "codon.analysis.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "codon", "codon.export.R"), local = TRUE, encoding = "UTF-8")
+source(app_path("modules", "codon", "codon.payload.R"), local = TRUE, encoding = "UTF-8")

@@ -1,0 +1,485 @@
+# RiboTE Development Notes
+
+## Scope
+- Active refactor target is `new/`.
+- Legacy reference code is at repo root `ui.R` and `server.R`.
+- New stack is `R Shiny + React + pnpm + Vite`.
+- External architecture/UI reference project is `../RNAmeta/new`.
+
+## Reference Priority
+- Business logic priority:
+  - first read and preserve behavior from legacy `RiboTE` code:
+    - `server.R`
+    - `ui.R`
+- Architecture and UI priority:
+  - use `../RNAmeta/new` as the primary reference for:
+    - file organization
+    - React/Shiny bridge patterns
+    - page shell structure
+    - component styling
+    - export panel patterns
+- If legacy `RiboTE` behavior conflicts with current `RNAmeta/new` structure:
+  - preserve legacy `RiboTE` analysis behavior
+  - adapt implementation into the `RNAmeta/new` style architecture
+  - do not silently replace old `RiboTE` biological logic with `RNAmeta` logic
+
+## Architecture
+- Shiny entry files:
+  - `new/global.R`
+  - `new/ui.R`
+  - `new/server.R`
+- Frontend app shell:
+  - `new/frontend/app_shell`
+- Shared state:
+  - `new/services/session_state.R`
+- Main active modules right now:
+  - `new/modules/load_data`
+  - `new/modules/data_preprocess`
+  - `new/modules/translation_efficiency`
+  - `new/modules/pca`
+
+## Module File Organization
+- Keep public entry files stable for Shiny and React wiring:
+  - R module entry files such as `*.shared.R` and `*.server.R` should remain the files sourced by `new/server.R`.
+  - React entry components such as `CodonResults.jsx`, `TranslationEfficiencyResults.jsx`, and chart barrel files such as `codonChart.js` should keep their existing public exports.
+- Split large R shared files by responsibility, then source them from the stable entry file in dependency order:
+  - `*.config.R` for constants, controls, resource path resolution, parameter normalization, and module config.
+  - `*.resources.R` for local resource loading and identifier normalization.
+  - `*.compute.R` / `*.analysis.*.R` / `*.ora.R` / `*.plot.R` for analysis computation and plot data construction.
+  - `*.payload.R` for React payload shaping, result view metadata, and summary cards.
+  - `*.export.R` for data/figure export table generation and export filenames.
+- Split large React files by public role while preserving Shiny bridge contracts:
+  - Keep result container state machines in the original entry component when they coordinate Shiny inputs or result-view acknowledgements.
+  - Move reusable view components to sibling `*Views.jsx` files.
+  - Move chart hooks, formatting helpers, and local persistence helpers to sibling `*Utils.jsx` or `*Charts.jsx` files.
+  - Keep D3 chart barrel files stable; concrete chart renderers may live in sibling `*.group.js`, `*.scatter.js`, `*.heatmap.js`, etc. files and be re-exported by the original barrel.
+- Do not change Shiny input ids, custom message names, payload field names, export schema, or result view ids as part of file splitting.
+- If a split touches React, bridge, or export JavaScript, run `pnpm build` in `new/frontend/app_shell`.
+
+## Working Rules
+- Do not create plan docs or `plans` folders for this project unless explicitly asked.
+- Prefer modifying `new/` only.
+- Always check old `RiboTE` `ui.R` / `server.R` before changing module behavior.
+- Keep UI style aligned with `RNAmeta/new` patterns.
+- For code edits, preserve current React/Shiny bridge structure.
+- Update or add tests in `tests/` first when practical, but follow the current user preference below.
+- Current user preference for this project:
+  - do not run tests unless explicitly requested
+  - frontend `pnpm build` is still expected after React/bridge/export changes
+
+## Verification
+- Common checks:
+  - `Rscript tests/ribote_shell_ui_test.R`
+  - `Rscript tests/ribote_server_wiring_test.R`
+  - `Rscript tests/ribote_data_preprocess_server_test.R`
+  - `Rscript tests/ribote_data_preprocess_export_test.R`
+  - `Rscript tests/ribote_translation_efficiency_server_test.R`
+  - `pnpm build` in `new/frontend/app_shell`
+- Codon-specific checks when touching codon result switching, export visibility, or sidebar sync:
+  - `Rscript tests/ribote_codon_results_active_view_sync_test.R`
+  - `Rscript tests/ribote_codon_controls_state_guard_test.R`
+  - `Rscript tests/ribote_codon_regression_guards_test.R`
+  - `Rscript tests/ribote_codon_sidebar_lock_sync_test.R`
+  - `Rscript tests/ribote_codon_summary_export_shell_test.R`
+  - `python tests/codon_group_switch_regression.py --url http://127.0.0.1:8123`
+  - `python tests/codon_rapid_group_switch_regression.py --url http://127.0.0.1:8123`
+  - `python tests/codon_controls_summary_regression.py --url http://127.0.0.1:8123`
+  - `python tests/codon_export_group_readiness_regression.py --url http://127.0.0.1:8123`
+- On this machine, parallel `Rscript` runs can hit `conda activate base` temp-file conflicts and return nonzero even when test text says `... passed`.
+- If that happens, rerun the affected test sequentially before concluding failure.
+- Browser regressions that drive the same local Shiny instance should also be run sequentially.
+- Do not run multiple Playwright codon regressions against the same `127.0.0.1:8123` app at the same time; they will interfere with each other and produce false failures.
+- Translation Efficiency chart/domain checks when touching TE plots or result-tab rendering:
+  - `Rscript tests/ribote_translation_efficiency_chart_domain_guard_test.R`
+  - `Rscript tests/ribote_translation_efficiency_rice_scatter_domain_test.R`
+  - `Rscript tests/ribote_translation_efficiency_server_test.R`
+  - `Rscript tests/ribote_results_active_tab_sync_test.R`
+  - `Rscript tests/ribote_translation_efficiency_export_test.R`
+- When investigating TE browser performance, use the real rice test matrix:
+  - `TEShinyData/96_99Y.txt`
+  - species: `Oryza sativa (IRGSP 1.0)`
+  - pairing: RNA `RNA_1196Y_1`, `RNA_1196Y_2`, `RNA_1199Y_1`, `RNA_1199Y_2`; Ribo `1196Y_1`, `1196Y_2`, `1199Y_1`, `1199Y_2`; control = `1196Y`, treatment = `1199Y`
+
+## Load Data Conventions
+- `Load Demo` is a development shortcut:
+  - auto-loads demo matrix
+  - auto-configures sample pairing
+  - auto-saves upload context
+  - downstream modules become available without clicking `Save / Confirm`
+- Real upload flow still supports manual sample configuration.
+- Pairing model is:
+  - assign sample type: `RNA-seq` / `Ribo-seq`
+  - pair one RNA sample to one Ribo sample
+  - assign pair role: `Control` / `Treatment`
+- Current `upload_context` stores pairing metadata; new code should not reintroduce legacy `baseData.json` / `orgData.json` generation.
+- `Load Data` now includes an empty default `Analysis Flow` block to match other modules.
+
+## Data Preprocess Conventions
+- `Run Preprocess` produces:
+  - processed count matrix
+  - library size chart
+  - QC charts
+- While analysis is running:
+  - analysis buttons must be disabled
+  - export buttons must also be disabled
+- Export behavior:
+  - `Data` tab: export processed matrix data
+  - `Library Size` tab:
+    - figure export = current chart
+    - data export = single CSV/TXT file, not zip
+  - `QC` tab:
+    - figure export = zip containing both QC figures
+    - data export = zip containing both QC data tables
+- Exported figures use white background even though web UI uses the project background.
+- If `Data Preprocess` is rerun:
+  - clear old preprocess summary cards and result panels immediately
+  - invalidate downstream `Translation Efficiency`
+  - invalidate downstream `PCA`
+
+## Sample Naming in Charts
+- Do not use raw uploaded sample names directly on chart axes when layout can break.
+- For sample-based charts, use stable short names generated from pairing:
+  - `RNA.C1`, `RNA.C2`, `RNA.T1`, `RNA.T2`
+  - `RPF.C1`, `RPF.C2`, `RPF.T1`, `RPF.T2`
+  - `TE.C1`, `TE.C2`, `TE.T1`, `TE.T2`
+- Tooltip rules:
+  - sample-based charts show short name prominently
+  - also show actual uploaded column name
+  - values must be labeled explicitly, e.g. `Count`, `Fraction`, `Type`
+- `Gene Biotype Composition` does not need an `Actual` field in tooltip because labels are already fixed semantic categories.
+- Data exports for sample-based charts should include both:
+  - actual sample name
+  - short display name
+
+## Translation Efficiency Conventions
+- Frontend focus files:
+  - `new/frontend/app_shell/src/components/TranslationEfficiencyResults.jsx`
+  - `new/frontend/app_shell/src/components/TranslationEfficiencyExport.jsx`
+  - `new/frontend/app_shell/src/bridge/exportBridge.js`
+- TE parameter behavior:
+  - changing `TE Tool`, `Fold Change`, `P-value`, or `P-value Type` must not auto-run analysis
+  - new parameters apply only after clicking `Run TE Analysis`
+  - clicking `Run TE Analysis` clears old TE summary cards and result panels before the new run starts
+- Dependency invalidation:
+  - rerunning `Data Preprocess` must invalidate and clear downstream `Translation Efficiency`
+  - TE summary cards and TE result panels must disappear until TE is rerun
+- TE guidance text:
+  - first-level prerequisite hint is `Save species and count matrix context in Load Data first.`
+  - second-level prerequisite hint is `Run Data Preprocess first.`
+  - hint placement should match `Data Preprocess`, directly under the run button
+- TE results:
+  - result tabs are `Data`, `TE Volcano Plot`, `TE Scatter Plots`
+  - `RNA vs Ribo Fold Change` is currently hidden, not deleted
+  - scatter plots remain vertically stacked, not `2x2`
+  - summary cards should clear when TE is invalidated or rerun
+- TE chart-domain rules:
+  - D3 circle layers must never bind raw scatter rows that can contain `Inf`, `NaN`, or invalid log-scale values.
+  - `TranslationEfficiencyResults.jsx` currently uses finite-number sanitization and `filterScatterDataForScale()`.
+  - log-scale scatter charts must only draw points with finite `x/y` and `x > 0 && y > 0`.
+  - linear scatter charts must only draw finite `x/y` values.
+  - Do not remove this guard when optimizing performance; rice TE data can contain many zero or non-finite TE ratios.
+- TE browser-performance risk:
+  - After TE completes, loading `TE Volcano Plot` and especially `TE Scatter Plots` can make the whole page less smooth.
+  - The previous `cx/cy = NaN` console storm was caused by invalid scatter points and is guarded by tests, but remaining slowdown may still come from too many SVG circles, animations, tooltip handlers, density paths, render-ready feedback, or repeated tab re-rendering.
+  - Optimize with measured evidence, not by changing biological TE results.
+  - Acceptable UI optimizations include display-only downsampling, canvas/raster rendering, disabling heavy transitions for large point sets, memoized drawing, or reducing duplicate Shiny result publishes, provided tables/export/statistics still use full data where appropriate and the UI explains any display subset.
+- TE export:
+  - exported figures use white background
+  - current figure and multi-figure export both use the same D3 rendering logic when possible
+- TE table naming should stay user-facing and explicit, e.g.:
+  - `RNA_Control_Mean`
+  - `RNA_Treatment_Mean`
+  - `RNA_log2FC`
+  - `RNA_Expression_Status`
+  - `Ribo_Control_Mean`
+  - `Ribo_Treatment_Mean`
+  - `Ribo_log2FC`
+  - `Ribo_Expression_Status`
+  - `TE_Control_Mean`
+  - `TE_Treatment_Mean`
+  - `TE_log2FC`
+  - `TE_Status`
+
+## PCA Conventions
+- PCA is downstream of `Translation Efficiency` and should use TE-derived sample spaces:
+  - `TE Ratio`
+  - `RNA Abundance`
+  - `Ribo Abundance`
+- Supported methods:
+  - `PCA`
+  - `MDS`
+  - `T-SNE`
+- PCA behavior:
+  - changing `Data Space` or `Method` does not auto-run; user must click `Run PCA`
+  - rerunning `Data Preprocess` or `Translation Efficiency` invalidates PCA and clears PCA outputs
+  - before PCA analysis runs, do not show the export module
+- PCA results UI:
+  - no result table
+  - no search, pagination, or result tabs
+  - keep only the single D3 plot plus summary cards
+  - current summary cards are only:
+    - `Samples Projected`
+    - `Genes Used`
+- PCA export:
+  - support batch export across `Data Space x Method`
+  - export scope is unified between figure and data export controls
+  - multi-figure export downloads a zip archive
+  - exported figures use white background and should visually match the on-page D3 chart
+  - gridline transparency, border lines, and D3 styling should stay consistent between web view and export
+- Relevant files:
+  - `new/modules/pca/pca.shared.R`
+  - `new/modules/pca/pca.server.R`
+  - `new/modules/pca/pca.ui.R`
+  - `new/frontend/app_shell/src/components/PcaResults.jsx`
+  - `new/frontend/app_shell/src/components/PcaExport.jsx`
+  - `new/frontend/app_shell/src/components/pcaChart.js`
+
+## Clustering Conventions
+- Clustering is downstream of `Translation Efficiency`.
+- Do not use legacy `INPUT / RPF / TE` labels in the new UI.
+- Current clustering data spaces should stay aligned with PCA terminology:
+  - `TE Ratio`
+  - `RNA Abundance`
+  - `Ribo Abundance`
+- Clustering implementation is D3-first, not Shiny plot-first:
+  - R computes matrices, ordering, and payload
+  - React/D3 renders the heatmaps, selection, and export figures
+- Main heatmap parameters are not realtime:
+  - changing `Data Space`, `Top Genes`, `Distance`, `Linkage`, `Max Z Score`, or `Gene Centricity` must require clicking `Run Clustering`
+  - only `Detail Heatmap` controls remain realtime
+- If `Detail Heatmap` source is `Gene IDs`, area brushing must be disabled and old brush selection should be cleared.
+- UI defaults:
+  - only `Detail Heatmap` and `Export` sections are expanded by default
+  - `Heatmap Data` and `Clustering Settings` are collapsed by default
+- Clustering sample naming should follow the current short-name convention:
+  - `RNA.C1`, `RNA.T1`, `RPF.C1`, `TE.C1`, etc.
+- `Color Series` has been removed from the UI; clustering heatmaps should stay on fixed `Blue-White-Red`.
+- Current D3 clustering behavior and styling that should not be regressed:
+  - top sample-group strip with `Treatment` and `Control`
+  - equal visual height for main and detail heatmaps
+  - horizontal x-axis labels
+  - explicit heatmap border/axis lines
+- visible selection rectangle with semi-transparent fill
+- result export uses the current D3 export bridge path
+
+## Codon Conventions
+- Codon currently has at least two live result groups:
+  - `Input and Usage`
+  - `Codon Bias`
+- Business logic for codon should still be checked against legacy `server.R` / `ui.R`, but implementation style should stay aligned with `RNAmeta/new`.
+- Relevant files:
+  - `new/modules/codon/codon.shared.R`
+  - `new/modules/codon/codon.server.R`
+  - `new/modules/codon/codon.ui.R`
+  - `new/frontend/app_shell/src/components/CodonResults.jsx`
+  - `new/frontend/app_shell/src/components/CodonExport.jsx`
+  - `new/frontend/app_shell/src/components/codonChart.js`
+  - `new/frontend/app_shell/src/bridge/analysisActionBridge.js`
+  - `new/frontend/app_shell/src/bridge/controlBridge.js`
+- Current codon result switching is a local-first React/Shiny handshake:
+  - React may switch the visible group/view optimistically first
+  - server confirmation comes back through `publish_results()`
+  - do not assume `current_view`, local `activeView`, export state, and sidebar state are naturally in sync without explicit handling
+- High-risk codon sync points:
+  - `current_view`
+  - `activeGroup`
+  - `groupViews`
+  - `persistedActiveViewKey`
+  - `pendingActiveViewRef`
+  - `lastConfiguredActiveViewRef`
+  - `sidebar_group_host`
+  - `data-ribote-codon-active-group`
+  - `input$result_view`
+  - `publish_controls()`
+  - `publish_results()`
+  - `publish_export()`
+  - `clear_input_usage_results()`
+  - `clear_codon_bias_results()`
+  - `merged_workspace_context()`
+- Group switching rules that should not be regressed:
+  - each big result group should remember its own last active subview
+  - switching between `Input and Usage` and `Codon Bias` must not auto-jump back after a delay
+  - rapid repeated toggles must settle on the final user choice, not an older queued choice
+  - the server must publish an acknowledgement even when the requested view is the same view but the request sequence advanced; otherwise frontend pending state can get stuck
+- Export rules that should not be regressed:
+  - export visibility must follow the currently intended codon view, not just the last server-published export config
+  - if `Codon Bias` has results but `Input and Usage` has not run yet, switching to `Input Summary` must hide the export shell immediately
+  - stale export UI from a previous codon group should never remain visible while the current group/view has no data
+- Sidebar rules that should not be regressed:
+  - `sidebar_group_host` dataset updates should happen immediately with result-group switching
+  - `controls_host` belongs to the `Input and Usage` sidebar panel and should not be cleared/rebuilt on every codon group switch
+  - if codon sidebar switching feels sluggish, first check whether server-side `publish_controls()` is being triggered unnecessarily during group switches
+- Summary-card rules that should not be regressed:
+  - the `Input and Usage` summary cards should stay mounted in DOM and only be hidden by group state
+  - switching subviews inside `Input and Usage` must not remount or refresh the summary block
+- Current codon request-flow implementation detail:
+  - `CodonResults.jsx` uses request sequencing plus a queued-request model to avoid replaying every rapid click into Shiny
+  - codon request state is persisted by `activeViewInputId` so host updates do not lose in-flight or queued requests
+  - if you redesign this flow, rerun both the normal and rapid group-switch browser regressions
+
+## GSEA Conventions
+- GSEA has been rewritten in `new/` and should not reintroduce legacy KEGG/pathview behavior.
+- Human GSEA uses local MSigDB GMT resources under:
+  - `new/resources/gene_sets/msigdb/hg38`
+- Rice GSEA uses local PlantGSEA-derived GMT resources under:
+  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1`
+- Supported GSEA collections currently are:
+  - `Hallmark`
+  - `Reactome`
+  - `GO Biological Process`
+- Rice-supported GSEA collections currently should be:
+  - `GO Biological Process`
+  - `GO Molecular Function`
+  - `GO Cellular Component`
+  - `KEGG`
+- GSEA should use the full TE-ranked gene list from `TE_log2FC`; do not prefilter genes by significance before enrichment.
+- GSEA should not mix in KEGG pathway graphics.
+- Species/identifier rules:
+  - human MSigDB resources use symbol-style matching.
+  - rice input genes use RAP/IRGSP IDs such as `Os01g0100100`; preserve case and do not uppercase these IDs.
+  - rice PlantGSEA source files used `LOC_Os...` IDs and were converted to `Os...` IDs with `riceidconverter`; do not treat them as MSigDB resources.
+  - if rice GSEA says `No gene sets remained after applying the selected GSEA size filters.`, first check species-specific resource resolution, gene ID column selection, ID normalization/casing, overlap count before size filtering, and min/max gene-set filters.
+- Current plot contents should stay:
+  - enrichment curve
+  - hit positions
+  - ranked list metric
+- GSEA result table and plot switching rules:
+  - changing collection/filters does not auto-run; user must click `Run GSEA`
+  - rerunning with the exact same parameters may preserve current results while refreshing from cache
+  - rerunning with a different collection or different analysis parameters must clear the old result view before the new result is published
+- Current GSEA implementation detail that should not be regressed:
+  - the frontend plot is reconstructed locally from `plotCatalog`
+  - do not revert to sending a heavy full plot payload for every cached switch unless intentionally redesigning the bridge
+- Current GSEA fixed seed behavior should remain deterministic across identical inputs.
+- GSEA export module exists and should only appear after results are available.
+- Relevant files:
+  - `new/modules/gsea/gsea.shared.R`
+  - `new/modules/gsea/gsea.server.R`
+  - `new/modules/gsea/gsea.ui.R`
+  - `new/frontend/app_shell/src/components/GseaResults.jsx`
+  - `new/frontend/app_shell/src/components/GseaExport.jsx`
+  - `new/frontend/app_shell/src/components/gseaChart.js`
+
+## Enrichment Conventions
+- Enrichment has been rewritten in `new/` and should not fall back to legacy `orgData.json`, `baseData.json`, or `normalcount.csv`.
+- Human Enrichment uses local MSigDB GMT resources under:
+  - `new/resources/gene_sets/msigdb/hg38`
+- Rice Enrichment uses local PlantGSEA-derived GMT resources under:
+  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1`
+- Supported Enrichment collections currently are:
+  - `GO Biological Process`
+  - `GO Molecular Function`
+  - `GO Cellular Component`
+  - `KEGG`
+- Species/identifier rules:
+  - human MSigDB resources use symbol-style matching.
+  - rice uses RAP/IRGSP IDs such as `Os01g0100100`; preserve case and do not uppercase rice IDs.
+  - if rice Enrichment says `No overlapping pathways were found for the current Enrichment query genes.`, first check that the query genes, background genes, and GMT genes are all using the same rice ID namespace and casing.
+  - do not silently replace the filtered background with a full annotation universe to make overlaps appear.
+- Enrichment logic is ORA-style overrepresentation analysis using TE-derived `Up` and `Down` gene sets.
+- Background behavior should stay explicit:
+  - `Filtered Genes` means the current preprocess-retained gene universe
+  - do not silently replace filtered background with the full annotation universe
+- Enrichment results currently include:
+  - summary cards
+  - a D3 overview figure
+  - a result table
+  - an export module shown only after results are available
+- Current Enrichment figure conventions that should not be regressed:
+  - diverging horizontal bar layout
+  - left side for `Down`, right side for `Up`
+  - no numeric labels on the bars; values should stay in tooltip/interaction
+  - only the single collection title line is shown above the figure
+- Result switching rules:
+  - changing collection/filters does not auto-run; user must click `Run Enrichment`
+  - rerunning with the exact same parameters may preserve current results while refreshing from cache
+  - rerunning with a different collection or different analysis parameters must clear the old result view before the new result is published
+- Relevant files:
+  - `new/modules/enrichment/enrichment.shared.R`
+  - `new/modules/enrichment/enrichment.server.R`
+  - `new/modules/enrichment/enrichment.ui.R`
+  - `new/frontend/app_shell/src/components/EnrichmentResults.jsx`
+  - `new/frontend/app_shell/src/components/EnrichmentExport.jsx`
+  - `new/frontend/app_shell/src/components/enrichmentChart.js`
+
+## Collection Switching Regression Notes
+- GSEA and Enrichment both had cache-related collection-switch regressions during this refactor.
+- When modifying either module, pay close attention to:
+  - same-parameter reruns
+  - cached reruns
+  - switching `Collection` away and then back again
+  - preserving the current module result host without leaving stale old results visible
+- Hidden DOM from inactive modules can mislead broad frontend selectors.
+- For browser-based regression checks, scope selectors to module-specific hosts:
+  - `#gsea-controls_host`
+  - `#gsea-results_host`
+  - `#enrichment-controls_host`
+  - `#enrichment-results_host`
+- A minimal regression script exists at:
+  - `tests/gsea_enrichment_collection_switch_regression.py`
+- Use that regression when touching GSEA/Enrichment collection switching, cached result reuse, or result-host publishing behavior.
+
+## Resource Assumptions
+- Human workflow is the current priority.
+- Required local resources currently include:
+  - `TEShinyData/all.count.txt`
+- Human gene annotation should use the project-built minimal geneInfo database, not the old external 3.8GB db:
+  - `TEShinyData/orgDB/hg38.geneInfo.sqlite`
+- Rice gene annotation should use the project-built minimal geneInfo database:
+  - `TEShinyData/orgDB/osa_IRGSP_1.geneInfo.sqlite`
+- Human annotation resources have been staged locally; new code should read local files directly and not reintroduce gzip extraction unless explicitly needed.
+- Local staged human gene set resources currently include:
+  - `new/resources/gene_sets/msigdb/hg38/h.all.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/msigdb/hg38/c2.cp.reactome.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/msigdb/hg38/c5.go.bp.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/msigdb/hg38/c5.go.mf.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/msigdb/hg38/c5.go.cc.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/msigdb/hg38/c2.cp.kegg_medicus.v2026.1.Hs.symbols.gmt`
+- Local staged rice gene set resources are PlantGSEA-derived, not MSigDB-derived:
+  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.bp.gmt`
+  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.mf.gmt`
+  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.cc.gmt`
+  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.kegg.gmt`
+- Resource provenance is recorded in:
+  - `new/resources/gene_set_resource_sources.txt`
+
+## UI/UX Conventions
+- Keep module spacing, typography, and card structure aligned with the current RiboTE refactor, which was tuned against `RNAmeta`.
+- Avoid reverting refined tooltip, export, chart, and disabled-state behavior.
+- Use the same wide-sidebar layout style as `Load Data` for modules that have more complex control panels.
+- For D3 charts:
+  - prefer stable pixel-based text sizing
+  - avoid raw long sample names on axes
+  - maintain current tooltip and export behavior unless intentionally redesigning
+
+## Handoff Prompt Seed
+- If continuing in a new session, first read this file and then inspect:
+  - `server.R`
+  - `ui.R`
+  - `../RNAmeta/new`
+  - `new/modules/load_data/*`
+  - `new/modules/data_preprocess/*`
+  - `new/modules/translation_efficiency/*`
+  - `new/modules/pca/*`
+  - `new/modules/clustering/*`
+  - `new/modules/gsea/*`
+  - `new/modules/enrichment/*`
+  - `new/frontend/app_shell/src/components/PreprocessResults.jsx`
+  - `new/frontend/app_shell/src/components/PreprocessExport.jsx`
+  - `new/frontend/app_shell/src/components/TranslationEfficiencyResults.jsx`
+  - `new/frontend/app_shell/src/components/TranslationEfficiencyExport.jsx`
+  - `new/frontend/app_shell/src/components/PcaResults.jsx`
+  - `new/frontend/app_shell/src/components/PcaExport.jsx`
+  - `new/frontend/app_shell/src/components/pcaChart.js`
+  - `new/frontend/app_shell/src/components/ClusteringResults.jsx`
+  - `new/frontend/app_shell/src/components/ClusteringExport.jsx`
+  - `new/frontend/app_shell/src/components/clusteringChart.js`
+  - `new/frontend/app_shell/src/components/GseaResults.jsx`
+  - `new/frontend/app_shell/src/components/GseaExport.jsx`
+  - `new/frontend/app_shell/src/components/gseaChart.js`
+  - `new/frontend/app_shell/src/components/EnrichmentResults.jsx`
+  - `new/frontend/app_shell/src/components/EnrichmentExport.jsx`
+  - `new/frontend/app_shell/src/components/enrichmentChart.js`
+  - `new/frontend/app_shell/src/bridge/exportBridge.js`
+  - `new/frontend/app_shell/src/bridge/analysisActionBridge.js`
+  - `tests/gsea_enrichment_collection_switch_regression.py`

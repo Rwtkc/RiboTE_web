@@ -1,0 +1,2 @@
+ensembl_dataset,name,name2,idType,idCode,id,totalGenes,group,taxon_id,academicName,file,KEGG,T.Number
+zmays_eg_gene,Zea mays genes Zm-B73-REFERENCE-NAM-5.0,Zea mays,ensembl_gene_id,ens,5843334,39756,plants,4577,zea mays,zmays_eg_gene__Zea_mays.db,zma,T01088

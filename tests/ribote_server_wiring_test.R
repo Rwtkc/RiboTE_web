@@ -1,0 +1,20 @@
+source("new/global.R", local = TRUE, encoding = "UTF-8")
+source("new/server.R", local = TRUE, encoding = "UTF-8")
+
+server_text <- paste(readLines("new/server.R", warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+analysis_bridge_text <- paste(readLines("new/frontend/app_shell/src/bridge/analysisActionBridge.js", warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+data_preprocess_ui_text <- paste(readLines("new/modules/data_preprocess/data_preprocess.ui.R", warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+
+stopifnot(grepl("mod_load_data_server", server_text, fixed = TRUE))
+stopifnot(grepl("mod_translation_efficiency_server", server_text, fixed = TRUE))
+stopifnot(grepl("mod_signalp_server", server_text, fixed = TRUE))
+stopifnot(grepl("mod_codon_server", server_text, fixed = TRUE))
+stopifnot(!grepl("mod_meta_plot_server", server_text, fixed = TRUE))
+stopifnot(grepl("rnameta:set-analysis-lock", server_text, fixed = TRUE))
+stopifnot(grepl("rnameta:set-analysis-lock", analysis_bridge_text, fixed = TRUE))
+stopifnot(grepl("data-rnameta-lock-during-analysis", analysis_bridge_text, fixed = TRUE))
+stopifnot(grepl("data-rnameta-disabled-before-lock", analysis_bridge_text, fixed = TRUE))
+stopifnot(grepl("data-rnameta-analysis-trigger", data_preprocess_ui_text, fixed = TRUE))
+stopifnot(grepl("data-rnameta-analysis-owner", data_preprocess_ui_text, fixed = TRUE))
+
+cat("ribote server wiring test passed\n")

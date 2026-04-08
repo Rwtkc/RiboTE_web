@@ -1,0 +1,45 @@
+﻿species,acronyms,id,db_name
+Homo sapiens (hg38),hg38,99,hsapiens_gene_ensembl__Human.db
+Mus musculus (mm10),mm10,131,mmusculus_gene_ensembl__Mouse.db
+Oryza sativa (lRGSP 1.0),osa_IRGSP_1,534,STRING.39947.Oryza__Oryza_sativa_Japonica_Group.db
+Oryza rufipogon (OR_W1943),oru.OR_W1943,532,orufipogon_eg_gene__Oryza_rufipogon.db
+Oryza indica (ASM465v1),ola.ASM223467v1,533,oindica_eg_gene__Oryza_sativa_Indica_Group.db
+Zea mays (B73 NAM 5.0),zma.B73_NAM5.0,584,zmays_eg_gene__Zea_mays.db
+Zea mays (B73 RefGen v4),zma_RefGen_v4,5843334,zmays_eg_gene__Zea_mays.db
+Rattus norvegicus (rn6),rn6,168,rnorvegicus_gene_ensembl__Rat.db
+Danio rerio (GRCz11）,dre_GRCz11,214,drerio_gene_ensembl__Zebrafish.db
+Bos taurus (ARS-UCD1.2),bta.ARS-UCD1.2,56,btaurus_gene_ensembl__Cow.db
+Canis lupus familiaris (RoS Cfam 1.0),clu.ROS_Cfam_1.0,-9615,STRING.9615.Canis__Canis_lupus_familiaris.db
+Gallus gallus (GRCg7b),gga.GRCg7b,39,ggallus_gene_ensembl__Chicken_maternal_Broiler.db
+Gorilla gorilla (gorGor4),ggo.gorGor4,87,ggorilla_gene_ensembl__Gorilla.db
+Macaca mulatta(Mmul 10),mml.Mmul_10,120,mmulatta_gene_ensembl__Macaque.db
+Pan troglodytes (Pan_tro_3.0),ptr.Pan_tro_3.0,40,ptroglodytes_gene_ensembl__Chimpanzee.db
+Sus scrofa (Sscrofa11.1),ssc.Sscrofa11.1,147,sscrofa_gene_ensembl__Pig_-_Duroc.db
+Xenopus tropicalisS(UCB Xtro 10.0),xtr.UCB_Xtro_10.0,199,xtropicalis_gene_ensembl__Tropical_clawed_frog.db
+Caenorhabditis elegans (wBcel235),cel_WBcel235,618,celegans_eg_gene__Caenorhabditis_elegans_(metazoa).db
+Drosophila melanogaster (BDGP6),dme_BDGP6,66,dmelanogaster_gene_ensembl__Drosophila_melanogaster
+Anopheles gambiae (AgamP4),aga.AgamP4,307,agambiae_eg_gene__Anopheles_gambiae.db
+Saccharomyces cerevisiae (R64),sce_R64,173,scerevisiae_gene_ensembl__Saccharomyces_cerevisiae.db
+Neurospora crassa (NC12),ncr.NC12,262,ncrassa_eg_gene__Neurospora_crassa.db
+Glycine max (v2.1),gma_v2,503,gmax_eg_gene__Glycine_max.db
+Solanum lycopersicum (SL v3.0),sly_SL3,555,slycopersicum_eg_gene__Solanum_lycopersicum.db
+Vitis vinifera(P40024.v4),vvi.PN40024.v4,583,vvinifera_eg_gene__Vitis_vinifera.db
+Triticum aestivum(lwGSC RefSeq 1.0),tae.IWGSC,561,taestivum_eg_gene__Triticum_aestivum.db
+Sorghum bicolor (NCBlv3),sbi.NCBIv3,557,sbicolor_eg_gene__Sorghum_bicolor.db
+Solanum tuberosum(SolTub 3.0),stu.SolTub_3.0,556,stuberosum_eg_gene__Solanum_tuberosum.db
+Populus trichocarpa (Pop_tri_v3),ptc.Pop_tri_v3,543,ptrichocarpa_eg_gene__Populus_trichocarpa.db
+Physcomitrium patens (Phypa_V3),ppa.Phypa_V3,540,ppatens_eg_gene__Physcomitrium_patens.db
+Medicago truncatula (MedtrA17 4.0),mtr.MedtrA17_4.0,518,mtruncatula_eg_gene__Medicago_truncatula.db
+Gossypium raimondii (Graimondii2 0 v6),gra.Graimondii2_0_v6,504,graimondii_eg_gene__Gossypium_raimondii.db
+Cucumis sativus (ASM407v2),csa.ASM407v2,490,csativus_eg_gene__Cucumis_sativus.db
+Cucumis sativus chineseLong v3(chineseLong_v3),na,na,na
+Chlamydomonas reinhardtii (v5.5),cre.v5.5,481,creinhardtii_eg_gene__Chlamydomonas_reinhardtii.db
+Brassica rapa(Brapa 1.0),bra.Brapa_1.0,474,brapa_eg_gene__Brassica_rapa.db
+Brachypodium distachyon (bdi.v3.0),bdi.v3.0,471,bdistachyon_eg_gene__Brachypodium_distachyon.db
+Malus domestica golden (ASM211411v1),mdo.ASM211411v1,515,mdgolden_eg_gene__Malus_domestica_Golden.db
+Adiantum capillus-veneris(ASM1452938v2),na,na,na
+Selaginella moellendorffii (v1.0),smo.v1,551,smoellendorffii_eg_gene__Selaginella_moellendorffii.db
+Escherichia coli (K-12),ecoli_k12,620,ecoli_eg_gene__Escherichia_coli.db
+Bacillus subtilis(str 168),bsu_168,4185,STRING.224308.Bacillus__Bacillus_subtilis.db
+Pyrococcus furiosus (DSM 3638),pfu_dsm_3638,2065,STRING.186497.Pyrococcus__Pyrococcus_furiosus.db
+Halobacterium salinarum(NRC1),hsa_NRC1,2058,STRING.64091.Halobacterium__Halobacterium_salinarum_NRC-1.db

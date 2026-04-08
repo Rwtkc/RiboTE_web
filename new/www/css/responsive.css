@@ -1,0 +1,31 @@
+@media (max-width: 61.9375rem) {
+  .navbar-default .navbar-brand {
+    font-size: 2.5rem;
+  }
+
+  .navbar-nav {
+    margin-top: 0;
+  }
+
+  .page-shell,
+  .shell-fallback {
+    padding: 0 0.625rem;
+  }
+
+  .help-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .help-panel--sidebar {
+    position: static;
+    top: auto;
+  }
+
+  .help-highlight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .help-nav__link {
+    padding-right: 1rem;
+  }
+}

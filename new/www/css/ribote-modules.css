@@ -21,10 +21,10 @@
   display: grid;
   gap: 1rem;
   padding: 1.35rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 1.25rem;
-  background: rgba(255, 253, 248, 0.96);
-  box-shadow: 0 0.75rem 1.875rem rgba(58, 49, 38, 0.06);
+  background: rgba(247, 251, 252, 0.96);
+  box-shadow: 0 0.75rem 1.875rem rgba(16, 35, 42, 0.06);
 }
 
 .ribote-panel--canvas {
@@ -38,7 +38,7 @@
   width: fit-content;
   padding: 0 0.9rem;
   border-radius: 999px;
-  background: rgba(232, 237, 226, 0.9);
+  background: rgba(216, 237, 240, 0.9);
   color: var(--rm-accent-deep);
   font-size: 0.75rem;
   font-weight: 800;
@@ -179,13 +179,13 @@
 .ribote-btn--primary {
   background: linear-gradient(135deg, var(--rm-accent-deep), var(--rm-accent));
   color: #fff;
-  box-shadow: 0 0.75rem 1.5rem rgba(101, 121, 91, 0.18);
+  box-shadow: 0 0.75rem 1.5rem rgba(10, 89, 99, 0.18);
 }
 
 .ribote-btn--primary:hover:not(:disabled),
 .ribote-btn--primary:focus:not(:disabled) {
-  background: #596d52;
-  color: #fffdf8;
+  background: #084f59;
+  color: #f7fbfc;
 }
 
 .ribote-btn--primary[disabled],
@@ -195,33 +195,33 @@
 .ribote-btn--primary:disabled:hover,
 .ribote-btn--primary:disabled:focus {
   transform: none;
-  background: #8a9d7e;
-  color: #fffdf8;
-  border-color: #8a9d7e;
+  background: #2d8d96;
+  color: #f7fbfc;
+  border-color: #2d8d96;
   cursor: not-allowed;
   opacity: 0.92;
   box-shadow: none;
 }
 
 .ribote-btn--secondary {
-  border-color: rgba(133, 155, 122, 0.2);
-  background: rgba(255, 252, 246, 0.9);
+  border-color: rgba(20, 119, 130, 0.2);
+  background: rgba(247, 251, 252, 0.9);
   color: var(--rm-text);
 }
 
 .ribote-btn--ghost {
-  border-color: rgba(201, 132, 104, 0.2);
-  background: rgba(242, 216, 204, 0.35);
-  color: #8e583f;
+  border-color: rgba(212, 90, 42, 0.2);
+  background: rgba(241, 199, 182, 0.35);
+  color: #934018;
 }
 
 .ribote-hint {
   margin: 0;
   padding: 0.9rem 1rem;
-  border: 0.0625rem solid rgba(201, 136, 109, 0.28);
+  border: 0.0625rem solid rgba(212, 90, 42, 0.28);
   border-radius: 0.9rem;
-  background: rgba(201, 136, 109, 0.1);
-  color: #875642;
+  background: rgba(212, 90, 42, 0.1);
+  color: #8a3d17;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.65;
@@ -250,9 +250,9 @@
   display: grid;
   gap: 0.3rem;
   padding: 0.95rem 1rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 1rem;
-  background: rgba(248, 242, 234, 0.72);
+  background: rgba(223, 236, 239, 0.72);
 }
 
 .ribote-summary-item__label {
@@ -279,16 +279,16 @@
 
 .ribote-result-card {
   padding: 1rem 1.1rem;
-  border: 0.0625rem dashed rgba(133, 155, 122, 0.24);
+  border: 0.0625rem dashed rgba(20, 119, 130, 0.24);
   border-radius: 1rem;
-  background: rgba(255, 252, 246, 0.75);
+  background: rgba(247, 251, 252, 0.75);
   margin-top: 0.55rem;
 }
 
 .ribote-result-card--warning {
   border-style: solid;
-  border-color: rgba(201, 132, 104, 0.26);
-  background: rgba(242, 216, 204, 0.32);
+  border-color: rgba(212, 90, 42, 0.26);
+  background: rgba(241, 199, 182, 0.32);
 }
 
 .ribote-result-card__copy {
@@ -323,8 +323,8 @@
 .ribote-result-tabs .nav > li.active > a:hover,
 .ribote-result-tabs .nav > li.active > a:focus {
   color: var(--rm-accent-deep);
-  background: rgba(232, 237, 226, 0.72);
-  border-color: rgba(133, 155, 122, 0.18);
+  background: rgba(216, 237, 240, 0.72);
+  border-color: rgba(20, 119, 130, 0.18);
 }
 
 .ribote-result-tabs .tab-content {
@@ -495,22 +495,22 @@
 }
 
 .ribote-table-pagination__actions .ribote-btn.is-active {
-  border-color: rgba(201, 132, 104, 0.55);
-  background: linear-gradient(180deg, rgba(201, 132, 104, 0.18), rgba(201, 132, 104, 0.08));
-  color: #714633;
-  box-shadow: 0 0.32rem 0.9rem rgba(201, 132, 104, 0.18);
+  border-color: rgba(212, 90, 42, 0.55);
+  background: linear-gradient(180deg, rgba(212, 90, 42, 0.18), rgba(212, 90, 42, 0.08));
+  color: #76320f;
+  box-shadow: 0 0.32rem 0.9rem rgba(212, 90, 42, 0.18);
 }
 
 .ribote-d3-card {
   display: grid;
   gap: 0.9rem;
   padding: 1rem 1.1rem;
-  border: 0.0625rem solid rgba(101, 121, 91, 0.28);
+  border: 0.0625rem solid rgba(10, 89, 99, 0.28);
   border-radius: 0.8rem;
-  background: rgba(255, 252, 246, 0.82);
+  background: rgba(247, 251, 252, 0.82);
   box-shadow:
-    0 0.12rem 0.3rem rgba(58, 49, 38, 0.05),
-    0 0 0 0.08rem rgba(133, 155, 122, 0.08);
+    0 0.12rem 0.3rem rgba(16, 35, 42, 0.05),
+    0 0 0 0.08rem rgba(20, 119, 130, 0.08);
 }
 
 .ribote-d3-card__title {
@@ -605,8 +605,8 @@
   min-height: 2.35rem;
   padding: 0 0.85rem;
   font-size: 1rem;
-  box-shadow: 0 0.55rem 1rem rgba(58, 49, 38, 0.1);
-  background: rgba(255, 252, 246, 0.92);
+  box-shadow: 0 0.55rem 1rem rgba(16, 35, 42, 0.1);
+  background: rgba(247, 251, 252, 0.92);
   backdrop-filter: blur(3px);
 }
 
@@ -624,7 +624,7 @@
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: rgba(255, 252, 246, 0.78);
+  background: rgba(247, 251, 252, 0.78);
   color: var(--rm-text);
   font-size: 1rem;
   font-weight: 700;
@@ -639,7 +639,7 @@
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: rgba(255, 252, 246, 0.78);
+  background: rgba(247, 251, 252, 0.78);
   color: var(--rm-text);
   font-size: 1rem;
   font-weight: 700;
@@ -676,7 +676,7 @@
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: rgba(255, 252, 246, 0.78);
+  background: rgba(247, 251, 252, 0.78);
   color: var(--rm-text);
   font-size: 1rem;
   font-weight: 700;
@@ -696,12 +696,12 @@
   display: grid;
   gap: 0.9rem;
   padding: 1rem 1.1rem;
-  border: 0.0625rem solid rgba(101, 121, 91, 0.28);
+  border: 0.0625rem solid rgba(10, 89, 99, 0.28);
   border-radius: 0.9rem;
-  background: rgba(255, 252, 246, 0.82);
+  background: rgba(247, 251, 252, 0.82);
   box-shadow:
-    0 0.12rem 0.3rem rgba(58, 49, 38, 0.05),
-    0 0 0 0.08rem rgba(133, 155, 122, 0.08);
+    0 0.12rem 0.3rem rgba(16, 35, 42, 0.05),
+    0 0 0 0.08rem rgba(20, 119, 130, 0.08);
 }
 
 .ribote-clustering-detail__header {
@@ -735,9 +735,9 @@
   display: grid;
   gap: 0.3rem;
   padding: 0.85rem 0.9rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.16);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.16);
   border-radius: 0.8rem;
-  background: rgba(248, 242, 234, 0.62);
+  background: rgba(223, 236, 239, 0.62);
 }
 
 .ribote-clustering-detail__label {
@@ -770,13 +770,13 @@
 }
 
 .ribote-d3-grid line {
-  stroke: rgba(133, 155, 122, 0.14);
+  stroke: rgba(20, 119, 130, 0.14);
 }
 
 .ribote-d3-axis-label,
 .ribote-d3-axis-tick {
   fill: #000;
-  font-family: "Montserrat", sans-serif;
+  font-family: sans-serif;
 }
 
 .ribote-d3-axis-label {
@@ -790,7 +790,7 @@
 .ribote-d3-caption,
 .ribote-d3-legend {
   fill: #000;
-  font-family: "Montserrat", sans-serif;
+  font-family: sans-serif;
   font-size: 14px;
 }
 
@@ -815,7 +815,7 @@
 
 .ribote-d3-chart-title {
   fill: #000;
-  font-family: "Montserrat", sans-serif;
+  font-family: sans-serif;
 }
 
 .ribote-d3-chart-title--library {
@@ -835,21 +835,21 @@
 
 .ribote-d3-chart-subtitle {
   fill: var(--rm-muted);
-  font-family: "Montserrat", sans-serif;
+  font-family: sans-serif;
   font-size: 12px;
   font-weight: 600;
 }
 
 .ribote-d3-axis-text {
   fill: #000;
-  font-family: "Montserrat", sans-serif;
+  font-family: sans-serif;
   font-size: 12px;
   font-weight: 600;
 }
 
 .ribote-d3-axis-title {
   fill: #000;
-  font-family: "Montserrat", sans-serif;
+  font-family: sans-serif;
   font-size: 12px;
   font-weight: 700;
 }
@@ -884,10 +884,10 @@
   min-width: 0;
   max-width: calc(100vw - 2rem);
   padding: 0.7rem 0.8rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.2);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.2);
   border-radius: 0.7rem;
-  background: rgba(255, 252, 246, 0.96);
-  box-shadow: 0 0.75rem 1.5rem rgba(58, 49, 38, 0.14);
+  background: rgba(247, 251, 252, 0.96);
+  box-shadow: 0 0.75rem 1.5rem rgba(16, 35, 42, 0.14);
   color: var(--rm-text);
   transition: opacity 0.18s ease;
 }
@@ -995,7 +995,7 @@
 
 .ribote-gsea-table-wrap {
   overflow: auto;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.16);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.16);
   border-radius: 0.85rem;
   background: rgba(255, 255, 255, 0.6);
 }
@@ -1019,21 +1019,21 @@
 }
 
 .ribote-gsea-table thead {
-  background: rgba(232, 237, 226, 0.72);
+  background: rgba(216, 237, 240, 0.72);
 }
 
 .ribote-enrichment-table thead {
-  background: rgba(232, 237, 226, 0.72);
+  background: rgba(216, 237, 240, 0.72);
 }
 
 .ribote-signalp-table thead {
-  background: rgba(232, 237, 226, 0.72);
+  background: rgba(216, 237, 240, 0.72);
 }
 
 .ribote-gsea-table th,
 .ribote-gsea-table td {
   padding: 0.8rem 0.9rem;
-  border-bottom: 0.0625rem solid rgba(133, 155, 122, 0.14);
+  border-bottom: 0.0625rem solid rgba(20, 119, 130, 0.14);
   color: var(--rm-text);
   font-size: 1.3rem;
   vertical-align: top;
@@ -1042,7 +1042,7 @@
 .ribote-enrichment-table th,
 .ribote-enrichment-table td {
   padding: 0.8rem 0.9rem;
-  border-bottom: 0.0625rem solid rgba(133, 155, 122, 0.14);
+  border-bottom: 0.0625rem solid rgba(20, 119, 130, 0.14);
   color: var(--rm-text);
   font-size: 1.3rem;
   vertical-align: top;
@@ -1051,7 +1051,7 @@
 .ribote-signalp-table th,
 .ribote-signalp-table td {
   padding: 0.8rem 0.9rem;
-  border-bottom: 0.0625rem solid rgba(133, 155, 122, 0.14);
+  border-bottom: 0.0625rem solid rgba(20, 119, 130, 0.14);
   color: var(--rm-text);
   font-size: 1.3rem;
   vertical-align: top;
@@ -1101,20 +1101,20 @@
 }
 
 .ribote-gsea-table tbody tr:hover {
-  background: rgba(232, 237, 226, 0.42);
+  background: rgba(216, 237, 240, 0.42);
 }
 
 .ribote-enrichment-table tbody tr:hover {
-  background: rgba(232, 237, 226, 0.28);
+  background: rgba(216, 237, 240, 0.28);
 }
 
 .ribote-signalp-table tbody tr:hover {
-  background: rgba(232, 237, 226, 0.28);
+  background: rgba(216, 237, 240, 0.28);
 }
 
 .ribote-gsea-table tbody tr.is-selected {
-  background: rgba(201, 136, 109, 0.18);
-  box-shadow: inset 0 0 0 0.08rem rgba(201, 136, 109, 0.34);
+  background: rgba(212, 90, 42, 0.18);
+  box-shadow: inset 0 0 0 0.08rem rgba(212, 90, 42, 0.34);
 }
 
 .ribote-gsea-pathway-name {
@@ -1153,7 +1153,7 @@
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: rgba(255, 252, 246, 0.78);
+  background: rgba(247, 251, 252, 0.78);
   color: var(--rm-text);
   font-size: 1rem;
   font-weight: 700;
@@ -1179,9 +1179,9 @@
   display: grid;
   gap: 0.2rem;
   padding: 0.75rem 0.85rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.16);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.16);
   border-radius: 0.8rem;
-  background: rgba(248, 242, 234, 0.58);
+  background: rgba(223, 236, 239, 0.58);
 }
 
 .ribote-gsea-plot-metric span {
@@ -1227,24 +1227,26 @@
   }
 }
 
-#shiny-notification-panel.rnameta-progress-panel {
+#shiny-notification-panel.rnameta-progress-panel,
+.rnameta-progress-placeholder.rnameta-progress-panel {
   position: static !important;
   inset: auto !important;
   width: 100% !important;
   max-width: none !important;
 }
 
-#shiny-notification-panel.rnameta-progress-panel .shiny-notification {
+#shiny-notification-panel.rnameta-progress-panel .shiny-notification,
+.rnameta-progress-placeholder.rnameta-progress-panel .shiny-notification {
   position: static !important;
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
   opacity: 1;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.22s ease;
   border-radius: 1rem !important;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.22) !important;
-  background: rgba(255, 252, 246, 0.98) !important;
-  box-shadow: 0 1rem 2rem rgba(115, 98, 72, 0.14) !important;
+  border: 0.0625rem solid rgba(20, 119, 130, 0.22) !important;
+  background: rgba(247, 251, 252, 0.98) !important;
+  box-shadow: 0 1rem 2rem rgba(16, 35, 42, 0.14) !important;
   color: var(--rm-text) !important;
 }
 
@@ -1252,7 +1254,8 @@
   display: none !important;
 }
 
-#shiny-notification-panel.rnameta-progress-panel .progress-text {
+#shiny-notification-panel.rnameta-progress-panel .progress-text,
+.rnameta-progress-placeholder.rnameta-progress-panel .progress-text {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -1266,23 +1269,25 @@
   height: 0.9rem;
   margin-bottom: 0.85rem;
   border-radius: 62.4375rem;
-  background: rgba(133, 155, 122, 0.14);
+  background: rgba(20, 119, 130, 0.14);
   overflow: hidden;
   box-shadow: none;
 }
 
 .shiny-notification .progress-bar {
-  background: linear-gradient(90deg, #859b7a 0%, #c9886d 100%) !important;
+  background: linear-gradient(90deg, #147782 0%, #d45a2a 100%) !important;
   box-shadow: none !important;
 }
 
-#shiny-notification-panel.rnameta-progress-panel .progress-message {
+#shiny-notification-panel.rnameta-progress-panel .progress-message,
+.rnameta-progress-placeholder.rnameta-progress-panel .progress-message {
   color: var(--rm-text);
   font-size: 1.3rem;
   font-weight: 800;
 }
 
-#shiny-notification-panel.rnameta-progress-panel .progress-detail {
+#shiny-notification-panel.rnameta-progress-panel .progress-detail,
+.rnameta-progress-placeholder.rnameta-progress-panel .progress-detail {
   margin-left: auto;
   text-align: right;
   color: var(--rm-muted);
@@ -1375,9 +1380,9 @@
 
 .ribote-annotation .form-control {
   height: 3.1rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.22);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.22);
   border-radius: 0.85rem;
-  background: rgba(255, 252, 246, 0.94);
+  background: rgba(247, 251, 252, 0.94);
   color: var(--rm-text);
   font-size: 1.05rem;
   font-weight: 600;
@@ -1385,8 +1390,8 @@
 }
 
 .ribote-annotation .form-control:focus {
-  border-color: rgba(104, 124, 94, 0.45);
-  box-shadow: 0 0 0 0.12rem rgba(133, 155, 122, 0.12);
+  border-color: rgba(10, 89, 99, 0.45);
+  box-shadow: 0 0 0 0.12rem rgba(20, 119, 130, 0.12);
 }
 
 .ribote-preview-table--annotation {
@@ -1444,9 +1449,9 @@
   max-width: 100%;
   min-width: 0;
   overflow-x: auto;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 1rem;
-  background: rgba(255, 252, 246, 0.82);
+  background: rgba(247, 251, 252, 0.82);
 }
 
 .ribote-table-wrap--te {
@@ -1467,13 +1472,13 @@
 }
 
 .ribote-preview-table thead {
-  background: rgba(232, 237, 226, 0.72);
+  background: rgba(216, 237, 240, 0.72);
 }
 
 .ribote-preview-table th,
 .ribote-preview-table td {
   padding: 0.8rem 0.95rem;
-  border-bottom: 0.0625rem solid rgba(133, 155, 122, 0.14);
+  border-bottom: 0.0625rem solid rgba(20, 119, 130, 0.14);
   color: var(--rm-text);
   font-size: 1.3rem;
   text-align: center;

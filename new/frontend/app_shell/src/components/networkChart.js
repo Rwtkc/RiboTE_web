@@ -31,7 +31,7 @@ function positionTooltip(tooltip, container, event) {
 
 function fallbackModuleColor(moduleName) {
   if (!moduleName) {
-    return "#859b7a";
+    return "#147782";
   }
 
   const probe = document.createElement("span");
@@ -39,7 +39,7 @@ function fallbackModuleColor(moduleName) {
   const resolved = probe.style.color;
 
   if (!resolved) {
-    return "#859b7a";
+    return "#147782";
   }
 
   return moduleName;

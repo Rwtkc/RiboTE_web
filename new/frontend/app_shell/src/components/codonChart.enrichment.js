@@ -107,7 +107,7 @@ export function drawCodonShiftEnrichmentChart(container, panel, renderState = {}
     .attr("height", barHeight)
     .attr("rx", 4)
     .attr("ry", 4)
-    .attr("fill", (point) => (point.selected ? "#c46a36" : "#6f9462"))
+    .attr("fill", (point) => (point.selected ? "#d45a2a" : "#147782"))
     .attr("fill-opacity", 0.82)
     .attr("stroke", (point) => (point.selected ? "#8f3e20" : "#4f7246"))
     .attr("stroke-width", 0.8)
@@ -253,7 +253,7 @@ export function drawCodonPermutationHistogramChart(container, panel) {
     .attr("width", (bin) => Math.max(1, xScale(bin.x1) - xScale(bin.x0) - 1))
     .attr("y", (bin) => yScale(bin.count))
     .attr("height", (bin) => innerHeight - yScale(bin.count))
-    .attr("fill", "#859b7a")
+    .attr("fill", "#147782")
     .attr("fill-opacity", 0.72)
     .on("mouseenter", function handleMouseEnter(event, bin) {
       tooltip
@@ -284,7 +284,7 @@ export function drawCodonPermutationHistogramChart(container, panel) {
     .attr("x2", observedX)
     .attr("y1", 0)
     .attr("y2", innerHeight)
-    .attr("stroke", "#c46a36")
+    .attr("stroke", "#d45a2a")
     .attr("stroke-width", 2)
     .attr("stroke-dasharray", "6 4");
 

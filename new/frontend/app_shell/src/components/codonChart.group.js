@@ -103,7 +103,7 @@ export function drawCodonUsageGroupChart(container, panel, renderState = {}) {
     .attr("x2", xScale.bandwidth() / 2)
     .attr("y1", (group) => yScale(group.min))
     .attr("y2", (group) => yScale(group.max))
-    .attr("stroke", "#3a3126")
+    .attr("stroke", "#17292f")
     .attr("stroke-width", 1.2);
 
   panelGroups
@@ -112,7 +112,7 @@ export function drawCodonUsageGroupChart(container, panel, renderState = {}) {
     .attr("x2", xScale.bandwidth() * 0.76)
     .attr("y1", (group) => yScale(group.min))
     .attr("y2", (group) => yScale(group.min))
-    .attr("stroke", "#3a3126")
+    .attr("stroke", "#17292f")
     .attr("stroke-width", 1.2);
 
   panelGroups
@@ -121,7 +121,7 @@ export function drawCodonUsageGroupChart(container, panel, renderState = {}) {
     .attr("x2", xScale.bandwidth() * 0.76)
     .attr("y1", (group) => yScale(group.max))
     .attr("y2", (group) => yScale(group.max))
-    .attr("stroke", "#3a3126")
+    .attr("stroke", "#17292f")
     .attr("stroke-width", 1.2);
 
   const boxes = panelGroups
@@ -130,9 +130,9 @@ export function drawCodonUsageGroupChart(container, panel, renderState = {}) {
     .attr("width", xScale.bandwidth() * 0.64)
     .attr("y", innerHeight)
     .attr("height", 0)
-    .attr("fill", (group) => CODON_GROUP_COLORS[group.teGroup] || "#859b7a")
+    .attr("fill", (group) => CODON_GROUP_COLORS[group.teGroup] || "#147782")
     .attr("fill-opacity", 0.84)
-    .attr("stroke", "rgba(58, 49, 38, 0.32)")
+    .attr("stroke", "rgba(16, 35, 42, 0.32)")
     .attr("stroke-width", 1.1)
     .on("mouseenter", function handleMouseEnter(event, group) {
       tooltip
@@ -170,7 +170,7 @@ export function drawCodonUsageGroupChart(container, panel, renderState = {}) {
     .attr("cy", (group) => yScale(group.mean))
     .attr("r", 3.6)
     .attr("fill", "#ffffff")
-    .attr("stroke", "#3a3126")
+    .attr("stroke", "#17292f")
     .attr("stroke-width", 1.1);
 
   panelGroups
@@ -302,7 +302,7 @@ export function drawCodonBiasGroupChart(container, panel, renderState = {}) {
     .attr("x2", xScale.bandwidth() / 2)
     .attr("y1", (group) => yScale(group.min))
     .attr("y2", (group) => yScale(group.max))
-    .attr("stroke", "#3a3126")
+    .attr("stroke", "#17292f")
     .attr("stroke-width", 1.2);
 
   panelGroups
@@ -311,7 +311,7 @@ export function drawCodonBiasGroupChart(container, panel, renderState = {}) {
     .attr("x2", xScale.bandwidth() * 0.76)
     .attr("y1", (group) => yScale(group.min))
     .attr("y2", (group) => yScale(group.min))
-    .attr("stroke", "#3a3126")
+    .attr("stroke", "#17292f")
     .attr("stroke-width", 1.2);
 
   panelGroups
@@ -320,7 +320,7 @@ export function drawCodonBiasGroupChart(container, panel, renderState = {}) {
     .attr("x2", xScale.bandwidth() * 0.76)
     .attr("y1", (group) => yScale(group.max))
     .attr("y2", (group) => yScale(group.max))
-    .attr("stroke", "#3a3126")
+    .attr("stroke", "#17292f")
     .attr("stroke-width", 1.2);
 
   const boxes = panelGroups
@@ -329,9 +329,9 @@ export function drawCodonBiasGroupChart(container, panel, renderState = {}) {
     .attr("width", xScale.bandwidth() * 0.64)
     .attr("y", innerHeight)
     .attr("height", 0)
-    .attr("fill", (group) => CODON_GROUP_COLORS[group.teGroup] || "#859b7a")
+    .attr("fill", (group) => CODON_GROUP_COLORS[group.teGroup] || "#147782")
     .attr("fill-opacity", 0.84)
-    .attr("stroke", "rgba(58, 49, 38, 0.32)")
+    .attr("stroke", "rgba(16, 35, 42, 0.32)")
     .attr("stroke-width", 1.1)
     .on("mouseenter", function handleMouseEnter(event, group) {
       tooltip
@@ -369,7 +369,7 @@ export function drawCodonBiasGroupChart(container, panel, renderState = {}) {
     .attr("cy", (group) => yScale(group.mean))
     .attr("r", 3.6)
     .attr("fill", "#ffffff")
-    .attr("stroke", "#3a3126")
+    .attr("stroke", "#17292f")
     .attr("stroke-width", 1.1);
 
   chart

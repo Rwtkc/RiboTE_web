@@ -1,21 +1,5 @@
 import { jsPDF } from "jspdf";
-import * as opentype from "opentype.js";
 import { svg2pdf } from "svg2pdf.js";
-import montserrat400Woff from "@fontsource/montserrat/files/montserrat-latin-400-normal.woff";
-import montserrat500Woff from "@fontsource/montserrat/files/montserrat-latin-500-normal.woff";
-import montserrat600Woff from "@fontsource/montserrat/files/montserrat-latin-600-normal.woff";
-import montserrat700Woff from "@fontsource/montserrat/files/montserrat-latin-700-normal.woff";
-import montserrat800Woff from "@fontsource/montserrat/files/montserrat-latin-800-normal.woff";
-
-const SVG_NS = "http://www.w3.org/2000/svg";
-const FONT_ASSETS = {
-  montserrat400: montserrat400Woff,
-  montserrat500: montserrat500Woff,
-  montserrat600: montserrat600Woff,
-  montserrat700: montserrat700Woff,
-  montserrat800: montserrat800Woff
-};
-const fontPromises = new Map();
 
 function copyComputedTextStyle(sourceNode, targetNode) {
   if (!sourceNode || !targetNode || typeof window?.getComputedStyle !== "function") {
@@ -23,11 +7,14 @@ function copyComputedTextStyle(sourceNode, targetNode) {
   }
 
   const computed = window.getComputedStyle(sourceNode);
+  const fontFamily = resolveSvgExportFontFamily(computed.fontFamily || getSvgTextValue(sourceNode, "font-family"));
+  const fontWeight = normalizeSvgExportFontWeight(computed.fontWeight || getSvgTextValue(sourceNode, "font-weight") || "400");
   const mappedAttributes = {
-    "font-family": computed.fontFamily || '"Montserrat", sans-serif',
+    "font-family": fontFamily,
     "font-size": computed.fontSize || "16px",
-    "font-weight": computed.fontWeight || "400",
-    "fill": computed.fill || "#22301f",
+    "font-weight": fontWeight,
+    "font-style": "normal",
+    "fill": computed.fill || "#17292f",
     "text-anchor": computed.textAnchor || sourceNode.getAttribute("text-anchor") || "start",
     "dominant-baseline": computed.dominantBaseline || sourceNode.getAttribute("dominant-baseline") || "alphabetic",
     "opacity": computed.opacity || "1"
@@ -38,6 +25,14 @@ function copyComputedTextStyle(sourceNode, targetNode) {
       targetNode.setAttribute(name, String(value));
     }
   });
+
+  const styleMap = parseStyleAttribute(targetNode.getAttribute("style"));
+  styleMap["font-family"] = fontFamily;
+  styleMap["font-size"] = computed.fontSize || "16px";
+  styleMap["font-weight"] = fontWeight;
+  styleMap["font-style"] = "normal";
+  styleMap.fill = computed.fill || "#17292f";
+  targetNode.setAttribute("style", serializeStyleAttribute(styleMap));
 }
 
 export function inlineComputedSvgTextStyles(sourceSvgNode, targetSvgNode) {
@@ -54,22 +49,20 @@ export function inlineComputedSvgTextStyles(sourceSvgNode, targetSvgNode) {
   }
 }
 
-function parseStyleAttribute(styleText) {
-  return String(styleText || "")
-    .split(";")
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .reduce((accumulator, entry) => {
-      const splitIndex = entry.indexOf(":");
-      if (splitIndex === -1) {
-        return accumulator;
-      }
+function normalizePdfTextFonts(svgNode) {
+  svgNode.querySelectorAll("text").forEach((node) => {
+    const fontFamily = resolveSvgExportFontFamily(getSvgTextValue(node, "font-family"));
+    const fontWeight = normalizeSvgExportFontWeight(getSvgTextValue(node, "font-weight"));
+    node.setAttribute("font-family", fontFamily);
+    node.setAttribute("font-weight", fontWeight);
+    node.setAttribute("font-style", "normal");
 
-      const key = entry.slice(0, splitIndex).trim();
-      const value = entry.slice(splitIndex + 1).trim();
-      accumulator[key] = value;
-      return accumulator;
-    }, {});
+    const styleMap = parseStyleAttribute(node.getAttribute("style"));
+    styleMap["font-family"] = fontFamily;
+    styleMap["font-weight"] = fontWeight;
+    styleMap["font-style"] = "normal";
+    node.setAttribute("style", serializeStyleAttribute(styleMap));
+  });
 }
 
 function getSvgTextValue(node, name) {
@@ -92,137 +85,67 @@ function getSvgTextValue(node, name) {
   return null;
 }
 
-function parseSvgLength(value, fontSize) {
-  if (value == null || value === "") {
-    return 0;
+function parseStyleAttribute(styleText) {
+  return String(styleText || "")
+    .split(";")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .reduce((accumulator, entry) => {
+      const splitIndex = entry.indexOf(":");
+      if (splitIndex === -1) {
+        return accumulator;
+      }
+
+      const key = entry.slice(0, splitIndex).trim();
+      const value = entry.slice(splitIndex + 1).trim();
+      accumulator[key] = value;
+      return accumulator;
+    }, {});
+}
+
+function serializeStyleAttribute(styleMap) {
+  return Object.entries(styleMap)
+    .filter(([, value]) => value != null && String(value).trim() !== "")
+    .map(([name, value]) => `${name}: ${value}`)
+    .join("; ");
+}
+
+function resolveSvgExportFontFamily(value) {
+  const family = String(value || "").toLowerCase();
+  if (
+    !family ||
+    family === "inherit" ||
+    family.includes("sans-serif") ||
+    family.includes("system-ui") ||
+    family.includes("var(") ||
+    family.includes("--app-") ||
+    family.includes("segoe ui") ||
+    family.includes("arial") ||
+    family.includes("helvetica")
+  ) {
+    return "sans-serif";
   }
 
-  const text = String(value).trim();
-  const numeric = Number.parseFloat(text);
+  return value || "sans-serif";
+}
+
+function normalizeSvgExportFontWeight(value) {
+  const normalized = String(value || "400").trim().toLowerCase();
+  if (normalized === "bold" || normalized === "bolder") {
+    return "700";
+  }
+
+  const numeric = Number.parseInt(normalized, 10);
   if (!Number.isFinite(numeric)) {
-    return 0;
+    return "400";
   }
 
-  if (text.endsWith("em")) {
-    return numeric * fontSize;
-  }
-
-  return numeric;
-}
-
-function normalizeFontWeight(value) {
-  const numeric = Number.parseInt(String(value || "400"), 10);
-  if (Number.isNaN(numeric)) {
-    return 400;
-  }
-
-  if (numeric >= 750) {
-    return 800;
-  }
-
-  if (numeric >= 650) {
-    return 700;
-  }
-
-  if (numeric >= 550) {
-    return 600;
-  }
-
-  if (numeric >= 450) {
-    return 500;
-  }
-
-  return 400;
-}
-
-function resolveFontKey(node) {
-  return `montserrat${normalizeFontWeight(getSvgTextValue(node, "font-weight"))}`;
-}
-
-function resolveBaselineOffset(font, fontSize, baseline) {
-  const units = font.unitsPerEm || 1000;
-  const ascender = font.ascender || 0;
-  const descender = font.descender || 0;
-  const normalized = String(baseline || "alphabetic").toLowerCase();
-
-  if (normalized === "middle" || normalized === "central") {
-    return ((ascender + descender) / 2 / units) * fontSize;
-  }
-
-  return 0;
-}
-
-function loadFontByKey(fontKey) {
-  if (!fontPromises.has(fontKey)) {
-    const assetUrl = FONT_ASSETS[fontKey];
-    if (!assetUrl) {
-      throw new Error(`Unsupported vector export font key: ${fontKey}`);
-    }
-
-    fontPromises.set(fontKey, fetch(assetUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to load vector export font.");
-        }
-        return response.arrayBuffer();
-      })
-      .then((buffer) => opentype.parse(buffer)));
-  }
-
-  return fontPromises.get(fontKey);
-}
-
-async function convertTextToPaths(svgRoot) {
-  const textNodes = Array.from(svgRoot.querySelectorAll("text")).filter((node) => String(node.textContent || "").trim());
-  if (!textNodes.length) {
-    return;
-  }
-
-  const uniqueFontKeys = [...new Set(textNodes.map((node) => resolveFontKey(node)))];
-  const fonts = Object.fromEntries(await Promise.all(uniqueFontKeys.map(async (fontKey) => [fontKey, await loadFontByKey(fontKey)])));
-
-  textNodes.forEach((node) => {
-    const text = String(node.textContent || "");
-    const font = fonts[resolveFontKey(node)];
-    const fontSize = Number.parseFloat(getSvgTextValue(node, "font-size") || "16");
-    const anchor = String(getSvgTextValue(node, "text-anchor") || "start").toLowerCase();
-    const baseline = String(getSvgTextValue(node, "dominant-baseline") || "alphabetic").toLowerCase();
-    let x = Number.parseFloat(node.getAttribute("x") || "0");
-    let y = Number.parseFloat(node.getAttribute("y") || "0");
-    x += parseSvgLength(node.getAttribute("dx"), fontSize);
-    y += parseSvgLength(node.getAttribute("dy"), fontSize);
-    const advance = font.getAdvanceWidth(text, fontSize);
-
-    if (anchor === "middle") {
-      x -= advance / 2;
-    } else if (anchor === "end") {
-      x -= advance;
-    }
-
-    y += resolveBaselineOffset(font, fontSize, baseline);
-
-    const pathNode = document.createElementNS(SVG_NS, "path");
-    pathNode.setAttribute("d", font.getPath(text, x, y, fontSize).toPathData(2));
-    pathNode.setAttribute("fill", getSvgTextValue(node, "fill") || "#22301f");
-    pathNode.setAttribute("stroke", "none");
-
-    const transform = node.getAttribute("transform");
-    if (transform) {
-      pathNode.setAttribute("transform", transform);
-    }
-
-    const opacity = getSvgTextValue(node, "opacity");
-    if (opacity != null) {
-      pathNode.setAttribute("opacity", opacity);
-    }
-
-    node.replaceWith(pathNode);
-  });
+  return numeric >= 600 ? "700" : "400";
 }
 
 export async function vectorPdfFromSvgNode({ svgNode, sourceSvgNode = null, widthPx, heightPx, filename }) {
   inlineComputedSvgTextStyles(sourceSvgNode, svgNode);
-  await convertTextToPaths(svgNode);
+  normalizePdfTextFonts(svgNode);
 
   const pdf = new jsPDF({
     orientation: widthPx >= heightPx ? "landscape" : "portrait",
@@ -230,6 +153,7 @@ export async function vectorPdfFromSvgNode({ svgNode, sourceSvgNode = null, widt
     format: [widthPx, heightPx],
     compress: true
   });
+  pdf.setFont("helvetica", "normal");
 
   await svg2pdf(svgNode, pdf, { xOffset: 0, yOffset: 0, scale: 1 });
   if (filename) {

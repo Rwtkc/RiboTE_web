@@ -129,7 +129,7 @@ function drawHorizontalBarChart(container, data, options, renderState = {}) {
   const marginLeft = Math.max(100, Math.min(260, estimatedLabelWidth));
   const legendItems = Array.from(
     new Map(
-      data.map((item) => [item.group || "Sample", item.color || "#859b7a"])
+      data.map((item) => [item.group || "Sample", item.color || "#147782"])
     ),
     ([label, color]) => ({ label, color })
   );
@@ -185,7 +185,7 @@ function drawHorizontalBarChart(container, data, options, renderState = {}) {
     .attr("y", (item) => y(item.label))
     .attr("width", 0)
     .attr("height", y.bandwidth())
-    .attr("fill", (item) => item.color || "#859b7a")
+    .attr("fill", (item) => item.color || "#147782")
     .on("mouseenter", function(event, item) {
       d3.select(this).attr("opacity", 0.86);
       tooltip
@@ -219,7 +219,13 @@ function drawHorizontalBarChart(container, data, options, renderState = {}) {
     .append("g")
     .call(d3.axisLeft(y).tickSize(0))
     .call((axis) => axis.select(".domain").attr("stroke", "#000"))
-    .call((axis) => axis.selectAll("text").attr("class", "ribote-d3-axis-label"));
+    .call((axis) =>
+      axis
+        .selectAll("text")
+        .attr("class", "ribote-d3-axis-label")
+        .attr("text-anchor", "end")
+        .attr("dx", "-0.2em")
+    );
 
   chart
     .append("g")
@@ -266,8 +272,8 @@ function drawStackedFractionChart(container, data, renderState = {}) {
   const samples = Array.from(new Set(data.map((item) => item.sample)));
   const categories = Array.from(new Set(data.map((item) => item.category)));
   const categoryColors = {
-    "rRNA": "#c98468",
-    "Non-rRNA": "#859b7a"
+    "rRNA": "#d45a2a",
+    "Non-rRNA": "#147782"
   };
 
   const totalsBySample = new Map(
@@ -318,7 +324,7 @@ function drawStackedFractionChart(container, data, renderState = {}) {
     .data(stackedSeries)
     .enter()
     .append("g")
-    .attr("fill", (series) => categoryColors[series.key] || "#b9b39f")
+    .attr("fill", (series) => categoryColors[series.key] || "#8fa1a7")
     .selectAll("rect")
     .data((series) => series.map((item) => ({ ...item, category: series.key })))
     .enter()
@@ -382,7 +388,7 @@ function drawStackedFractionChart(container, data, renderState = {}) {
 
   categories.forEach((category, index) => {
     const group = legend.append("g").attr("transform", `translate(${index * legendItemWidth}, 0)`);
-    group.append("rect").attr("width", 18).attr("height", 18).attr("fill", categoryColors[category] || "#b9b39f");
+    group.append("rect").attr("width", 18).attr("height", 18).attr("fill", categoryColors[category] || "#8fa1a7");
     group.append("text").attr("x", 28).attr("y", 15).attr("class", "ribote-d3-legend ribote-d3-legend--library").text(category);
   });
 }
@@ -395,10 +401,10 @@ function mapBarPlotData(data) {
     group: item.sample_type || "Sample",
     color:
       item.sample_type === "Ribo-seq"
-        ? "#c98468"
+        ? "#d45a2a"
         : item.sample_type === "RNA-seq"
-          ? "#859b7a"
-          : "#b9b39f"
+          ? "#147782"
+          : "#8fa1a7"
   }));
 }
 
@@ -407,7 +413,7 @@ function mapBiotypeData(data) {
     label: item.gene_biotype,
     value: Number(item.genes_retained) || 0,
     group: "Gene Biotype",
-    color: "#859b7a"
+    color: "#147782"
   }));
 }
 

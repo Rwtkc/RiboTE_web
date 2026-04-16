@@ -183,6 +183,10 @@ function removeScopeState(scopeId) {
   delete store[scopeId];
 }
 
+function isClusteringControlsScope(scopeId) {
+  return String(scopeId || "") === "clustering-controls_host";
+}
+
 function ChevronDownIcon() {
   return (
     <Box
@@ -210,9 +214,9 @@ function ChevronDownIcon() {
 }
 
 const accordionCardSx = {
-  border: "0.0625rem solid rgba(133, 155, 122, 0.18)",
+  border: "0.0625rem solid rgba(20, 119, 130, 0.18)",
   borderRadius: "1rem",
-  backgroundColor: "rgba(255, 251, 246, 0.85)",
+  backgroundColor: "rgba(247, 251, 252, 0.85)",
   boxShadow: "none",
   overflow: "hidden",
   "&:before": {
@@ -246,7 +250,7 @@ const accordionDetailsSx = {
 };
 
 const checkboxSx = {
-  color: "rgba(133, 155, 122, 0.72)",
+  color: "rgba(20, 119, 130, 0.72)",
   "&.Mui-checked": {
     color: "var(--rm-accent-deep)"
   },
@@ -260,7 +264,7 @@ const checkboxLabelSx = {
   gap: "0.55rem",
   "& .MuiFormControlLabel-label": {
     color: "var(--rm-text)",
-    fontFamily: "\"Montserrat\", sans-serif",
+    fontFamily: "sans-serif",
     fontSize: "1.2rem",
     fontWeight: 700,
     lineHeight: 1.45
@@ -279,7 +283,7 @@ const multiSelectSx = {
     display: "flex",
     alignItems: "center",
     padding: "0.85rem 1rem !important",
-    fontFamily: "\"Montserrat\", sans-serif",
+    fontFamily: "sans-serif",
     fontSize: "1.05rem",
     fontWeight: 600,
     lineHeight: 1.5
@@ -435,17 +439,25 @@ function CodonPickerField({ field, selectedValues, setState, scopeId }) {
   );
 }
 
-function updateFieldValue(field, value, setState, scopeId) {
+function updateFieldValue(field, value, setState, scopeId, options = {}) {
   setState((current) => ({
     ...current,
     [field.key]: value
   }));
 
   setScopeFieldValue(scopeId, field.id, value);
+
+  if (options.deferShinySync) {
+    return;
+  }
+
   setShinyInputValue(field.id, value, { priority: "event" });
 }
 
-function renderField(field, state, setState, scopeId) {
+function renderField(field, state, setState, scopeId, options = {}) {
+  const isDisabled = Boolean(options.isDisabled);
+  const action = options.action ?? null;
+  const deferShinySync = Boolean(options.deferShinySync);
   if (field.type === "select") {
     return (
       <label key={field.key} className="ribote-field">
@@ -453,7 +465,8 @@ function renderField(field, state, setState, scopeId) {
         <FormControl fullWidth>
           <Select
             value={state[field.key] ?? ""}
-            onChange={(event) => updateFieldValue(field, event.target.value, setState, scopeId)}
+            disabled={isDisabled}
+            onChange={(event) => updateFieldValue(field, event.target.value, setState, scopeId, { deferShinySync })}
             sx={riboteSelectFieldSx}
             inputProps={riboteSelectInputProps}
             MenuProps={{ PaperProps: { sx: riboteSelectMenuPaperSx } }}
@@ -476,12 +489,13 @@ function renderField(field, state, setState, scopeId) {
         <input
           className="ribote-input"
           type="number"
+          disabled={isDisabled}
           value={state[field.key] ?? ""}
           min={field.min}
           max={field.max}
           step={field.step}
           placeholder={field.placeholder}
-          onChange={(event) => updateFieldValue(field, event.target.value, setState, scopeId)}
+          onChange={(event) => updateFieldValue(field, event.target.value, setState, scopeId, { deferShinySync })}
         />
       </label>
     );
@@ -504,7 +518,7 @@ function renderField(field, state, setState, scopeId) {
                 : typeof event.target.value === "string"
                   ? event.target.value.split(",").filter(Boolean)
                   : [];
-              updateFieldValue(field, nextValue, setState, scopeId);
+              updateFieldValue(field, nextValue, setState, scopeId, { deferShinySync });
             }}
             renderValue={(selected) => formatMultiSelectValue(selected, field.placeholder || "Select codons")}
             sx={multiSelectSx}
@@ -559,7 +573,8 @@ function renderField(field, state, setState, scopeId) {
         control={
           <Checkbox
             checked={Boolean(state[field.key])}
-            onChange={(event) => updateFieldValue(field, event.target.checked, setState, scopeId)}
+            disabled={isDisabled}
+            onChange={(event) => updateFieldValue(field, event.target.checked, setState, scopeId, { deferShinySync })}
             sx={checkboxSx}
           />
         }
@@ -569,15 +584,19 @@ function renderField(field, state, setState, scopeId) {
   }
 
   return (
-    <label key={field.key} className="ribote-field">
+    <label key={field.key} className={`ribote-field${action ? " ribote-field--with-action" : ""}`}>
       <span className="ribote-field__label">{field.label}</span>
-      <input
-        className="ribote-input"
-        type="text"
-        value={state[field.key] ?? ""}
-        placeholder={field.placeholder}
-        onChange={(event) => updateFieldValue(field, event.target.value, setState, scopeId)}
-      />
+      <div className={`ribote-field__control-row${action ? " ribote-field__control-row--with-action" : ""}`}>
+        <input
+          className="ribote-input"
+          type="text"
+          disabled={isDisabled}
+          value={state[field.key] ?? ""}
+          placeholder={field.placeholder}
+          onChange={(event) => updateFieldValue(field, event.target.value, setState, scopeId, { deferShinySync })}
+        />
+        {action}
+      </div>
     </label>
   );
 }
@@ -588,11 +607,18 @@ export default function ModuleControls({ config }) {
   const [state, setState] = useState(() => buildInitialState(sections));
   const [scopeId, setScopeId] = useState(null);
   const [externalContextVersion, setExternalContextVersion] = useState(0);
+  const [appliedClusteringGeneIds, setAppliedClusteringGeneIds] = useState("");
   const resolvedSections = useMemo(
     () => buildSpeciesScopedSections(sections, scopeId),
     [sections, scopeId, externalContextVersion]
   );
   const effectiveState = useMemo(() => buildPreservedState(resolvedSections, state), [resolvedSections, state]);
+  const clusteringGeneIdsField = useMemo(
+    () => resolvedSections.flatMap((section) => section.fields || []).find((field) => field.key === "clustering_detail_gene_ids") || null,
+    [resolvedSections]
+  );
+  const isClusteringScope = isClusteringControlsScope(scopeId);
+  const isClusteringGeneIdsMode = isClusteringScope && /gene/i.test(String(effectiveState.clustering_detail_mode || ""));
 
   useEffect(() => {
     const hostElement = rootRef.current?.parentElement;
@@ -641,15 +667,50 @@ export default function ModuleControls({ config }) {
     resolvedSections.forEach((section) => {
       (section.fields || []).forEach((field) => {
         setScopeFieldValue(scopeId, field.id, effectiveState[field.key]);
+        if (isClusteringScope && field.key === "clustering_detail_gene_ids") {
+          return;
+        }
         setShinyInputValue(field.id, effectiveState[field.key], { priority: "event" });
       });
     });
-  }, [scopeId, resolvedSections, effectiveState]);
+  }, [scopeId, resolvedSections, effectiveState, isClusteringScope]);
+
+  useEffect(() => {
+    if (!isClusteringScope || !clusteringGeneIdsField?.id) {
+      return;
+    }
+
+    setAppliedClusteringGeneIds("");
+    setScopeFieldValue(scopeId, clusteringGeneIdsField.id, "");
+    setShinyInputValue(clusteringGeneIdsField.id, "", { priority: "event" });
+  }, [clusteringGeneIdsField?.id, isClusteringGeneIdsMode, isClusteringScope, scopeId]);
 
   const renderedSections = useMemo(
     () =>
       resolvedSections.map((section) => {
-        const fields = (section.fields || []).map((field) => renderField(field, effectiveState, setState, scopeId));
+        const fields = (section.fields || []).map((field) => {
+          const isClusteringGeneIdsField = isClusteringScope && field.key === "clustering_detail_gene_ids";
+          const nextValue = String(effectiveState[field.key] ?? "").trim();
+
+          return renderField(field, effectiveState, setState, scopeId, {
+            deferShinySync: isClusteringGeneIdsField,
+            isDisabled: isClusteringGeneIdsField && !isClusteringGeneIdsMode,
+            action: isClusteringGeneIdsField ? (
+              <button
+                type="button"
+                className="ribote-btn ribote-btn--secondary ribote-field__action"
+                disabled={!isClusteringGeneIdsMode || !nextValue || nextValue === appliedClusteringGeneIds}
+                onClick={() => {
+                  setAppliedClusteringGeneIds(nextValue);
+                  setScopeFieldValue(scopeId, field.id, effectiveState[field.key]);
+                  setShinyInputValue(field.id, effectiveState[field.key], { priority: "event" });
+                }}
+              >
+                Apply
+              </button>
+            ) : null
+          });
+        });
 
         if (section.collapsible) {
           return (
@@ -681,7 +742,7 @@ export default function ModuleControls({ config }) {
           </div>
         );
       }),
-    [resolvedSections, effectiveState, scopeId]
+    [resolvedSections, effectiveState, scopeId, isClusteringScope, isClusteringGeneIdsMode, appliedClusteringGeneIds]
   );
 
   return (

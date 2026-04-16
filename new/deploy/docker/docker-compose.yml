@@ -1,0 +1,85 @@
+name: ribote
+
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: ribote_nginx
+    depends_on:
+      - ribote_app_1
+      - ribote_app_2
+      - ribote_app_3
+    ports:
+      - "${PUBLIC_BIND_ADDR:-0.0.0.0}:${PUBLIC_PORT:-10802}:8080"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+
+  ribote_app_1:
+    build:
+      context: .
+      dockerfile: Dockerfile.shiny-hostr
+      args:
+        SHINY_UID: "${SHINY_UID:-1000}"
+        SHINY_GID: "${SHINY_GID:-1000}"
+    image: ribote/shiny-hostr:latest
+    container_name: ribote_app_1
+    user: "${SHINY_UID:-1000}:${SHINY_GID:-1000}"
+    environment:
+      APP_DIR: /public/shiny/RiboTE/new
+      HOST_R_BIN: /public/liuqi/miniconda3/envs/R4.3.0/bin/R
+      SHINY_PORT: 3838
+      HOME: /home/shiny
+    volumes:
+      - "${APP_HOST_PATH:-/public/shiny/RiboTE/new}:/public/shiny/RiboTE/new:rw"
+      - "${HOST_R_ENV_PATH:-/public/liuqi/miniconda3/envs/R4.3.0}:/public/liuqi/miniconda3/envs/R4.3.0:ro"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3838"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  ribote_app_2:
+    image: ribote/shiny-hostr:latest
+    container_name: ribote_app_2
+    user: "${SHINY_UID:-1000}:${SHINY_GID:-1000}"
+    environment:
+      APP_DIR: /public/shiny/RiboTE/new
+      HOST_R_BIN: /public/liuqi/miniconda3/envs/R4.3.0/bin/R
+      SHINY_PORT: 3838
+      HOME: /home/shiny
+    volumes:
+      - "${APP_HOST_PATH:-/public/shiny/RiboTE/new}:/public/shiny/RiboTE/new:rw"
+      - "${HOST_R_ENV_PATH:-/public/liuqi/miniconda3/envs/R4.3.0}:/public/liuqi/miniconda3/envs/R4.3.0:ro"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3838"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    depends_on:
+      - ribote_app_1
+
+  ribote_app_3:
+    image: ribote/shiny-hostr:latest
+    container_name: ribote_app_3
+    user: "${SHINY_UID:-1000}:${SHINY_GID:-1000}"
+    environment:
+      APP_DIR: /public/shiny/RiboTE/new
+      HOST_R_BIN: /public/liuqi/miniconda3/envs/R4.3.0/bin/R
+      SHINY_PORT: 3838
+      HOME: /home/shiny
+    volumes:
+      - "${APP_HOST_PATH:-/public/shiny/RiboTE/new}:/public/shiny/RiboTE/new:rw"
+      - "${HOST_R_ENV_PATH:-/public/liuqi/miniconda3/envs/R4.3.0}:/public/liuqi/miniconda3/envs/R4.3.0:ro"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3838"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    depends_on:
+      - ribote_app_1

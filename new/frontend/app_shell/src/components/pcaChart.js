@@ -56,10 +56,10 @@ function expandDomain(domain, ratio = 0.12) {
 
 function sampleGroupColor(group) {
   if (group === "Treatment") {
-    return "#c98468";
+    return "#d45a2a";
   }
 
-  return "#607d6d";
+  return "#0f6d78";
 }
 
 export function normalizePcaPoints(points) {
@@ -145,14 +145,14 @@ export function drawPcaProjectionChart(container, points, options, renderState =
     .attr("class", "ribote-d3-grid")
     .attr("transform", `translate(0,${innerHeight})`)
     .call(d3.axisBottom(x).tickSize(-innerHeight).tickFormat(() => ""))
-    .call((axis) => axis.selectAll("line").attr("stroke", "rgba(133, 155, 122, 0.14)"))
+    .call((axis) => axis.selectAll("line").attr("stroke", "rgba(20, 119, 130, 0.14)"))
     .call((axis) => axis.selectAll("path").attr("stroke", "none"));
 
   chart
     .append("g")
     .attr("class", "ribote-d3-grid")
     .call(d3.axisLeft(y).tickSize(-innerWidth).tickFormat(() => ""))
-    .call((axis) => axis.selectAll("line").attr("stroke", "rgba(133, 155, 122, 0.14)"))
+    .call((axis) => axis.selectAll("line").attr("stroke", "rgba(20, 119, 130, 0.14)"))
     .call((axis) => axis.selectAll("path").attr("stroke", "none"));
 
   chart
@@ -172,7 +172,7 @@ export function drawPcaProjectionChart(container, points, options, renderState =
       .attr("x2", x(0))
       .attr("y1", 0)
       .attr("y2", innerHeight)
-      .attr("stroke", "rgba(133, 155, 122, 0.32)")
+      .attr("stroke", "rgba(20, 119, 130, 0.32)")
       .attr("stroke-dasharray", "6 6");
   }
 
@@ -183,7 +183,7 @@ export function drawPcaProjectionChart(container, points, options, renderState =
       .attr("x2", innerWidth)
       .attr("y1", y(0))
       .attr("y2", y(0))
-      .attr("stroke", "rgba(133, 155, 122, 0.32)")
+      .attr("stroke", "rgba(20, 119, 130, 0.32)")
       .attr("stroke-dasharray", "6 6");
   }
 

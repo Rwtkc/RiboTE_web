@@ -1,12 +1,12 @@
 import * as d3 from "d3";
 
 const SIGNALP_GROUP_COLORS = {
-  Up: "#349F2B",
-  Non: "#CCCCCC",
-  Down: "#B2DF8A"
+  Up: "#0f6d78",
+  Non: "#8fa1a7",
+  Down: "#d45a2a"
 };
 
-const SIGNALP_GRID_STROKE = "#859b7a";
+const SIGNALP_GRID_STROKE = "#147782";
 const SIGNALP_GRID_OPACITY = 0.14;
 
 function positionTooltip(tooltip, container, event) {
@@ -137,7 +137,7 @@ export function drawSignalpOverviewChart(container, rows, options = {}, renderSt
       .attr("width", 18)
       .attr("height", 18)
       .attr("rx", 4)
-      .attr("fill", SIGNALP_GROUP_COLORS[group] || "#859b7a");
+      .attr("fill", SIGNALP_GROUP_COLORS[group] || "#147782");
 
     legendItem
       .append("text")
@@ -209,8 +209,8 @@ export function drawSignalpOverviewChart(container, rows, options = {}, renderSt
     .attr("width", x1.bandwidth())
     .attr("height", 0)
     .attr("rx", 5)
-    .attr("fill", (row) => SIGNALP_GROUP_COLORS[row.teGroup] || "#859b7a")
-    .attr("stroke", "rgba(58, 49, 38, 0.16)")
+    .attr("fill", (row) => SIGNALP_GROUP_COLORS[row.teGroup] || "#147782")
+    .attr("stroke", "rgba(16, 35, 42, 0.16)")
     .attr("stroke-width", 1)
     .on("mouseenter", function handleMouseEnter(event, row) {
       const comparisonText = row.teGroup === "Up"
@@ -247,7 +247,7 @@ export function drawSignalpOverviewChart(container, rows, options = {}, renderSt
     .attr("x", (row) => (x1(row.teGroup) || 0) + x1.bandwidth() / 2)
     .attr("y", innerHeight - 6)
     .attr("text-anchor", "middle")
-    .attr("fill", "rgba(58, 49, 38, 0.78)")
+    .attr("fill", "rgba(16, 35, 42, 0.78)")
     .style("font-size", "11px")
     .style("font-weight", 700)
     .text((row) => formatPercent(row.percent));

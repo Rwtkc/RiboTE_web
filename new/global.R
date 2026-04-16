@@ -34,6 +34,8 @@ app_path <- function(...) {
   file.path(app_root, ...)
 }
 
+addResourcePath("ribote-resources", app_path("resources"))
+
 resolve_data_root <- function() {
   candidates <- c(
     file.path(app_root, "TEShinyData"),

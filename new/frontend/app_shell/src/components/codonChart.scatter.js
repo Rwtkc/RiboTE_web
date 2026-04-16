@@ -116,7 +116,7 @@ export function drawCodonRnaScatterChart(container, panel, renderState = {}) {
       .attr("cx", (point) => xScale(point.x))
       .attr("cy", (point) => yScale(point.y))
       .attr("r", shouldAnimate ? 0 : 3.2)
-      .attr("fill", (point) => CODON_GROUP_COLORS[point.teGroup] || "#859b7a")
+      .attr("fill", (point) => CODON_GROUP_COLORS[point.teGroup] || "#147782")
       .attr("fill-opacity", 0.74)
       .attr("stroke", "rgba(255,255,255,0.75)")
       .attr("stroke-width", 0.7)
@@ -158,7 +158,7 @@ export function drawCodonRnaScatterChart(container, panel, renderState = {}) {
         .attr("y1", yScale(linePoints[0].y))
         .attr("x2", xScale(linePoints[1].x))
         .attr("y2", yScale(linePoints[1].y))
-        .attr("stroke", "#3a3126")
+        .attr("stroke", "#17292f")
         .attr("stroke-width", 1.6)
         .attr("stroke-dasharray", "6 4");
     }
@@ -303,7 +303,7 @@ export function drawCodonBiasAssociationChart(container, panel, renderState = {}
     .attr("cx", (point) => xScale(point.x))
     .attr("cy", (point) => yScale(point.y))
     .attr("r", shouldAnimate ? 0 : 3.2)
-    .attr("fill", (point) => CODON_GROUP_COLORS[point.teGroup] || "#859b7a")
+    .attr("fill", (point) => CODON_GROUP_COLORS[point.teGroup] || "#147782")
     .attr("fill-opacity", 0.74)
     .attr("stroke", "rgba(255,255,255,0.75)")
     .attr("stroke-width", 0.7)
@@ -346,7 +346,7 @@ export function drawCodonBiasAssociationChart(container, panel, renderState = {}
       .attr("y1", yScale(linePoints[0].y))
       .attr("x2", xScale(linePoints[1].x))
       .attr("y2", yScale(linePoints[1].y))
-      .attr("stroke", "#3a3126")
+      .attr("stroke", "#17292f")
       .attr("stroke-width", 1.6)
       .attr("stroke-dasharray", "6 4");
   }

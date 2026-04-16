@@ -11,6 +11,8 @@ ribote_welcome_shell_config <- function() {
         "Follow the workflow from data loading and preprocessing to translation efficiency,",
         "sample relationships, network analysis, and pathway interpretation."
       ),
+      logo_src = "/ribote-resources/logo.webp",
+      logo_alt = "RiboTE project artwork",
       badges = c(
         "Matched RNA / Ribo inputs",
         "Translation efficiency workflows",

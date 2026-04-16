@@ -118,11 +118,11 @@ function positionTooltip(tooltip, container, event) {
 function teStatusColor(status) {
   switch (status) {
     case "Up":
-      return "#c98468";
+      return "#d45a2a";
     case "Down":
-      return "#607d6d";
+      return "#0f6d78";
     default:
-      return "#b9b39f";
+      return "#8fa1a7";
   }
 }
 
@@ -476,7 +476,7 @@ export function drawScatterChart(container, data, options, renderState = {}) {
       .attr("x2", x(0))
       .attr("y1", 0)
       .attr("y2", innerHeight)
-      .attr("stroke", "#cfc5b5")
+      .attr("stroke", "#b6c8cf")
       .attr("stroke-dasharray", "6 6");
   }
 
@@ -487,7 +487,7 @@ export function drawScatterChart(container, data, options, renderState = {}) {
       .attr("x2", innerWidth)
       .attr("y1", y(0))
       .attr("y2", y(0))
-      .attr("stroke", "#cfc5b5")
+      .attr("stroke", "#b6c8cf")
       .attr("stroke-dasharray", "6 6");
   }
 
@@ -503,7 +503,7 @@ export function drawScatterChart(container, data, options, renderState = {}) {
       .attr("x2", x(value))
       .attr("y1", 0)
       .attr("y2", innerHeight)
-      .attr("stroke", "#b9b39f")
+      .attr("stroke", "#8fa1a7")
       .attr("stroke-width", 1.2)
       .attr("stroke-dasharray", "6 6");
   });
@@ -519,7 +519,7 @@ export function drawScatterChart(container, data, options, renderState = {}) {
       .attr("x2", innerWidth)
       .attr("y1", y(value))
       .attr("y2", y(value))
-      .attr("stroke", "#b9b39f")
+      .attr("stroke", "#8fa1a7")
       .attr("stroke-width", 1.2)
       .attr("stroke-dasharray", "6 6");
   });
@@ -535,7 +535,7 @@ export function drawScatterChart(container, data, options, renderState = {}) {
     .attr("fill", (item) => pointColor || teStatusColor(item.status))
     .attr("opacity", 0.78)
     .on("mouseenter", function(event, item) {
-      d3.select(this).attr("opacity", 1).attr("stroke", "#51483f").attr("stroke-width", 1.2);
+      d3.select(this).attr("opacity", 1).attr("stroke", "#17292f").attr("stroke-width", 1.2);
       tooltip
         .style("opacity", 1)
         .html(
@@ -764,7 +764,7 @@ export function drawMarginalDensityScatterChart(container, data, options, render
     .attr("fill", (item) => teStatusColor(item.status))
     .attr("opacity", 0.72)
     .on("mouseenter", function(event, item) {
-      d3.select(this).attr("opacity", 1).attr("stroke", "#51483f").attr("stroke-width", 1.2);
+      d3.select(this).attr("opacity", 1).attr("stroke", "#17292f").attr("stroke-width", 1.2);
       tooltip
         .style("opacity", 1)
         .html(

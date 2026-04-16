@@ -1,10 +1,10 @@
 import * as d3 from "d3";
 
-const TEXT_COLOR = "#152018";
+const TEXT_COLOR = "#17292f";
 const AXIS_COLOR = "#000000";
-const FONT_FAMILY = "\"Montserrat\", sans-serif";
-const DOWN_FILL = "#b8dced";
-const UP_FILL = "#f3a3a6";
+const FONT_FAMILY = "sans-serif";
+const DOWN_FILL = "#bfe4e8";
+const UP_FILL = "#f3b18c";
 
 function positionTooltip(tooltip, container, event) {
   const tooltipNode = tooltip.node();
@@ -135,8 +135,8 @@ export function drawEnrichmentOverviewChart(container, rows, options = {}, rende
   const legend = chart.append("g").attr("transform", `translate(${(innerWidth - 160) / 2}, -18)`);
 
   [
-    { label: "Down", fill: DOWN_FILL, textFill: "#3d8a40" },
-    { label: "Up", fill: UP_FILL, textFill: "#c7322f" }
+    { label: "Down", fill: DOWN_FILL, textFill: "#0a5963" },
+    { label: "Up", fill: UP_FILL, textFill: "#934018" }
   ].forEach((item, index) => {
     const group = legend.append("g").attr("transform", `translate(${index * 88}, 0)`);
 
@@ -261,7 +261,7 @@ export function drawEnrichmentOverviewChart(container, rows, options = {}, rende
     .attr("x", innerWidth)
     .attr("y", innerHeight + 52)
     .attr("text-anchor", "end")
-    .attr("fill", "#6c7d72")
+    .attr("fill", "#5a6b73")
     .attr("font-family", FONT_FAMILY)
     .attr("font-size", 11)
     .attr("font-weight", 600)

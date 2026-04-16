@@ -133,8 +133,12 @@ export default function ClusteringResults({ config }) {
     };
   }
 
+  const isGeneIdsMode = /gene/i.test(String(config?.detailMode || ""));
+
   const preservePreviousDetail = (
     !hasIncomingDetail &&
+    !isGeneIdsMode &&
+    !config?.detailEmptyMessage &&
     lastResolvedDetailRef.current.heatmap &&
     lastResolvedDetailRef.current.mainSignature === mainHeatmap.signature &&
     lastResolvedDetailRef.current.detailMode === (config?.detailMode || "")
@@ -158,17 +162,19 @@ export default function ClusteringResults({ config }) {
       mainHeatmap,
       {
         chartHeight: 780,
-        onBrushSelection: (selection) => {
-          if (!ids.selectionInputId) {
-            return;
-          }
-
-          setShinyInputValue(ids.selectionInputId, selection, { priority: "event" });
-        }
+        activeCell: selectedCell,
+        onCellClick: (cell) => {
+          setSelectedCell(cell);
+        },
+        onBrushSelection: !isGeneIdsMode && mainHeatmap.brushEnabled && ids.selectionInputId
+          ? (selection) => {
+              setShinyInputValue(ids.selectionInputId, selection, { priority: "event" });
+            }
+          : undefined
       },
       renderState
     ),
-    [ids.selectionInputId, mainHeatmap.signature]
+    [ids.selectionInputId, mainHeatmap.brushEnabled, mainHeatmap.signature, config?.detailMode, isGeneIdsMode, selectedCell]
   );
 
   const { ref: detailRef, isRendering: detailRendering } = useD3Chart(
@@ -238,10 +244,11 @@ export default function ClusteringResults({ config }) {
           </div>
         ) : (
           <p className="ribote-clustering-detail__empty">
-            Click a cell in the detail heatmap to inspect its value and sample mapping.
+            Click a cell in the main or detail heatmap to inspect its value and sample mapping.
           </p>
         )}
       </div>
     </div>
   );
 }
+

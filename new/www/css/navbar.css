@@ -1,8 +1,8 @@
 .navbar-default {
-  background: rgba(255, 251, 244, 0.94);
+  background: rgba(246, 250, 251, 0.94);
   border: none;
-  border-bottom: 0.0625rem solid rgba(133, 155, 122, 0.18);
-  box-shadow: 0 0.75rem 1.75rem rgba(58, 49, 38, 0.06);
+  border-bottom: 0.0625rem solid rgba(20, 119, 130, 0.18);
+  box-shadow: 0 0.75rem 1.75rem rgba(16, 35, 42, 0.06);
   backdrop-filter: blur(0.625rem);
   min-height: 5.5rem;
 }
@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: center;
   color: var(--rm-accent-deep) !important;
-  background: linear-gradient(90deg, #6d8e73 0%, #829e79 42%, #cf8568 70%, #d88f74 100%);
+  background: linear-gradient(90deg, #0f6d78 0%, #147782 42%, #d45a2a 70%, #e16b3a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -50,7 +50,7 @@
 }
 
 .navbar-default .navbar-nav > li > a {
-  color: #4c5649 !important;
+  color: #30434a !important;
   font-weight: 600;
   font-size: 1.3rem;
   padding: 1rem 1rem 1.25rem;
@@ -66,8 +66,8 @@
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
   color: var(--rm-accent-deep) !important;
-  background: rgba(133, 155, 122, 0.1) !important;
-  box-shadow: inset 0 -0.125rem 0 rgba(133, 155, 122, 0.35);
+  background: rgba(20, 119, 130, 0.1) !important;
+  box-shadow: inset 0 -0.125rem 0 rgba(20, 119, 130, 0.35);
   transform: translateY(-0.0625rem);
 }
 
@@ -75,7 +75,7 @@
 .navbar-default .navbar-nav > .active > a:focus,
 .navbar-default .navbar-nav > .active > a:hover {
   color: var(--rm-accent-deep) !important;
-  background: linear-gradient(180deg, rgba(133, 155, 122, 0.15), rgba(133, 155, 122, 0.03)) !important;
+  background: linear-gradient(180deg, rgba(20, 119, 130, 0.15), rgba(20, 119, 130, 0.03)) !important;
   border-radius: 0.875rem 0.875rem 0 0;
   box-shadow: inset 0 -0.1875rem 0 var(--rm-accent);
 }
@@ -84,9 +84,9 @@
 .navbar-default .navbar-nav > .open > a:focus,
 .navbar-default .navbar-nav > .open > a:hover {
   color: var(--rm-accent-deep) !important;
-  background: linear-gradient(180deg, rgba(133, 155, 122, 0.15), rgba(133, 155, 122, 0.03)) !important;
+  background: linear-gradient(180deg, rgba(20, 119, 130, 0.15), rgba(20, 119, 130, 0.03)) !important;
   border-radius: 0.875rem 0.875rem 0 0;
-  box-shadow: inset 0 -0.1875rem 0 rgba(133, 155, 122, 0.55);
+  box-shadow: inset 0 -0.1875rem 0 rgba(20, 119, 130, 0.55);
 }
 
 .navbar-default .navbar-nav > li.dropdown > a .caret {
@@ -107,16 +107,16 @@
   min-width: 14.5rem;
   margin-top: 0.0625rem;
   padding: 0.5rem 0;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.2);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.2);
   border-radius: 0 0 0.75rem 0.75rem;
-  background: rgba(255, 252, 246, 0.98);
-  box-shadow: 0 1rem 1.875rem rgba(58, 49, 38, 0.12);
+  background: rgba(247, 251, 252, 0.98);
+  box-shadow: 0 1rem 1.875rem rgba(16, 35, 42, 0.12);
   backdrop-filter: blur(0.625rem);
 }
 
 .dropdown-menu > li > a {
   padding: 0.75rem 1.375rem;
-  color: #556153;
+  color: #40535a;
   font-size: 1.3rem;
   font-weight: 500;
   line-height: 1.25;
@@ -129,7 +129,7 @@
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
   color: var(--rm-accent-deep);
-  background: linear-gradient(90deg, rgba(133, 155, 122, 0.14), rgba(201, 132, 104, 0.06));
+  background: linear-gradient(90deg, rgba(20, 119, 130, 0.14), rgba(212, 90, 42, 0.06));
   padding-left: 1.625rem;
 }
 
@@ -137,5 +137,5 @@
 .dropdown-menu > .active > a:focus,
 .dropdown-menu > .active > a:hover {
   color: var(--rm-accent-deep);
-  background: linear-gradient(90deg, rgba(133, 155, 122, 0.18), rgba(201, 132, 104, 0.08));
+  background: linear-gradient(90deg, rgba(20, 119, 130, 0.18), rgba(212, 90, 42, 0.08));
 }

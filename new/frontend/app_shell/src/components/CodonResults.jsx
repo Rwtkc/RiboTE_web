@@ -322,6 +322,33 @@ export default function CodonResults({ config }) {
     handleViewChange(nextView?.id || "");
   };
 
+  useEffect(() => {
+    let firstFrame = null;
+    let secondFrame = null;
+
+    firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        window.dispatchEvent(new CustomEvent("rnameta:results-rendered", {
+          detail: {
+            module: "codon",
+            view: activeView,
+            token: configuredActiveViewToken
+          }
+        }));
+      });
+    });
+
+    return () => {
+      if (firstFrame !== null) {
+        window.cancelAnimationFrame(firstFrame);
+      }
+
+      if (secondFrame !== null) {
+        window.cancelAnimationFrame(secondFrame);
+      }
+    };
+  }, [activeView, configuredActiveViewToken]);
+
   if (!views.length) {
     return null;
   }
@@ -350,23 +377,9 @@ export default function CodonResults({ config }) {
   } else if (currentView?.id === "selected_load_effect") {
     content = <SelectedLoadEffectView viewConfig={config?.selectedLoadEffect} />;
   } else if (currentView?.id === "codon_clustering") {
-    content = (
-      <CodonHeatmapView
-        viewConfig={config?.codonClustering}
-        summaryTitle="Codon Co-usage Clustering Summary"
-        summaryCopy="Rows report mean pairwise codon similarity after hierarchical clustering."
-        columns={["No.", "Codon", "Mean Correlation", "Selected"]}
-      />
-    );
+    content = <CodonHeatmapView viewConfig={config?.codonClustering} />;
   } else if (currentView?.id === "codon_usage_heatmap") {
-    content = (
-      <CodonHeatmapView
-        viewConfig={config?.codonUsageHeatmap}
-        summaryTitle="Codon Usage Heatmap Summary"
-        summaryCopy="The summary reports the displayed heatmap size after variance-based gene selection."
-        columns={["No.", "Displayed Genes", "Available Genes", "Codons"]}
-      />
-    );
+    content = <CodonHeatmapView viewConfig={config?.codonUsageHeatmap} />;
   } else if (currentView?.id === "codon_run_zscore") {
     content = <CodonRunZscoreView viewConfig={config?.codonRunZscore} />;
   } else if (currentView?.id === "codon_run_enrichment") {

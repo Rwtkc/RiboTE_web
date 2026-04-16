@@ -28,8 +28,8 @@
 .help-panel--hero {
   padding: 1.65rem 1.7rem;
   background:
-    radial-gradient(circle at top right, rgba(133, 155, 122, 0.18), transparent 34%),
-    radial-gradient(circle at bottom left, rgba(201, 132, 104, 0.14), transparent 30%),
+    radial-gradient(circle at top right, rgba(20, 119, 130, 0.18), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(212, 90, 42, 0.14), transparent 30%),
     var(--rm-surface);
 }
 
@@ -109,9 +109,9 @@
 .help-highlight-card {
   min-height: 100%;
   padding: 1rem 1rem 0.95rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.16);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.16);
   border-radius: 1rem;
-  background: rgba(248, 242, 234, 0.76);
+  background: rgba(223, 236, 239, 0.76);
 }
 
 .help-highlight-card__title {
@@ -135,7 +135,7 @@
   display: grid;
   gap: 0.3rem;
   padding: 0.95rem 1rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 1rem;
   background: var(--rm-surface-soft);
   text-decoration: none;
@@ -145,8 +145,8 @@
 .help-nav__link:hover,
 .help-nav__link:focus {
   transform: translateY(-0.0625rem);
-  border-color: rgba(133, 155, 122, 0.38);
-  box-shadow: 0 0.5rem 1.2rem rgba(58, 49, 38, 0.08);
+  border-color: rgba(20, 119, 130, 0.38);
+  box-shadow: 0 0.5rem 1.2rem rgba(16, 35, 42, 0.08);
   text-decoration: none;
 }
 
@@ -165,10 +165,10 @@
   padding: 0 1.35rem;
   padding-top: 1rem;
   padding-bottom: 0.95rem;
-  border-left: 0.28rem solid rgba(133, 155, 122, 0.78);
+  border-left: 0.28rem solid rgba(20, 119, 130, 0.78);
   border-radius: 1rem;
   background:
-    linear-gradient(180deg, rgba(255, 253, 248, 0.94), rgba(248, 242, 234, 0.72));
+    linear-gradient(180deg, rgba(247, 251, 252, 0.94), rgba(223, 236, 239, 0.72));
 }
 
 .help-topic__title {
@@ -209,9 +209,9 @@
 .help-list-card {
   min-height: 100%;
   padding: 0.95rem 1rem;
-  border: 0.0625rem solid rgba(201, 132, 104, 0.2);
+  border: 0.0625rem solid rgba(212, 90, 42, 0.2);
   border-radius: 1rem;
-  background: linear-gradient(180deg, rgba(242, 216, 204, 0.36), rgba(255, 253, 248, 0.92));
+  background: linear-gradient(180deg, rgba(241, 199, 182, 0.36), rgba(247, 251, 252, 0.92));
 }
 
 .help-list-card__title {

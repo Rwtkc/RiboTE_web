@@ -96,14 +96,14 @@ codon_load_bias_resource_table <- function(upload_context) {
 
   tai_table <- unique(
     tai_dt[, .(
-      transcript_id = as.character(transcript_id),
+      transcript_id = codon_normalize_transcript_id(transcript_id),
       tAI = suppressWarnings(as.numeric(get(tai_value_column)))
     )],
     by = "transcript_id"
   )
   cbi_table <- unique(
     cbi_dt[, .(
-      transcript_id = as.character(transcript_id),
+      transcript_id = codon_normalize_transcript_id(transcript_id),
       CBI = suppressWarnings(as.numeric(get(cbi_value_column)))
     )],
     by = "transcript_id"
@@ -194,4 +194,3 @@ codon_build_scope_table <- function(base_context, parameters) {
     gene_table = as.data.frame(gene_scope, stringsAsFactors = FALSE)
   )
 }
-

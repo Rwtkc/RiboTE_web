@@ -165,7 +165,7 @@ export default function TranslationEfficiencyResults({ config }) {
     chartHeight: 600,
     showLegend: false,
     showCorrelation: true,
-    pointColor: "#8c877b",
+    pointColor: "#7b8d94",
     displayMeta: chartDisplayMeta.scatter,
     extraRows: (item) => `
       <div class="ribote-d3-tooltip__row"><span class="ribote-d3-tooltip__key">TE_log2FC:</span><span class="ribote-d3-tooltip__value">${d3.format(".3f")(item.te)}</span></div>`
@@ -378,7 +378,7 @@ export default function TranslationEfficiencyResults({ config }) {
                   rows.map((row, rowIndex) => (
                     <tr key={`row-${rowIndex}`}>
                       {columns.map((column) => (
-                        <td key={`${rowIndex}-${column}`}>{String(row[column] ?? "")}</td>
+                        <td key={`${rowIndex}-${column}`}>{formatTeTableCell(row[column])}</td>
                       ))}
                     </tr>
                   ))
@@ -466,4 +466,30 @@ export default function TranslationEfficiencyResults({ config }) {
       ) : null}
     </div>
   );
+}
+
+function formatTeTableCell(value) {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  const raw = String(value).trim();
+  if (!raw) {
+    return "";
+  }
+
+  if (/^0\d+/u.test(raw) || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/iu.test(raw)) {
+    return raw;
+  }
+
+  const numeric = Number(raw);
+  if (!Number.isFinite(numeric)) {
+    return raw;
+  }
+
+  if (Number.isInteger(numeric) && !/[.eE]/.test(raw)) {
+    return raw;
+  }
+
+  return numeric.toFixed(4);
 }

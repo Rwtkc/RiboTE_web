@@ -12,6 +12,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
     codon_shift_analysis_cache <- reactiveVal(list())
     codon_pattern_analysis_cache <- reactiveVal(list())
     codon_run_analysis_cache <- reactiveVal(list())
+    codon_data_export_cache <- reactiveVal(list())
     current_view <- reactiveVal("input_summary")
     active_group <- reactiveVal("Input and Usage")
     latest_result_view_request_seq <- reactiveVal(0)
@@ -235,6 +236,66 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
       invisible(context)
     }
 
+    group_views <- function(group_name) {
+      Filter(function(view_id) {
+        view_id %in% codon_supported_result_views() && identical(codon_view_group(view_id), group_name)
+      }, codon_all_result_views())
+    }
+
+    get_data_export_cache_entry <- function(view = current_view(), format = "csv") {
+      cache <- codon_data_export_cache()
+      cache[[codon_data_export_cache_key(view, format)]]
+    }
+
+    clear_data_export_cache <- function(views = NULL) {
+      if (is.null(views)) {
+        codon_data_export_cache(list())
+        return(invisible(NULL))
+      }
+
+      cache <- codon_data_export_cache()
+      view_ids <- unique(vapply(views, codon_normalize_result_view, character(1)))
+
+      for (view_id in view_ids) {
+        for (format in codon_supported_data_export_formats()) {
+          cache[[codon_data_export_cache_key(view_id, format)]] <- NULL
+        }
+      }
+
+      codon_data_export_cache(cache)
+      invisible(NULL)
+    }
+
+    warm_data_export_cache <- function(context, views) {
+      if (is.null(context)) {
+        return(invisible(NULL))
+      }
+
+      normalized_views <- unique(vapply(views, codon_normalize_result_view, character(1)))
+      existing_cache <- codon_data_export_cache()
+      views_to_build <- Filter(function(view_id) {
+        codon_view_has_data(context, view_id) && !codon_data_export_cache_ready(existing_cache, view_id)
+      }, normalized_views)
+
+      if (!length(views_to_build)) {
+        return(invisible(NULL))
+      }
+
+      cache <- codon_data_export_cache()
+      built_entries <- codon_build_data_export_cache(
+        context = context,
+        views = views_to_build,
+        formats = codon_supported_data_export_formats()
+      )
+
+      for (cache_key in names(built_entries)) {
+        cache[[cache_key]] <- built_entries[[cache_key]]
+      }
+
+      codon_data_export_cache(cache)
+      invisible(NULL)
+    }
+
     merged_workspace_context <- function() {
       codon_merge_workspace_contexts(
         usage_context = input_usage_context(),
@@ -246,6 +307,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
     }
 
     clear_input_usage_results <- function() {
+      clear_data_export_cache(group_views("Input and Usage"))
       input_usage_context(NULL)
       publish_results()
       publish_export()
@@ -253,6 +315,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
     }
 
     clear_codon_bias_results <- function() {
+      clear_data_export_cache(group_views("Codon Bias"))
       codon_bias_context(NULL)
       publish_results()
       publish_export()
@@ -260,6 +323,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
     }
 
     clear_te_shift_results <- function() {
+      clear_data_export_cache(group_views("TE Shift and Enrichment"))
       te_shift_context(NULL)
       publish_results()
       publish_export()
@@ -267,6 +331,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
     }
 
     clear_pattern_views_results <- function() {
+      clear_data_export_cache(group_views("Pattern Views"))
       pattern_views_context(NULL)
       publish_results()
       publish_export()
@@ -274,6 +339,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
     }
 
     clear_codon_runs_results <- function() {
+      clear_data_export_cache(group_views("Codon Runs"))
       codon_runs_context(NULL)
       publish_results()
       publish_export()
@@ -281,6 +347,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
     }
 
     clear_codon_results <- function() {
+      clear_data_export_cache()
       input_usage_context(NULL)
       codon_bias_context(NULL)
       te_shift_context(NULL)
@@ -402,6 +469,16 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
         )),
         codon_supported_result_views()
       )
+      data_ready_by_view <- stats::setNames(
+        as.list(vapply(
+          codon_supported_result_views(),
+          function(view_id) {
+            !is.null(context) && codon_view_has_data(context, view_id) && codon_data_export_cache_ready(codon_data_export_cache(), view_id)
+          },
+          logical(1)
+        )),
+        codon_supported_result_views()
+      )
       export_config$ids <- list(
         format = session$ns("export_format"),
         width = session$ns("export_width"),
@@ -423,8 +500,9 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
             currentView = current_view(),
             activeViewInputId = session$ns("result_view"),
             readyByView = ready_by_view,
+            dataReadyByView = data_ready_by_view,
             figureDisabled = is.null(context) || !current_view() %in% codon_supported_result_views() || !codon_view_has_data(context, current_view()),
-            dataDisabled = is.null(context) || !current_view() %in% codon_supported_result_views() || !codon_view_has_data(context, current_view())
+            dataDisabled = is.null(context) || !current_view() %in% codon_supported_result_views() || !codon_view_has_data(context, current_view()) || !isTRUE(data_ready_by_view[[current_view()]])
           )
         )
       )
@@ -464,6 +542,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
       if (!identical(next_species_key, last_species_key())) {
         codon_resource_cache(list())
         codon_base_context_cache(list())
+        clear_data_export_cache()
         last_species_key(next_species_key)
       }
     })
@@ -478,6 +557,7 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
         codon_shift_analysis_cache(list())
         codon_pattern_analysis_cache(list())
         codon_run_analysis_cache(list())
+        clear_data_export_cache()
         last_source_signature(next_source_signature)
       }
     })
@@ -631,6 +711,9 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
         return(invisible(NULL))
       }
 
+      progress$set(value = 92, message = "Running Input and Usage", detail = "92% | Preparing export-ready CSV and TXT data for Input and Usage views")
+      warm_data_export_cache(context, group_views("Input and Usage"))
+
       progress$set(value = 100, message = "Running Input and Usage", detail = "100% | Codon input and usage results are ready")
       apply_input_usage_context(context)
     }, ignoreInit = TRUE)
@@ -682,6 +765,9 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
         return(invisible(NULL))
       }
 
+      progress$set(value = 92, message = "Running Codon Bias", detail = "92% | Preparing export-ready CSV and TXT data for Codon Bias views")
+      warm_data_export_cache(context, group_views("Codon Bias"))
+
       progress$set(value = 100, message = "Running Codon Bias", detail = "100% | Codon bias results are ready")
       apply_codon_bias_context(context)
     }, ignoreInit = TRUE)
@@ -725,6 +811,9 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
       if (is.null(context)) {
         return(invisible(NULL))
       }
+
+      progress$set(value = 92, message = "Running TE Shift and Enrichment", detail = "92% | Preparing export-ready CSV and TXT data for TE-shift views")
+      warm_data_export_cache(context, group_views("TE Shift and Enrichment"))
 
       progress$set(value = 100, message = "Running TE Shift and Enrichment", detail = "100% | TE-shift codon results are ready")
       apply_te_shift_context(context)
@@ -770,6 +859,9 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
         return(invisible(NULL))
       }
 
+      progress$set(value = 92, message = "Running Pattern Views", detail = "92% | Preparing export-ready CSV and TXT data for Pattern Views")
+      warm_data_export_cache(context, group_views("Pattern Views"))
+
       progress$set(value = 100, message = "Running Pattern Views", detail = "100% | Codon pattern results are ready")
       apply_pattern_views_context(context)
     }, ignoreInit = TRUE)
@@ -814,6 +906,9 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
         return(invisible(NULL))
       }
 
+      progress$set(value = 92, message = "Running Codon Runs", detail = "92% | Preparing export-ready CSV and TXT data for Codon Run views")
+      warm_data_export_cache(context, group_views("Codon Runs"))
+
       progress$set(value = 100, message = "Running Codon Runs", detail = "100% | Codon run results are ready")
       apply_codon_runs_context(context)
     }, ignoreInit = TRUE)
@@ -852,31 +947,23 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
       } else {
         "text/csv;charset=utf-8"
       }
-      entries <- codon_data_export_entries(
-        context,
-        format = settings$data_format,
-        view = current_view()
+      entry <- get_data_export_cache_entry(
+        view = current_view(),
+        format = settings$data_format
       )
 
-      if (length(entries) <= 1L) {
-        entry <- entries[[1]]
-
-        session$sendCustomMessage(
-          "ribote-text-export",
-          list(
-            filename = entry$filename,
-            mimeType = mime_type,
-            content = entry$content
-          )
-        )
+      if (is.null(entry)) {
+        showNotification("Export data are still being prepared for this Codon view.", type = "message", duration = 4)
+        publish_export()
         return(invisible(NULL))
       }
 
       session$sendCustomMessage(
-        "ribote-archive-export",
+        "ribote-text-export",
         list(
-          filename = codon_archive_filename(current_view()),
-          entries = entries
+          filename = entry$filename,
+          mimeType = mime_type,
+          content = entry$content
         )
       )
     }, ignoreInit = TRUE)
@@ -1022,3 +1109,6 @@ mod_codon_server <- function(id, session_state, analysis_lock = NULL) {
     outputOptions(output, "run_codon_runs_hint", suspendWhenHidden = FALSE)
   })
 }
+
+
+

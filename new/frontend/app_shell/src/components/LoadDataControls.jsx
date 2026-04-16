@@ -2,6 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { FormControl, MenuItem, Select, ThemeProvider } from "@mui/material";
 import { setShinyInputValue } from "../utils/shinyBridge";
 import {
+  buildDragPreviewLabel,
+  dragSelectionForSample,
+  moveSamplesToZone,
+  nextSelectedSamples,
+  normalizeSelectedSamples
+} from "../utils/loadDataSampleSelection";
+import {
   riboteSelectFieldSx,
   riboteSelectInputProps,
   riboteSelectMenuPaperSx,
@@ -126,12 +133,27 @@ function buildPairManifest(pairRows, riboSamples) {
   }));
 }
 
-function DropZone({ title, subtitle, zoneKey, samples, onDropSample, onDragStart }) {
+function DropZone({ title, subtitle, zoneKey, samples, selectedSamples, onDropSamples, onSampleSelect, onDragStart }) {
   const handleDrop = (event) => {
     event.preventDefault();
-    const sampleName = event.dataTransfer.getData("text/plain");
-    if (sampleName) {
-      onDropSample(sampleName, zoneKey);
+    const serializedSamples = event.dataTransfer.getData("application/x-ribote-samples");
+    let movedSamples = [];
+
+    if (serializedSamples) {
+      try {
+        movedSamples = JSON.parse(serializedSamples);
+      } catch (error) {
+        movedSamples = [];
+      }
+    }
+
+    if (!Array.isArray(movedSamples) || movedSamples.length === 0) {
+      const sampleName = event.dataTransfer.getData("text/plain");
+      movedSamples = sampleName ? [sampleName] : [];
+    }
+
+    if (movedSamples.length > 0) {
+      onDropSamples(movedSamples, zoneKey);
     }
   };
 
@@ -146,20 +168,28 @@ function DropZone({ title, subtitle, zoneKey, samples, onDropSample, onDragStart
         <small>{subtitle}</small>
       </div>
       <div className="ribote-sample-modal__zone-body">
-        {samples.map((sample) => (
-          <button
-            key={sample}
-            type="button"
-            className="ribote-sample-card"
-            draggable
-            onDragStart={(event) => {
-              event.dataTransfer.setData("text/plain", sample);
-              onDragStart(sample);
-            }}
-          >
-            {sample}
-          </button>
-        ))}
+        {samples.map((sample) => {
+          const isSelected = selectedSamples.includes(sample);
+          return (
+            <button
+              key={sample}
+              type="button"
+              className={`ribote-sample-card${isSelected ? " is-selected" : ""}`}
+              draggable
+              aria-pressed={isSelected ? "true" : "false"}
+              onClick={(event) => {
+                onSampleSelect(sample, event.ctrlKey || event.metaKey);
+              }}
+              onDragStart={(event) => {
+                const draggedSamples = onDragStart(sample, event);
+                event.dataTransfer.setData("text/plain", sample);
+                event.dataTransfer.setData("application/x-ribote-samples", JSON.stringify(draggedSamples));
+              }}
+            >
+              {sample}
+            </button>
+          );
+        })}
         {samples.length === 0 ? <div className="ribote-sample-modal__empty">Drop sample cards here</div> : null}
       </div>
     </div>
@@ -179,6 +209,7 @@ export default function LoadDataControls({ config }) {
   const [demoFileName, setDemoFileName] = useState("");
   const [sampleNames, setSampleNames] = useState([]);
   const [assignments, setAssignments] = useState(buildAssignments([]));
+  const [selectedSamples, setSelectedSamples] = useState([]);
   const [pairRows, setPairRows] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [step, setStep] = useState("assign");
@@ -191,9 +222,19 @@ export default function LoadDataControls({ config }) {
     syncInputValue(config.species_id, species);
   }, [config.species_id, species]);
 
+  const availableSamples = useMemo(
+    () => [...assignments.unassigned, ...assignments.rna, ...assignments.ribo],
+    [assignments]
+  );
+
+  useEffect(() => {
+    setSelectedSamples((current) => normalizeSelectedSamples(current, availableSamples));
+  }, [availableSamples]);
+
   const resetSampleConfiguration = (nextSampleNames) => {
     setSampleNames(nextSampleNames);
     setAssignments(buildAssignments(nextSampleNames));
+    setSelectedSamples([]);
     setPairRows([]);
     setModalOpen(false);
     setStep("assign");
@@ -214,6 +255,7 @@ export default function LoadDataControls({ config }) {
         .filter((row) => row.sample_type === "Ribo-seq")
         .map((row) => row.sample_name)
     });
+    setSelectedSamples([]);
     setPairRows(
       nextPairManifest.map((row) => ({
         rnaSample: row.rna_sample,
@@ -328,24 +370,42 @@ export default function LoadDataControls({ config }) {
     return "";
   }, [canConfigureSamples, pairManifest, sampleTypeManifest]);
 
-  const moveSample = (sampleName, targetZone) => {
-    setAssignments((current) => {
-      const next = {
-        unassigned: current.unassigned.filter((sample) => sample !== sampleName),
-        rna: current.rna.filter((sample) => sample !== sampleName),
-        ribo: current.ribo.filter((sample) => sample !== sampleName)
-      };
-      next[targetZone] = [...next[targetZone], sampleName];
-      return next;
-    });
+  const handleSampleSelect = (sampleName, additive) => {
+    setSelectedSamples((current) => nextSelectedSamples(current, sampleName, additive));
+  };
+
+  const handleDragStart = (sampleName, event) => {
+    const draggedSamples = dragSelectionForSample(selectedSamples, sampleName);
+    setSelectedSamples(draggedSamples);
+
+    if (event?.dataTransfer) {
+      const dragPreview = document.createElement("div");
+      dragPreview.className = "ribote-sample-card ribote-sample-card--drag-preview";
+      dragPreview.textContent = buildDragPreviewLabel(draggedSamples);
+      document.body.appendChild(dragPreview);
+      event.dataTransfer.setDragImage(dragPreview, 24, 20);
+      window.requestAnimationFrame(() => {
+        dragPreview.remove();
+      });
+    }
+
+    return draggedSamples;
+  };
+
+  const moveSamples = (movedSamples, targetZone) => {
+    const normalizedMovedSamples = Array.isArray(movedSamples) ? movedSamples.filter(Boolean) : [];
+    setAssignments((current) => moveSamplesToZone(current, normalizedMovedSamples, targetZone, sampleNames).assignments);
+    setSelectedSamples(normalizedMovedSamples);
   };
 
   const openPairingModal = () => {
+    setSelectedSamples([]);
     setStep("assign");
     setModalOpen(true);
   };
 
   const advanceToPairing = () => {
+    setSelectedSamples([]);
     setPairRows((current) => buildPairRows(assignments.rna, current));
     setStep("pair");
   };
@@ -473,28 +533,34 @@ export default function LoadDataControls({ config }) {
                       subtitle={`${assignments.unassigned.length} sample cards`}
                       zoneKey="unassigned"
                       samples={assignments.unassigned}
-                      onDropSample={moveSample}
-                      onDragStart={() => {}}
+                      selectedSamples={selectedSamples}
+                      onDropSamples={moveSamples}
+                      onSampleSelect={handleSampleSelect}
+                      onDragStart={handleDragStart}
                     />
                     <DropZone
                       title="RNA-seq"
                       subtitle={`${assignments.rna.length} assigned`}
                       zoneKey="rna"
                       samples={assignments.rna}
-                      onDropSample={moveSample}
-                      onDragStart={() => {}}
+                      selectedSamples={selectedSamples}
+                      onDropSamples={moveSamples}
+                      onSampleSelect={handleSampleSelect}
+                      onDragStart={handleDragStart}
                     />
                     <DropZone
                       title="Ribo-seq"
                       subtitle={`${assignments.ribo.length} assigned`}
                       zoneKey="ribo"
                       samples={assignments.ribo}
-                      onDropSample={moveSample}
-                      onDragStart={() => {}}
+                      selectedSamples={selectedSamples}
+                      onDropSamples={moveSamples}
+                      onSampleSelect={handleSampleSelect}
+                      onDragStart={handleDragStart}
                     />
                   </div>
                   <div className="ribote-sample-modal__hint">
-                    Move every sample into RNA-seq or Ribo-seq. The two partitions must contain the same number of cards.
+                    Move every sample into RNA-seq or Ribo-seq. Hold Ctrl or Command to select multiple cards, then drag any selected card as a batch. The two partitions must contain the same number of cards.
                   </div>
                 </div>
               ) : (
@@ -601,3 +667,8 @@ export default function LoadDataControls({ config }) {
     </ThemeProvider>
   );
 }
+
+
+
+
+

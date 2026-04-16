@@ -29,10 +29,20 @@ function positionTooltip(tooltip, container, event) {
 
 function sampleGroupColor(group) {
   if (group === "Treatment") {
-    return "#cd7468";
+    return "#d45a2a";
   }
 
-  return "#6f88bc";
+  return "#0d6c88";
+}
+
+function sampleMetaHtml(column) {
+  return [
+    `<div class="ribote-d3-tooltip__title">${column.displaySample}</div>`,
+    column.actualSample ? `<div class="ribote-d3-tooltip__row"><span class="ribote-d3-tooltip__key">Actual:</span><span class="ribote-d3-tooltip__value">${column.actualSample}</span></div>` : "",
+    column.actualRna ? `<div class="ribote-d3-tooltip__row"><span class="ribote-d3-tooltip__key">RNA:</span><span class="ribote-d3-tooltip__value">${column.actualRna}</span></div>` : "",
+    column.actualRibo ? `<div class="ribote-d3-tooltip__row"><span class="ribote-d3-tooltip__key">Ribo:</span><span class="ribote-d3-tooltip__value">${column.actualRibo}</span></div>` : "",
+    `<div class="ribote-d3-tooltip__row"><span class="ribote-d3-tooltip__key">Group:</span><span class="ribote-d3-tooltip__value">${column.group || "Sample"}</span></div>`
+  ].filter(Boolean).join("");
 }
 
 function normalizeColumns(columns) {
@@ -65,7 +75,7 @@ export function normalizeClusteringHeatmap(heatmap) {
     title: String(heatmap?.title || ""),
     subtitle: String(heatmap?.subtitle || ""),
     signature: String(heatmap?.signature || ""),
-    palette: Array.isArray(heatmap?.palette) ? heatmap.palette.map((color) => String(color)) : ["#4b74b6", "#ffffff", "#c23b35"],
+    palette: Array.isArray(heatmap?.palette) ? heatmap.palette.map((color) => String(color)) : ["#0d6c88", "#ffffff", "#d45a2a"],
     rows,
     columns,
     matrix,
@@ -106,7 +116,7 @@ function valueDomain(values) {
 
 function buildColorScale(values, palette) {
   const domain = valueDomain(values);
-  const colors = palette.length >= 3 ? palette.slice(0, 3) : ["#4b74b6", "#ffffff", "#c23b35"];
+  const colors = palette.length >= 3 ? palette.slice(0, 3) : ["#0d6c88", "#ffffff", "#d45a2a"];
 
   return d3.scaleLinear()
     .domain(domain)
@@ -308,7 +318,18 @@ export function drawClusteringHeatmap(container, heatmap, options = {}, renderSt
     .attr("height", annotationHeight)
     .attr("rx", 2)
     .attr("fill", (column) => sampleGroupColor(column.group))
-    .attr("opacity", 0.88);
+    .attr("opacity", 0.88)
+    .style("cursor", "help")
+    .on("mouseenter", function(event, column) {
+      tooltip.style("opacity", 1).html(sampleMetaHtml(column));
+      positionTooltip(tooltip, container, event);
+    })
+    .on("mousemove", function(event) {
+      positionTooltip(tooltip, container, event);
+    })
+    .on("mouseleave", function() {
+      tooltip.style("opacity", 0);
+    });
 
   const plot = chart.append("g").attr("transform", `translate(0,${annotationHeight + annotationGap})`);
 
@@ -414,7 +435,18 @@ export function drawClusteringHeatmap(container, heatmap, options = {}, renderSt
     .attr("dominant-baseline", "hanging")
     .attr("class", "ribote-d3-axis-tick")
     .attr("font-size", 12)
-    .text((column) => column.displaySample);
+    .style("cursor", "help")
+    .text((column) => column.displaySample)
+    .on("mouseenter", function(event, column) {
+      tooltip.style("opacity", 1).html(sampleMetaHtml(column));
+      positionTooltip(tooltip, container, event);
+    })
+    .on("mousemove", function(event) {
+      positionTooltip(tooltip, container, event);
+    })
+    .on("mouseleave", function() {
+      tooltip.style("opacity", 0);
+    });
 
   if (showRowLabels) {
     const yAxis = chart.append("g").attr("transform", `translate(-10,${annotationHeight + annotationGap})`);
@@ -465,7 +497,7 @@ export function drawClusteringHeatmap(container, heatmap, options = {}, renderSt
     brushGroup
       .selectAll(".selection")
       .attr("fill", "rgba(29, 110, 98, 0.6)")
-      .attr("stroke", "#165c52")
+      .attr("stroke", "#0a5963")
       .attr("stroke-width", 1.9)
       .attr("shape-rendering", "crispEdges");
     brushGroup.selectAll(".handle").attr("display", "none");

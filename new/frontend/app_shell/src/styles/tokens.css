@@ -1,16 +1,14 @@
-@import url("https://gs.jurieo.com/gemini/fonts-googleapis/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
-
 :root {
-  --rm-bg: #f3ede4;
-  --rm-surface: #fffdf8;
-  --rm-surface-soft: #f8f2ea;
-  --rm-border: #d8cebf;
-  --rm-text: #2f3930;
-  --rm-muted: #6d7569;
-  --rm-accent: #859b7a;
-  --rm-accent-deep: #65795b;
-  --rm-accent-soft: #e8ede2;
-  --rm-warm: #c98468;
-  --rm-warm-soft: #f2d8cc;
-  --rm-shadow: 0 0.75rem 1.875rem rgba(58, 49, 38, 0.08);
+  --rm-bg: #e7f0f2;
+  --rm-surface: #f7fbfc;
+  --rm-surface-soft: #dfecef;
+  --rm-border: #b6c8cf;
+  --rm-text: #17292f;
+  --rm-muted: #5a6b73;
+  --rm-accent: #147782;
+  --rm-accent-deep: #0a5963;
+  --rm-accent-soft: #d8edf0;
+  --rm-warm: #d45a2a;
+  --rm-warm-soft: #f1c7b6;
+  --rm-shadow: 0 0.75rem 1.875rem rgba(16, 35, 42, 0.08);
 }

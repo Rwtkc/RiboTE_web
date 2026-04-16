@@ -5,13 +5,15 @@ const ANALYSIS_LOCK_SELECTOR = [
   "[data-rnameta-lock-during-analysis='true']"
 ].join(", ");
 
-function publishAnalysisLockState(locked, owner = null) {
+function publishAnalysisLockState(locked, owner = null, label = "") {
   window.__rnametaAnalysisLocked = Boolean(locked);
   window.__rnametaAnalysisOwner = owner || null;
+  window.__rnametaAnalysisLabel = locked ? label || "Analysis" : "";
   window.dispatchEvent(new CustomEvent("rnameta:analysis-lock-state", {
     detail: {
       locked: Boolean(locked),
-      owner: owner || null
+      owner: owner || null,
+      label: locked ? label || "Analysis" : ""
     }
   }));
 }
@@ -62,8 +64,9 @@ function triggerAnalysisRun(button) {
   }
 
   const owner = button.dataset.rnametaAnalysisOwner || null;
+  const label = button.textContent?.trim() || "Analysis";
   const usesSnapshotRequest = button.dataset.rnametaAnalysisSnapshot === "true";
-  lockAnalysisButtons(owner);
+  lockAnalysisButtons(owner, label);
   window.setTimeout(() => {
     if (usesSnapshotRequest) {
       const requestId = button.id.replace(/run_analysis$/, "analysis_request");
@@ -106,8 +109,8 @@ function setButtonDisabledState(button, disabled) {
   button.setAttribute("aria-disabled", "false");
 }
 
-function lockAnalysisButtons(owner) {
-  publishAnalysisLockState(true, owner || window.__rnametaAnalysisOwner || null);
+function lockAnalysisButtons(owner, label = "") {
+  publishAnalysisLockState(true, owner || window.__rnametaAnalysisOwner || null, label);
 
   document.querySelectorAll(ANALYSIS_LOCK_SELECTOR).forEach((button) => {
     setButtonDisabledState(button, true);
@@ -141,7 +144,7 @@ export function initializeAnalysisActionBridge() {
   );
 
   window.addEventListener("rnameta:action-lock", () => {
-    lockAnalysisButtons(window.__rnametaAnalysisOwner || null);
+    lockAnalysisButtons(window.__rnametaAnalysisOwner || null, window.__rnametaAnalysisLabel || "");
   });
 
   window.addEventListener("rnameta:action-unlock", () => {
@@ -154,8 +157,8 @@ export function initializeAnalysisActionBridge() {
 
   if (window.Shiny?.addCustomMessageHandler) {
     window.Shiny.addCustomMessageHandler("rnameta:set-analysis-lock", (message) => {
-      if (message?.locked) {
-        lockAnalysisButtons(message.owner || null);
+    if (message?.locked) {
+        lockAnalysisButtons(message.owner || null, message.label || "");
         return;
       }
 
@@ -170,6 +173,6 @@ export function initializeAnalysisActionBridge() {
       return;
     }
 
-    lockAnalysisButtons(button.dataset.rnametaAnalysisOwner || null);
+    lockAnalysisButtons(button.dataset.rnametaAnalysisOwner || null, button.textContent?.trim() || "Analysis");
   });
 }

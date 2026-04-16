@@ -400,7 +400,6 @@ export function UsageByGroupView({ viewConfig }) {
 }
 
 export function UsageVsRnaView({ viewConfig }) {
-  const rows = Array.isArray(viewConfig?.rows) ? viewConfig.rows : [];
   const panels = Array.isArray(viewConfig?.panels) ? viewConfig.panels : [];
   const [currentPanelPage, setCurrentPanelPage] = useState(1);
   const panelPageSize = 3;
@@ -435,27 +434,6 @@ export function UsageVsRnaView({ viewConfig }) {
           </div>
           <PanelPager currentPage={currentPanelPage} totalPages={totalPanelPages} onPageChange={setCurrentPanelPage} />
         </>
-      ) : null}
-
-      {rows.length ? (
-        <PaginatedTable
-          title="Selected Codon vs RNA Summary"
-          copy={`Scope: ${viewConfig?.scopeLabel || "Current scope"} | Correlations use all genes in the current scope.`}
-          columns={["No.", "Codon", "RNA Group", "Genes Measured", "Displayed Genes", "Pearson r", "p Value"]}
-          rows={rows}
-          pageSize={10}
-          renderCell={(row, index) => (
-            <>
-              <td>{index}</td>
-              <td>{row.Codon}</td>
-              <td>{row.RNA_Group}</td>
-              <td>{formatInteger(row.Genes_Measured)}</td>
-              <td>{formatInteger(row.Displayed_Genes)}</td>
-              <td>{formatNumber(row.Pearson_R, 3)}</td>
-              <td>{formatPValue(row.P_Value)}</td>
-            </>
-          )}
-        />
       ) : null}
     </div>
   );
@@ -506,7 +484,6 @@ export function BiasByGroupView({ viewConfig }) {
 }
 
 export function CbiAssociationsView({ viewConfig }) {
-  const rows = Array.isArray(viewConfig?.rows) ? viewConfig.rows : [];
   const panels = Array.isArray(viewConfig?.panels) ? viewConfig.panels : [];
   const [currentPanelPage, setCurrentPanelPage] = useState(1);
   const panelPageSize = 2;
@@ -542,33 +519,11 @@ export function CbiAssociationsView({ viewConfig }) {
           <PanelPager currentPage={currentPanelPage} totalPages={totalPanelPages} onPageChange={setCurrentPanelPage} />
         </>
       ) : null}
-
-      {rows.length ? (
-        <PaginatedTable
-          title="CBI Association Summary"
-          copy="Pearson correlations are calculated from the full gene set for each panel, even when the plotted points are display-limited."
-          columns={["No.", "Association", "Condition", "Genes Measured", "Displayed Genes", "Pearson r", "p Value"]}
-          rows={rows}
-          pageSize={10}
-          renderCell={(row, index) => (
-            <>
-              <td>{index}</td>
-              <td>{row.Association}</td>
-              <td>{row.Condition}</td>
-              <td>{formatInteger(row.Genes_Measured)}</td>
-              <td>{formatInteger(row.Displayed_Genes)}</td>
-              <td>{formatNumber(row.Pearson_R, 3)}</td>
-              <td>{formatPValue(row.P_Value)}</td>
-            </>
-          )}
-        />
-      ) : null}
     </div>
   );
 }
 
 export function SelectedCodonBurdenView({ viewConfig }) {
-  const rows = Array.isArray(viewConfig?.rows) ? viewConfig.rows : [];
   const panels = Array.isArray(viewConfig?.panels) ? viewConfig.panels : [];
 
   return (
@@ -585,26 +540,6 @@ export function SelectedCodonBurdenView({ viewConfig }) {
             <CodonBiasAssociationPanel key={panel.panelId} panel={panel} />
           ))}
         </div>
-      ) : null}
-
-      {rows.length ? (
-        <PaginatedTable
-          title="Selected Codon Burden Summary"
-          copy="Pearson correlations use the full current-scope gene set for each row."
-          columns={["No.", "Scope", "TE Group", "Genes Measured", "Displayed Genes", "Pearson r", "p Value"]}
-          rows={rows}
-          renderCell={(row, index) => (
-            <>
-              <td>{index}</td>
-              <td>{row.Scope}</td>
-              <td>{row.TE_Group}</td>
-              <td>{formatInteger(row.Genes_Measured)}</td>
-              <td>{formatInteger(row.Displayed_Genes)}</td>
-              <td>{formatNumber(row.Pearson_R, 3)}</td>
-              <td>{formatPValue(row.P_Value)}</td>
-            </>
-          )}
-        />
       ) : null}
     </div>
   );
@@ -702,7 +637,6 @@ export function SelectedCodonAcrossGroupsView({ viewConfig }) {
 }
 
 export function PermutationSupportView({ viewConfig }) {
-  const rows = Array.isArray(viewConfig?.rows) ? viewConfig.rows : [];
   const panels = Array.isArray(viewConfig?.panels) ? viewConfig.panels : [];
 
   return (
@@ -720,31 +654,11 @@ export function PermutationSupportView({ viewConfig }) {
           ))}
         </div>
       ) : null}
-
-      {rows.length ? (
-        <PaginatedTable
-          title="Permutation Support Summary"
-          copy="Empirical p-values are estimated from deterministic random gene sets of the same size as the observed selected-codon hit set."
-          columns={["No.", "Metric", "Observed", "Permutation Mean", "Empirical p", "Iterations"]}
-          rows={rows}
-          renderCell={(row, index) => (
-            <>
-              <td>{index}</td>
-              <td>{row.Metric}</td>
-              <td>{formatNumber(row.Observed, 4)}</td>
-              <td>{formatNumber(row.Permutation_Mean, 4)}</td>
-              <td>{formatPValue(row.Empirical_PValue)}</td>
-              <td>{formatInteger(row.Iterations)}</td>
-            </>
-          )}
-        />
-      ) : null}
     </div>
   );
 }
 
 export function TeBiasSelectedLoadView({ viewConfig }) {
-  const rows = Array.isArray(viewConfig?.rows) ? viewConfig.rows : [];
   const panels = Array.isArray(viewConfig?.panels) ? viewConfig.panels : [];
 
   return (
@@ -762,33 +676,11 @@ export function TeBiasSelectedLoadView({ viewConfig }) {
           ))}
         </div>
       ) : null}
-
-      {rows.length ? (
-        <PaginatedTable
-          title="TE Bias Across Selected Codon Load"
-          copy="Rows summarize quantile bins of selected-codon load across the current scope."
-          columns={["No.", "Load Bin", "Genes", "Median Load", "Mean TE log2FC", "Up Fraction", "Non Fraction", "Down Fraction"]}
-          rows={rows}
-          renderCell={(row, index) => (
-            <>
-              <td>{index}</td>
-              <td>{row.Load_Bin}</td>
-              <td>{formatInteger(row.Genes)}</td>
-              <td>{formatNumber(row.Median_Selected_Load, 3)}</td>
-              <td>{formatNumber(row.Mean_TE_log2FC, 3)}</td>
-              <td>{formatPercent(Number(row.Up_Fraction) * 100)}</td>
-              <td>{formatPercent(Number(row.Non_Fraction) * 100)}</td>
-              <td>{formatPercent(Number(row.Down_Fraction) * 100)}</td>
-            </>
-          )}
-        />
-      ) : null}
     </div>
   );
 }
 
 export function SelectedLoadEffectView({ viewConfig }) {
-  const rows = Array.isArray(viewConfig?.rows) ? viewConfig.rows : [];
   const panels = Array.isArray(viewConfig?.panels) ? viewConfig.panels : [];
 
   return (
@@ -806,31 +698,11 @@ export function SelectedLoadEffectView({ viewConfig }) {
           ))}
         </div>
       ) : null}
-
-      {rows.length ? (
-        <PaginatedTable
-          title="Selected Codon Load vs TE Effect Score"
-          copy="Pearson correlations use the full current-scope gene set."
-          columns={["No.", "Scope", "Genes Measured", "Displayed Genes", "Pearson r", "p Value"]}
-          rows={rows}
-          renderCell={(row, index) => (
-            <>
-              <td>{index}</td>
-              <td>{row.Scope}</td>
-              <td>{formatInteger(row.Genes_Measured)}</td>
-              <td>{formatInteger(row.Displayed_Genes)}</td>
-              <td>{formatNumber(row.Pearson_R, 3)}</td>
-              <td>{formatPValue(row.P_Value)}</td>
-            </>
-          )}
-        />
-      ) : null}
     </div>
   );
 }
 
-export function CodonHeatmapView({ viewConfig, summaryTitle, summaryCopy, columns }) {
-  const rows = Array.isArray(viewConfig?.rows) ? viewConfig.rows : [];
+export function CodonHeatmapView({ viewConfig }) {
   const panels = Array.isArray(viewConfig?.panels) ? viewConfig.panels : [];
 
   return (
@@ -847,29 +719,6 @@ export function CodonHeatmapView({ viewConfig, summaryTitle, summaryCopy, column
             <CodonHeatmapPanel key={panel.panelId} panel={panel} />
           ))}
         </div>
-      ) : null}
-
-      {rows.length ? (
-        <PaginatedTable
-          title={summaryTitle}
-          copy={summaryCopy}
-          columns={columns}
-          rows={rows}
-          renderCell={(row, index) => (
-            <>
-              <td>{index}</td>
-              {columns.slice(1).map((column) => {
-                const key = column.replace(/ /g, "_");
-                const value = row[key] ?? row[column] ?? row[column.toLowerCase()] ?? row[column.replace(/ /g, "_")];
-                const numericValue = Number(value);
-                const displayValue = Number.isFinite(numericValue)
-                  ? (Number.isInteger(numericValue) ? formatInteger(numericValue) : formatNumber(numericValue, 3))
-                  : String(value);
-                return <td key={`${index}-${column}`}>{displayValue}</td>;
-              })}
-            </>
-          )}
-        />
       ) : null}
     </div>
   );
@@ -920,7 +769,6 @@ export function CodonRunEnrichmentView({ viewConfig }) {
 }
 
 export function CodonRunZscoreView({ viewConfig }) {
-  const rows = Array.isArray(viewConfig?.rows) ? viewConfig.rows : [];
   const panels = Array.isArray(viewConfig?.panels) ? viewConfig.panels : [];
 
   return (
@@ -938,26 +786,6 @@ export function CodonRunZscoreView({ viewConfig }) {
           ))}
         </div>
       ) : null}
-
-      {rows.length ? (
-        <PaginatedTable
-          title="Codon Run Load vs Usage Z-score"
-          copy="Pearson correlations use the full current-scope gene set for each run length."
-          columns={["No.", "Run Length", "Genes Measured", "Displayed Genes", "Pearson r", "p Value"]}
-          rows={rows}
-          renderCell={(row, index) => (
-            <>
-              <td>{index}</td>
-              <td>{row.Run_Length}</td>
-              <td>{formatInteger(row.Genes_Measured)}</td>
-              <td>{formatInteger(row.Displayed_Genes)}</td>
-              <td>{formatNumber(row.Pearson_R, 3)}</td>
-              <td>{formatPValue(row.P_Value)}</td>
-            </>
-          )}
-        />
-      ) : null}
     </div>
   );
 }
-

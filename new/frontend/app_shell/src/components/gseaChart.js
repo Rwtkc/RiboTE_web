@@ -1,8 +1,8 @@
 import * as d3 from "d3";
 
-const GSEA_TEXT_COLOR = "#152018";
+const GSEA_TEXT_COLOR = "#17292f";
 const GSEA_AXIS_COLOR = "#000000";
-const GSEA_FONT_FAMILY = "\"Montserrat\", sans-serif";
+const GSEA_FONT_FAMILY = "sans-serif";
 
 function formatNumber(value, digits = 4) {
   if (!Number.isFinite(value)) {
@@ -269,7 +269,7 @@ export function drawGseaEnrichmentPlot(container, plot, renderState = {}) {
     .append("path")
     .datum(plot.points)
     .attr("fill", "none")
-    .attr("stroke", "#325d9f")
+    .attr("stroke", "#0d6c88")
     .attr("stroke-width", 2.35)
     .attr("stroke-linejoin", "round")
     .attr("stroke-linecap", "round")
@@ -306,7 +306,7 @@ export function drawGseaEnrichmentPlot(container, plot, renderState = {}) {
     .attr("x2", (value) => x(value))
     .attr("y1", rugTop)
     .attr("y2", rugTop + rugHeight)
-    .attr("stroke", "#c77469")
+    .attr("stroke", "#d45a2a")
     .attr("stroke-width", 1)
     .attr("opacity", 0.78);
 
@@ -340,8 +340,8 @@ export function drawGseaEnrichmentPlot(container, plot, renderState = {}) {
       .attr("cx", x(plot.peakX))
       .attr("cy", y(plot.peakY))
       .attr("r", 4.2)
-      .attr("fill", "#c77469")
-      .attr("stroke", "#fffdf8")
+      .attr("fill", "#d45a2a")
+      .attr("stroke", "#f7fbfc")
       .attr("stroke-width", 1.4);
   }
 
@@ -450,8 +450,8 @@ export function drawGseaEnrichmentPlot(container, plot, renderState = {}) {
   const focusPoint = chart
     .append("circle")
     .attr("r", 4)
-    .attr("fill", "#325d9f")
-    .attr("stroke", "#fffdf8")
+    .attr("fill", "#0d6c88")
+    .attr("stroke", "#f7fbfc")
     .attr("stroke-width", 1.2)
     .style("opacity", 0);
 

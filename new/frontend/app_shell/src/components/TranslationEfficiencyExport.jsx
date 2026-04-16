@@ -77,9 +77,9 @@ function ChevronDownIcon() {
 }
 
 const cardSx = {
-  border: "0.0625rem solid rgba(133, 155, 122, 0.16)",
+  border: "0.0625rem solid rgba(20, 119, 130, 0.16)",
   borderRadius: "1rem",
-  backgroundColor: "rgba(248, 242, 234, 0.68)",
+  backgroundColor: "rgba(223, 236, 239, 0.68)",
   boxShadow: "none",
   overflow: "hidden",
   "&:before": {
@@ -132,7 +132,7 @@ const eyebrowSx = {
   px: "0.65rem",
   py: "0.35rem",
   borderRadius: "999px",
-  backgroundColor: "rgba(133, 155, 122, 0.12)",
+  backgroundColor: "rgba(20, 119, 130, 0.12)",
   color: "var(--rm-accent-deep)",
   fontSize: "0.7rem",
   fontWeight: 800,
@@ -144,7 +144,7 @@ const exportMenuPaperSx = {
   ...riboteSelectMenuPaperSx,
   "& .MuiMenuItem-root": {
     minHeight: "3rem",
-    fontFamily: "\"Montserrat\", sans-serif",
+    fontFamily: "sans-serif",
     fontSize: "1.08rem",
     color: "var(--rm-text)"
   }

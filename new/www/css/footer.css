@@ -9,11 +9,11 @@
   justify-content: center;
   min-height: 2.625rem;
   padding: 0.625rem 1.25rem;
-  background: rgba(255, 251, 244, 0.94);
-  border-top: 0.0625rem solid rgba(133, 155, 122, 0.18);
-  box-shadow: 0 -0.5rem 1.5rem rgba(58, 49, 38, 0.05);
+  background: rgba(246, 250, 251, 0.94);
+  border-top: 0.0625rem solid rgba(20, 119, 130, 0.18);
+  box-shadow: 0 -0.5rem 1.5rem rgba(16, 35, 42, 0.05);
   backdrop-filter: blur(0.625rem);
-  color: #656c62;
+  color: #5a6b73;
   font-size: 1.3rem;
   font-weight: 600;
   letter-spacing: 0.01em;

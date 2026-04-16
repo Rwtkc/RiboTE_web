@@ -447,9 +447,23 @@ clustering_heatmap_matrix_payload <- function(matrix_data) {
   })
 }
 
-clustering_heatmap_signature <- function(signature_seed, matrix_data = NULL, sample_map = NULL, empty_message = NULL) {
+clustering_heatmap_signature <- function(
+  signature_seed,
+  matrix_data = NULL,
+  sample_map = NULL,
+  empty_message = NULL,
+  brush_enabled = FALSE,
+  show_row_labels = FALSE
+) {
   if (is.null(matrix_data) || !is.matrix(matrix_data) || !nrow(matrix_data) || !ncol(matrix_data)) {
-    return(paste(signature_seed, "empty", as.character(empty_message), sep = "::"))
+    return(paste(
+      signature_seed,
+      "empty",
+      as.character(empty_message),
+      if (isTRUE(brush_enabled)) "brush" else "static",
+      if (isTRUE(show_row_labels)) "rows" else "compact",
+      sep = "::"
+    ))
   }
 
   row_labels <- rownames(matrix_data)
@@ -467,6 +481,8 @@ clustering_heatmap_signature <- function(signature_seed, matrix_data = NULL, sam
     ncol(matrix_data),
     row_anchor,
     column_anchor,
+    if (isTRUE(brush_enabled)) "brush" else "static",
+    if (isTRUE(show_row_labels)) "rows" else "compact",
     value_anchor,
     sep = "::"
   )
@@ -506,7 +522,9 @@ clustering_results_payload <- function(clustering_context, detail_context, selec
       signature = clustering_heatmap_signature(
         signature_seed = main_signature_seed,
         matrix_data = clustering_context$ordered_matrix,
-        sample_map = clustering_context$sample_map
+        sample_map = clustering_context$sample_map,
+        brush_enabled = identical(detail_context$mode, "area"),
+        show_row_labels = FALSE
       )
     ),
     detailMode = detail_context$mode,
@@ -526,7 +544,9 @@ clustering_results_payload <- function(clustering_context, detail_context, selec
       signature = clustering_heatmap_signature(
         signature_seed = paste(main_signature_seed, detail_context$mode, detail_context$summary, sep = "::"),
         matrix_data = detail_context$matrix,
-        sample_map = detail_context$sample_map
+        sample_map = detail_context$sample_map,
+        brush_enabled = FALSE,
+        show_row_labels = detail_context$show_row_labels
       )
     )
   } else {
@@ -537,7 +557,9 @@ clustering_results_payload <- function(clustering_context, detail_context, selec
         signature_seed = paste(main_signature_seed, detail_context$mode, "empty", sep = "::"),
         matrix_data = NULL,
         sample_map = NULL,
-        empty_message = detail_context$empty_message
+        empty_message = detail_context$empty_message,
+        brush_enabled = FALSE,
+        show_row_labels = FALSE
       ),
       palette = as.list(clustering_context$palette),
       rowLabels = list(),

@@ -1,13 +1,13 @@
 import * as d3 from "d3";
 
 export const CODON_GROUP_COLORS = {
-  Up: "#c46a36",
-  Non: "#b9b9b9",
-  Down: "#6f9462"
+  Up: "#d45a2a",
+  Non: "#8fa1a7",
+  Down: "#147782"
 };
 
 export const CODON_GROUP_ORDER = ["Up", "Non", "Down"];
-export const CODON_GRID_STROKE = "#859b7a";
+export const CODON_GRID_STROKE = "#147782";
 export const CODON_GRID_OPACITY = 0.14;
 let codonClipSequence = 0;
 
@@ -89,7 +89,7 @@ export function drawAxisWithGrid(chart, yScale, innerWidth) {
 export function drawGroupLegend(chart, innerWidth, yPosition) {
   const legendItems = CODON_GROUP_ORDER.map((group) => ({
     group,
-    color: CODON_GROUP_COLORS[group] || "#859b7a"
+    color: CODON_GROUP_COLORS[group] || "#147782"
   }));
   const legendSpacing = 88;
   const legendWidth = Math.max(0, (legendItems.length - 1) * legendSpacing);
@@ -105,7 +105,7 @@ export function drawGroupLegend(chart, innerWidth, yPosition) {
       .attr("cy", 0)
       .attr("r", 5.5)
       .attr("fill", item.color)
-      .attr("stroke", "rgba(58, 49, 38, 0.24)")
+      .attr("stroke", "rgba(16, 35, 42, 0.24)")
       .attr("stroke-width", 0.8);
     legendItem
       .append("text")

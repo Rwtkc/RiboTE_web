@@ -11,7 +11,7 @@ body,
 
 body {
   color: var(--rm-text);
-  font-family: "Montserrat", sans-serif;
+  font-family: sans-serif;
 }
 
 a {
@@ -34,9 +34,9 @@ button {
   pointer-events: none;
   opacity: 0.18;
   background-image:
-    radial-gradient(circle at top left, rgba(133, 155, 122, 0.08), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(201, 132, 104, 0.06), transparent 22%),
-    linear-gradient(180deg, rgba(255, 253, 248, 0.18), rgba(255, 253, 248, 0));
+    radial-gradient(circle at top left, rgba(20, 119, 130, 0.08), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(212, 90, 42, 0.06), transparent 22%),
+    linear-gradient(180deg, rgba(247, 251, 252, 0.18), rgba(247, 251, 252, 0));
 }
 
 .shell-main {

@@ -5,6 +5,98 @@
   gap: 1rem;
 }
 
+.rnameta-frontend-progress.rnameta-progress-panel {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.rnameta-frontend-progress.rnameta-progress-panel .rnameta-progress-card {
+  box-sizing: border-box !important;
+  display: grid !important;
+  gap: 0.75rem !important;
+  position: static !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 4.95rem !important;
+  margin: 0 !important;
+  padding: 0.95rem 1rem 1rem !important;
+  opacity: 1 !important;
+  border: 0.0625rem solid rgba(20, 119, 130, 0.22) !important;
+  border-radius: 1rem !important;
+  background: rgba(247, 251, 252, 0.98) !important;
+  background-color: rgba(247, 251, 252, 0.98) !important;
+  box-shadow: 0 1rem 2rem rgba(16, 35, 42, 0.14) !important;
+  color: var(--rm-text) !important;
+  overflow: hidden !important;
+  transition: opacity 0.18s ease !important;
+}
+
+#shiny-notification-panel.rnameta-progress-source {
+  position: fixed !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+#shiny-notification-panel.rnameta-progress-source .shiny-notification {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.rnameta-frontend-progress.rnameta-progress-panel .progress {
+  order: 1;
+  width: 100% !important;
+  height: 0.9rem !important;
+  margin: 0 !important;
+  border-radius: 999rem !important;
+  background: rgba(20, 119, 130, 0.14) !important;
+  background-color: rgba(20, 119, 130, 0.14) !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+.rnameta-frontend-progress.rnameta-progress-panel .progress-bar {
+  height: 100% !important;
+  background: linear-gradient(90deg, #147782 0%, #d45a2a 100%) !important;
+  background-color: #147782 !important;
+  box-shadow: none !important;
+  transition: width 0.28s ease !important;
+}
+
+.rnameta-frontend-progress.rnameta-progress-panel .progress-text {
+  order: 2;
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 0.9rem !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  flex-wrap: wrap !important;
+  font-size: 1.3rem !important;
+  line-height: 1.45 !important;
+}
+
+.rnameta-frontend-progress.rnameta-progress-panel .progress-message {
+  color: var(--rm-text) !important;
+  font-size: 1.3rem !important;
+  font-weight: 800 !important;
+}
+
+.rnameta-frontend-progress.rnameta-progress-panel .progress-detail {
+  margin-left: auto !important;
+  text-align: right !important;
+  color: var(--rm-muted) !important;
+  font-size: 1.3rem !important;
+  line-height: 1.45 !important;
+}
+
 .ribote-export-disclosure {
   display: grid;
   gap: 0.75rem;
@@ -28,9 +120,9 @@
   display: grid;
   gap: 0.875rem;
   padding: 1rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 1rem;
-  background: rgba(255, 251, 246, 0.85);
+  background: rgba(247, 251, 252, 0.85);
 }
 
 .ribote-control-section--plain {
@@ -54,7 +146,7 @@
   align-self: flex-start;
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
-  background: rgba(133, 155, 122, 0.12);
+  background: rgba(20, 119, 130, 0.12);
   color: var(--rm-accent-deep);
   font-size: 0.7rem;
   font-weight: 800;
@@ -72,6 +164,23 @@
 .ribote-field {
   display: grid;
   gap: 0.4rem;
+}
+
+.ribote-field__control-row {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.ribote-field__control-row--with-action {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+
+.ribote-field__action {
+  width: 100%;
+  min-height: 3.75rem;
+  padding-inline: 1rem;
+  white-space: nowrap;
 }
 
 .ribote-field__label {
@@ -95,7 +204,7 @@
   height: 0;
   border-left: 0.3rem solid transparent;
   border-right: 0.3rem solid transparent;
-  border-top: 0.35rem solid #8f987d;
+  border-top: 0.35rem solid #147782;
   pointer-events: none;
   transform: translateY(-50%);
 }
@@ -113,6 +222,14 @@
   font-size: 1.1rem;
   padding: 0.8rem 0.95rem;
   box-shadow: inset 0 0.0625rem 0 rgba(255, 255, 255, 0.8);
+}
+
+.ribote-input:disabled,
+.ribote-select:disabled,
+.ribote-textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+  background: rgba(231, 240, 242, 0.88);
 }
 
 .ribote-select {
@@ -158,9 +275,9 @@
 .ribote-file-picker__button {
   flex: 0 0 auto;
   min-height: 2.6rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.24);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.24);
   border-radius: 0.7rem;
-  background: rgba(232, 237, 226, 0.92);
+  background: rgba(216, 237, 240, 0.92);
   color: var(--rm-accent-deep);
   font: inherit;
   font-size: 1.15rem;
@@ -174,8 +291,8 @@
 
 .ribote-file-picker__button:hover {
   transform: translateY(-0.0625rem);
-  border-color: rgba(101, 121, 91, 0.3);
-  background: rgba(232, 237, 226, 0.98);
+  border-color: rgba(10, 89, 99, 0.3);
+  background: rgba(216, 237, 240, 0.98);
 }
 
 .ribote-file-picker__summary {
@@ -191,7 +308,7 @@
 }
 
 .ribote-file-picker__summary--empty {
-  color: #9ca697;
+  color: #7b8d94;
 }
 
 .ribote-control-card--load-data {
@@ -220,7 +337,7 @@
 }
 
 .ribote-control-card--load-data .ribote-select option {
-  background: rgba(255, 252, 246, 0.98);
+  background: rgba(247, 251, 252, 0.98);
   color: var(--rm-text);
   font-size: 1.3rem;
 }
@@ -277,9 +394,9 @@
 
 .ribote-codon-card {
   min-height: 3.2rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.2);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.2);
   border-radius: 0.85rem;
-  background: rgba(255, 252, 246, 0.92);
+  background: rgba(247, 251, 252, 0.92);
   color: var(--rm-text);
   font: inherit;
   font-size: 1.05rem;
@@ -295,25 +412,25 @@
 
 .ribote-codon-card:hover {
   transform: translateY(-0.0625rem);
-  border-color: rgba(201, 132, 104, 0.34);
-  background: rgba(255, 249, 242, 0.96);
-  box-shadow: 0 0.45rem 1rem rgba(58, 49, 38, 0.08);
+  border-color: rgba(212, 90, 42, 0.34);
+  background: rgba(239, 247, 249, 0.96);
+  box-shadow: 0 0.45rem 1rem rgba(16, 35, 42, 0.08);
 }
 
 .ribote-codon-card.is-active {
-  border-color: rgba(201, 132, 104, 0.5);
-  background: linear-gradient(180deg, rgba(201, 132, 104, 0.18), rgba(201, 132, 104, 0.08));
-  color: #714633;
+  border-color: rgba(212, 90, 42, 0.5);
+  background: linear-gradient(180deg, rgba(212, 90, 42, 0.18), rgba(212, 90, 42, 0.08));
+  color: #76320f;
   box-shadow:
-    0 0.45rem 1rem rgba(201, 132, 104, 0.16),
-    inset 0 0 0 0.0625rem rgba(201, 132, 104, 0.14);
+    0 0.45rem 1rem rgba(212, 90, 42, 0.16),
+    inset 0 0 0 0.0625rem rgba(212, 90, 42, 0.14);
 }
 
 .ribote-sample-config__summary {
   padding: 0.8rem 0.9rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 0.85rem;
-  background: rgba(255, 252, 246, 0.88);
+  background: rgba(247, 251, 252, 0.88);
   color: var(--rm-muted);
   font-size: 1.05rem;
   font-weight: 600;
@@ -322,22 +439,22 @@
 
 .ribote-sample-config__hint {
   padding: 0.8rem 0.9rem;
-  border: 0.0625rem solid rgba(201, 132, 104, 0.32);
+  border: 0.0625rem solid rgba(212, 90, 42, 0.32);
   border-radius: 0.85rem;
-  background: rgba(242, 216, 204, 0.42);
-  color: #8e583f;
+  background: rgba(241, 199, 182, 0.42);
+  color: #934018;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.65;
 }
 
 .ribote-btn--attention {
-  border-color: rgba(201, 132, 104, 0.32);
-  box-shadow: 0 0 0 0.16rem rgba(201, 132, 104, 0.12);
+  border-color: rgba(212, 90, 42, 0.32);
+  box-shadow: 0 0 0 0.16rem rgba(212, 90, 42, 0.12);
 }
 
 .ribote-btn--attention:hover:not(:disabled) {
-  box-shadow: 0 0 0 0.18rem rgba(201, 132, 104, 0.16);
+  box-shadow: 0 0 0 0.18rem rgba(212, 90, 42, 0.16);
 }
 
 .ribote-sample-modal {
@@ -349,7 +466,7 @@
 .ribote-sample-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(43, 37, 29, 0.38);
+  background: rgba(16, 35, 42, 0.38);
   backdrop-filter: blur(4px);
 }
 
@@ -363,10 +480,10 @@
   margin: 1rem auto;
   padding: 1.35rem;
   overflow: auto;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 1.25rem;
-  background: rgba(255, 253, 248, 0.98);
-  box-shadow: 0 1rem 2.4rem rgba(47, 39, 30, 0.18);
+  background: rgba(247, 251, 252, 0.98);
+  box-shadow: 0 1rem 2.4rem rgba(16, 35, 42, 0.18);
 }
 
 .ribote-sample-modal__dialog-header {
@@ -391,9 +508,9 @@
 }
 
 .ribote-sample-modal__close {
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 0.7rem;
-  background: rgba(255, 252, 246, 0.9);
+  background: rgba(247, 251, 252, 0.9);
   color: var(--rm-text);
   font: inherit;
   font-size: 1rem;
@@ -418,9 +535,9 @@
   gap: 0.85rem;
   min-height: 19rem;
   padding: 1rem;
-  border: 0.0625rem dashed rgba(133, 155, 122, 0.28);
+  border: 0.0625rem dashed rgba(20, 119, 130, 0.28);
   border-radius: 1rem;
-  background: rgba(255, 252, 246, 0.86);
+  background: rgba(247, 251, 252, 0.86);
 }
 
 .ribote-sample-modal__zone-header {
@@ -448,9 +565,9 @@
 }
 
 .ribote-sample-card {
-  border: 0.0625rem solid rgba(133, 155, 122, 0.2);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.2);
   border-radius: 0.8rem;
-  background: rgba(232, 237, 226, 0.9);
+  background: rgba(216, 237, 240, 0.9);
   color: var(--rm-text);
   font: inherit;
   font-size: 1rem;
@@ -458,10 +575,27 @@
   line-height: 1.4;
   padding: 0.7rem 0.8rem;
   cursor: grab;
+  transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.ribote-sample-card.is-selected {
+  border-color: rgba(212, 90, 42, 0.55);
+  background: rgba(255, 236, 225, 0.92);
+  box-shadow: 0 0 0 0.12rem rgba(212, 90, 42, 0.16);
+}
+
+.ribote-sample-card--drag-preview {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  border-color: rgba(212, 90, 42, 0.55);
+  background: rgba(255, 236, 225, 0.96);
+  box-shadow: 0 0.4rem 1.2rem rgba(16, 35, 42, 0.16);
+  pointer-events: none;
 }
 
 .ribote-sample-modal__empty {
-  color: #9ca697;
+  color: #7b8d94;
   font-size: 0.98rem;
   font-weight: 600;
 }
@@ -469,7 +603,7 @@
 .ribote-sample-modal__hint {
   padding: 0.85rem 1rem;
   border-radius: 0.9rem;
-  background: rgba(232, 237, 226, 0.65);
+  background: rgba(216, 237, 240, 0.65);
   color: var(--rm-muted);
   font-size: 1rem;
   font-weight: 600;
@@ -493,9 +627,9 @@
   display: flex;
   align-items: center;
   padding: 0 0.95rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 0.875rem;
-  background: rgba(255, 252, 246, 0.88);
+  background: rgba(247, 251, 252, 0.88);
   color: var(--rm-text);
   font-size: 1.05rem;
   font-weight: 700;
@@ -527,13 +661,13 @@
   gap: 0.35rem;
   padding: 1rem 1.1rem;
   border-radius: 1rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
-  background: rgba(232, 237, 226, 0.72);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
+  background: rgba(216, 237, 240, 0.72);
 }
 
 .ribote-canvas-status--ready {
-  border-color: rgba(101, 121, 91, 0.24);
-  background: rgba(232, 237, 226, 0.92);
+  border-color: rgba(10, 89, 99, 0.24);
+  background: rgba(216, 237, 240, 0.92);
 }
 
 .ribote-canvas-status__label {
@@ -568,7 +702,7 @@
 }
 
 .ribote-canvas-group-row__label {
-  color: rgba(133, 155, 122, 0.78);
+  color: rgba(20, 119, 130, 0.78);
   font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -582,9 +716,9 @@
 }
 
 .ribote-canvas-group-tab {
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 999px;
-  background: rgba(255, 252, 246, 0.8);
+  background: rgba(247, 251, 252, 0.8);
   color: var(--rm-muted);
   cursor: pointer;
   font: inherit;
@@ -603,29 +737,29 @@
 
 .ribote-canvas-group-tab:hover {
   transform: translateY(-0.0625rem);
-  border-color: rgba(201, 132, 104, 0.3);
+  border-color: rgba(212, 90, 42, 0.3);
   color: var(--rm-text);
 }
 
 .ribote-canvas-group-tab.is-active {
-  border-color: rgba(201, 132, 104, 0.46);
-  background: linear-gradient(180deg, rgba(201, 132, 104, 0.18), rgba(201, 132, 104, 0.08));
-  color: #714633;
+  border-color: rgba(212, 90, 42, 0.46);
+  background: linear-gradient(180deg, rgba(212, 90, 42, 0.18), rgba(212, 90, 42, 0.08));
+  color: #76320f;
   box-shadow:
-    0 0.42rem 0.95rem rgba(201, 132, 104, 0.14),
-    inset 0 0 0 0.0625rem rgba(201, 132, 104, 0.12);
+    0 0.42rem 0.95rem rgba(212, 90, 42, 0.14),
+    inset 0 0 0 0.0625rem rgba(212, 90, 42, 0.12);
 }
 
 .ribote-canvas-view-tab-panel {
   display: grid;
   padding: 1rem 1rem 1.05rem;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.16);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.16);
   border-radius: 1.1rem;
   background:
-    linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(249, 244, 236, 0.88));
+    linear-gradient(180deg, rgba(247, 251, 252, 0.98), rgba(231, 240, 242, 0.88));
   box-shadow:
     inset 0 0.0625rem 0 rgba(255, 255, 255, 0.82),
-    0 0.35rem 1rem rgba(58, 49, 38, 0.04);
+    0 0.35rem 1rem rgba(16, 35, 42, 0.04);
 }
 
 .ribote-canvas-view-tab-panel__header {
@@ -636,7 +770,7 @@
 }
 
 .ribote-canvas-view-tab-panel__eyebrow {
-  color: rgba(133, 155, 122, 0.78);
+  color: rgba(20, 119, 130, 0.78);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -652,13 +786,13 @@
 
 .ribote-canvas-view-tab-panel__divider {
   height: 0.0625rem;
-  background: linear-gradient(90deg, rgba(201, 132, 104, 0.22), rgba(133, 155, 122, 0.08));
+  background: linear-gradient(90deg, rgba(212, 90, 42, 0.22), rgba(20, 119, 130, 0.08));
 }
 
 .ribote-canvas-tab {
-  border: 0.0625rem solid rgba(133, 155, 122, 0.2);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.2);
   border-radius: 0.85rem;
-  background: rgba(255, 252, 246, 0.85);
+  background: rgba(247, 251, 252, 0.85);
   color: var(--rm-muted);
   cursor: pointer;
   font: inherit;
@@ -674,7 +808,7 @@
 .ribote-canvas-tab:hover,
 .ribote-canvas-tab.is-active {
   transform: translateY(-0.0625rem);
-  border-color: rgba(201, 132, 104, 0.28);
+  border-color: rgba(212, 90, 42, 0.28);
   color: var(--rm-text);
 }
 
@@ -691,10 +825,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
-  border-color: rgba(133, 155, 122, 0.28);
-  background: linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(244, 237, 226, 0.96));
+  border-color: rgba(20, 119, 130, 0.28);
+  background: linear-gradient(180deg, rgba(247, 251, 252, 0.98), rgba(231, 240, 242, 0.96));
   box-shadow:
-    0 0.125rem 0.25rem rgba(58, 49, 38, 0.05),
+    0 0.125rem 0.25rem rgba(16, 35, 42, 0.05),
     inset 0 0.0625rem 0 rgba(255, 255, 255, 0.78);
   color: var(--rm-text);
   line-height: 1.35;
@@ -711,27 +845,27 @@
 
 .ribote-canvas-tabs--results .ribote-canvas-tab:hover {
   transform: translateY(-0.125rem);
-  border-color: rgba(201, 132, 104, 0.42);
-  background: linear-gradient(180deg, rgba(255, 253, 248, 1), rgba(248, 240, 229, 1));
+  border-color: rgba(212, 90, 42, 0.42);
+  background: linear-gradient(180deg, rgba(247, 251, 252, 1), rgba(230, 239, 242, 1));
   box-shadow:
-    0 0.4rem 1rem rgba(58, 49, 38, 0.08),
+    0 0.4rem 1rem rgba(16, 35, 42, 0.08),
     inset 0 0.0625rem 0 rgba(255, 255, 255, 0.9);
 }
 
 .ribote-canvas-tabs--results .ribote-canvas-tab:focus-visible {
-  outline: 0.125rem solid rgba(201, 132, 104, 0.72);
+  outline: 0.125rem solid rgba(212, 90, 42, 0.72);
   outline-offset: 0.12rem;
-  border-color: rgba(201, 132, 104, 0.48);
+  border-color: rgba(212, 90, 42, 0.48);
 }
 
 .ribote-canvas-tabs--results .ribote-canvas-tab.is-active {
   transform: translateY(-0.0625rem);
-  border-color: rgba(201, 132, 104, 0.56);
-  background: linear-gradient(180deg, rgba(201, 132, 104, 0.18), rgba(201, 132, 104, 0.08));
+  border-color: rgba(212, 90, 42, 0.56);
+  background: linear-gradient(180deg, rgba(212, 90, 42, 0.18), rgba(212, 90, 42, 0.08));
   box-shadow:
-    0 0.5rem 1.1rem rgba(201, 132, 104, 0.16),
-    inset 0 0 0 0.0625rem rgba(201, 132, 104, 0.16);
-  color: #714633;
+    0 0.5rem 1.1rem rgba(212, 90, 42, 0.16),
+    inset 0 0 0 0.0625rem rgba(212, 90, 42, 0.16);
+  color: #76320f;
 }
 
 .ribote-canvas-view {
@@ -761,8 +895,8 @@
   min-height: 2rem;
   padding: 0 0.8rem;
   border-radius: 999px;
-  background: rgba(201, 132, 104, 0.12);
-  color: #8e583f;
+  background: rgba(212, 90, 42, 0.12);
+  color: #934018;
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -780,18 +914,18 @@
   position: relative;
   min-height: 20rem;
   overflow: hidden;
-  border: 0.0625rem solid rgba(133, 155, 122, 0.18);
+  border: 0.0625rem solid rgba(20, 119, 130, 0.18);
   border-radius: 1.25rem;
   background:
-    linear-gradient(180deg, rgba(255, 253, 248, 0.95) 0%, rgba(248, 242, 234, 0.95) 100%);
+    linear-gradient(180deg, rgba(247, 251, 252, 0.95) 0%, rgba(223, 236, 239, 0.95) 100%);
 }
 
 .ribote-canvas-view__grid {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(133, 155, 122, 0.08) 0.0625rem, transparent 0.0625rem),
-    linear-gradient(90deg, rgba(133, 155, 122, 0.08) 0.0625rem, transparent 0.0625rem);
+    linear-gradient(rgba(20, 119, 130, 0.08) 0.0625rem, transparent 0.0625rem),
+    linear-gradient(90deg, rgba(20, 119, 130, 0.08) 0.0625rem, transparent 0.0625rem);
   background-size: 2.25rem 2.25rem;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent);
 }
@@ -844,6 +978,10 @@
 }
 
 @media (max-width: 40rem) {
+  .ribote-field__control-row--with-action {
+    grid-template-columns: 1fr;
+  }
+
   .ribote-canvas-group-tabs,
   .ribote-canvas-view-tab-panel__header {
     display: grid;
@@ -905,3 +1043,5 @@
     grid-template-columns: 1fr;
   }
 }
+
+

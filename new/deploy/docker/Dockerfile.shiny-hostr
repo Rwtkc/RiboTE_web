@@ -1,0 +1,54 @@
+FROM ubuntu:22.04
+
+ARG SHINY_UID=1000
+ARG SHINY_GID=1000
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    bash \
+    ca-certificates \
+    coreutils \
+    curl \
+    findutils \
+    fontconfig \
+    hostname \
+    locales \
+    openssh-client \
+    procps \
+    xz-utils \
+    libcairo2 \
+    libcurl4 \
+    libfontconfig1 \
+    libfreetype6 \
+    libice6 \
+    libicu70 \
+    libjpeg-turbo8 \
+    libpng16-16 \
+    libsm6 \
+    libssl3 \
+    libx11-6 \
+    libxext6 \
+    libxml2 \
+    libxrender1 \
+    zlib1g \
+  && locale-gen en_US.UTF-8 \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -g "${SHINY_GID}" -o shiny \
+  && useradd -m -u "${SHINY_UID}" -g "${SHINY_GID}" -o -s /bin/bash shiny
+
+WORKDIR /public/shiny/RiboTE/new
+
+COPY run-shiny-hostr.sh /usr/local/bin/run-shiny-hostr.sh
+RUN chmod 755 /usr/local/bin/run-shiny-hostr.sh
+
+ENV APP_DIR=/public/shiny/RiboTE/new \
+    HOST_R_BIN=/public/liuqi/miniconda3/envs/R4.3.0/bin/R \
+    SHINY_PORT=3838 \
+    HOME=/home/shiny \
+    LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8
+
+ENTRYPOINT ["/usr/local/bin/run-shiny-hostr.sh"]

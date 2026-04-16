@@ -35,7 +35,7 @@ export function drawCodonHeatmapChart(container, panel) {
   const xScale = d3.scaleBand().domain(columns.map((column) => column.label)).range([0, innerWidth]).padding(0.02);
   const yScale = d3.scaleBand().domain(rows).range([0, innerHeight]).padding(0.02);
   const colorMax = Number(panel?.colorMax) > 0 ? Number(panel.colorMax) : 1;
-  const colorScale = d3.scaleLinear().domain([-colorMax, 0, colorMax]).range(["#2f6e91", "#f7f3ee", "#c46a36"]);
+  const colorScale = d3.scaleLinear().domain([-colorMax, 0, colorMax]).range(["#0d6c88", "#eef6f8", "#d45a2a"]);
   const tooltip = root.append("div").attr("class", "ribote-d3-tooltip").style("opacity", 0);
 
   const svg = root.append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("class", "ribote-d3-chart");
@@ -93,7 +93,7 @@ export function drawCodonHeatmapChart(container, panel) {
       .attr("text-anchor", "end")
       .attr("dx", "-0.55em")
       .attr("dy", "-0.2em")
-      .style("fill", (_, index) => (columns[index]?.selected ? "#c46a36" : null)));
+      .style("fill", (_, index) => (columns[index]?.selected ? "#d45a2a" : null)));
 
   if (rows.length <= 48) {
     chart.append("g")

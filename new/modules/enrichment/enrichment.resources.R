@@ -100,6 +100,7 @@ enrichment_pretty_pathway_name <- function(pathway_id, collection) {
   } else if (identical(collection, "kegg")) {
     display_name <- sub("^KEGG_MEDICUS_", "", display_name)
     display_name <- sub("^KEGG_", "", display_name)
+    display_name <- sub("^MMU[0-9]{5}_", "", display_name)
   }
 
   gsub("_", " ", display_name)

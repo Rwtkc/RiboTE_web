@@ -395,7 +395,7 @@ export default function LoadDataControls({ config }) {
   const moveSamples = (movedSamples, targetZone) => {
     const normalizedMovedSamples = Array.isArray(movedSamples) ? movedSamples.filter(Boolean) : [];
     setAssignments((current) => moveSamplesToZone(current, normalizedMovedSamples, targetZone, sampleNames).assignments);
-    setSelectedSamples(normalizedMovedSamples);
+    setSelectedSamples([]);
   };
 
   const openPairingModal = () => {

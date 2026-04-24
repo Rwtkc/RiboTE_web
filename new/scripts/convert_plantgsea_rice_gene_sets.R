@@ -26,7 +26,7 @@ if (!dir.exists(file.path(repo_root, "new"))) {
 
 go_path <- get_arg("--go", file.path(repo_root, "new", "Osa_GO.txt"))
 kegg_path <- get_arg("--kegg", file.path(repo_root, "new", "Osa_KEGG.txt"))
-out_dir <- get_arg("--out-dir", file.path(repo_root, "new", "resources", "gene_sets", "plantgsea", "osa_IRGSP_1"))
+out_dir <- get_arg("--out-dir", file.path(repo_root, "new", "resources", "gene_sets", "osa_IRGSP_1"))
 riceidconverter_tar <- get_arg("--riceidconverter-tar", NULL)
 
 if (!file.exists(go_path) && file.exists(file.path(out_dir, "source", "Osa_GO.txt"))) {

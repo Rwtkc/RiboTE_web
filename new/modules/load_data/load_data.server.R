@@ -60,7 +60,6 @@ mod_load_data_server <- function(id, session_state) {
       list(
         org_db_path = org_db_path,
         gff_rda_path = optional_path("gff", species_meta$gff_rda_name),
-        txdb_path = optional_path("txdb", species_meta$txdb_name),
         txlens_path = optional_path("txlens", species_meta$txlens_name),
         fasta_path = optional_path("fa", species_meta$fasta_name),
         tai_path = first_existing_path(optional_path("cds", species_meta$tai_name)),

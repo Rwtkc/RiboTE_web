@@ -8,6 +8,7 @@ gsea_collection_values <- function(species_key = "hg38") {
   switch(
     as.character(species_key),
     hg38 = c("hallmark", "reactome", "go_bp"),
+    mm10 = c("hallmark", "reactome", "go_bp", "kegg"),
     osa_IRGSP_1 = c("go_bp", "go_mf", "go_cc", "kegg"),
     character()
   )
@@ -37,13 +38,7 @@ gsea_collection_label <- function(collection) {
 }
 
 gsea_resource_root <- function(species_key) {
-  species_key <- as.character(species_key)
-
-  if (identical(species_key, "osa_IRGSP_1")) {
-    return(app_path("resources", "gene_sets", "plantgsea", species_key))
-  }
-
-  app_path("resources", "gene_sets", "msigdb", species_key)
+  app_path("resources", "gene_sets", as.character(species_key))
 }
 
 gsea_collection_pattern <- function(species_key, collection) {
@@ -56,6 +51,17 @@ gsea_collection_pattern <- function(species_key, collection) {
       hallmark = "^h\\.all\\..*\\.Hs\\.symbols\\.gmt$",
       reactome = "^c2\\.cp\\.reactome\\..*\\.Hs\\.symbols\\.gmt$",
       go_bp = "^c5\\.go\\.bp\\..*\\.Hs\\.symbols\\.gmt$",
+      NULL
+    ))
+  }
+
+  if (identical(species_key, "mm10")) {
+    return(switch(
+      collection,
+      hallmark = "^mh\\.all\\..*\\.Mm\\.symbols\\.gmt$",
+      reactome = "^m2\\.cp\\.reactome\\..*\\.Mm\\.symbols\\.gmt$",
+      go_bp = "^m5\\.go\\.bp\\..*\\.Mm\\.symbols\\.gmt$",
+      kegg = "^mm10\\.kegg\\.gmt$",
       NULL
     ))
   }

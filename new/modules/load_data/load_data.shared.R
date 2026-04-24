@@ -6,11 +6,21 @@ ribote_species_catalog <- function() {
       org_id = 99L,
       org_db_name = "hg38.geneInfo.sqlite",
       gff_rda_name = "hg38.gff.rda",
-      txdb_name = "hg38.gencode.sqlite",
       txlens_name = "hg38.txlens.rda",
       fasta_name = "hg38.txdb.fa",
       tai_name = "hg38.tai",
       cbi_name = "hg38.cds.m"
+    ),
+    "Mus musculus (mm10)" = list(
+      label = "Mus musculus (mm10)",
+      acronym = "mm10",
+      org_id = 131L,
+      org_db_name = "mm10.geneInfo.sqlite",
+      gff_rda_name = "mm10.gff.rda",
+      txlens_name = "mm10.txlens.rda",
+      fasta_name = "mm10.txdb.fa",
+      tai_name = "mm10.tai",
+      cbi_name = "mm10.cds.m"
     ),
     "Oryza sativa (IRGSP 1.0)" = list(
       label = "Oryza sativa (IRGSP 1.0)",
@@ -18,7 +28,6 @@ ribote_species_catalog <- function() {
       org_id = NA_integer_,
       org_db_name = "osa_IRGSP_1.geneInfo.sqlite",
       gff_rda_name = "osa_IRGSP_1.gff.rda",
-      txdb_name = "osa_IRGSP_1.gencode.sqlite",
       txlens_name = "osa_IRGSP_1.txlens.rda",
       fasta_name = "osa_IRGSP_1.txdb.fa",
       tai_name = "osa_IRGSP_1.tai",

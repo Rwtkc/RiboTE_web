@@ -8,6 +8,7 @@ enrichment_collection_values <- function(species_key = "hg38") {
   switch(
     as.character(species_key),
     hg38 = c("go_bp", "go_mf", "go_cc", "kegg"),
+    mm10 = c("go_bp", "go_mf", "go_cc", "kegg"),
     osa_IRGSP_1 = c("go_bp", "go_mf", "go_cc", "kegg"),
     character()
   )
@@ -35,13 +36,7 @@ enrichment_collection_label <- function(collection) {
 }
 
 enrichment_resource_root <- function(species_key) {
-  species_key <- as.character(species_key)
-
-  if (identical(species_key, "osa_IRGSP_1")) {
-    return(app_path("resources", "gene_sets", "plantgsea", species_key))
-  }
-
-  app_path("resources", "gene_sets", "msigdb", species_key)
+  app_path("resources", "gene_sets", as.character(species_key))
 }
 
 enrichment_species_key <- function(upload_context) {
@@ -72,6 +67,17 @@ enrichment_collection_pattern <- function(species_key, collection) {
       go_mf = "^c5\\.go\\.mf\\..*\\.Hs\\.symbols\\.gmt$",
       go_cc = "^c5\\.go\\.cc\\..*\\.Hs\\.symbols\\.gmt$",
       kegg = "^c2\\.cp\\.kegg_medicus\\..*\\.Hs\\.symbols\\.gmt$",
+      NULL
+    ))
+  }
+
+  if (identical(species_key, "mm10")) {
+    return(switch(
+      collection,
+      go_bp = "^m5\\.go\\.bp\\..*\\.Mm\\.symbols\\.gmt$",
+      go_mf = "^m5\\.go\\.mf\\..*\\.Mm\\.symbols\\.gmt$",
+      go_cc = "^m5\\.go\\.cc\\..*\\.Mm\\.symbols\\.gmt$",
+      kegg = "^mm10\\.kegg\\.gmt$",
       NULL
     ))
   }

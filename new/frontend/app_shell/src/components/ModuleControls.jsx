@@ -112,6 +112,12 @@ const gseaCollectionOptionsBySpecies = {
     { label: "Reactome", value: "reactome" },
     { label: "GO Biological Process", value: "go_bp" }
   ],
+  mm10: [
+    { label: "Hallmark", value: "hallmark" },
+    { label: "Reactome", value: "reactome" },
+    { label: "GO Biological Process", value: "go_bp" },
+    { label: "KEGG", value: "kegg" }
+  ],
   osa_IRGSP_1: [
     { label: "GO Biological Process", value: "go_bp" },
     { label: "GO Molecular Function", value: "go_mf" },
@@ -125,6 +131,10 @@ function readSavedSpeciesKey() {
 
   if (summaryText.includes("Oryza sativa (IRGSP 1.0)")) {
     return "osa_IRGSP_1";
+  }
+
+  if (summaryText.includes("Mus musculus (mm10)")) {
+    return "mm10";
   }
 
   if (summaryText.includes("Homo sapiens (hg38)")) {

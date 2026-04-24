@@ -103,6 +103,7 @@ gsea_pretty_pathway_name <- function(pathway_id, collection) {
     display_name <- sub("^GOCC_", "", display_name)
   } else if (identical(collection, "kegg")) {
     display_name <- sub("^KEGG_", "", display_name)
+    display_name <- sub("^MMU[0-9]{5}_", "", display_name)
   }
 
   gsub("_", " ", display_name)

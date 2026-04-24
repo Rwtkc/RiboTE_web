@@ -296,9 +296,9 @@
 ## GSEA Conventions
 - GSEA has been rewritten in `new/` and should not reintroduce legacy KEGG/pathview behavior.
 - Human GSEA uses local MSigDB GMT resources under:
-  - `new/resources/gene_sets/msigdb/hg38`
+  - `new/resources/gene_sets/hg38`
 - Rice GSEA uses local PlantGSEA-derived GMT resources under:
-  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1`
+  - `new/resources/gene_sets/osa_IRGSP_1`
 - Supported GSEA collections currently are:
   - `Hallmark`
   - `Reactome`
@@ -339,9 +339,9 @@
 ## Enrichment Conventions
 - Enrichment has been rewritten in `new/` and should not fall back to legacy `orgData.json`, `baseData.json`, or `normalcount.csv`.
 - Human Enrichment uses local MSigDB GMT resources under:
-  - `new/resources/gene_sets/msigdb/hg38`
+  - `new/resources/gene_sets/hg38`
 - Rice Enrichment uses local PlantGSEA-derived GMT resources under:
-  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1`
+  - `new/resources/gene_sets/osa_IRGSP_1`
 - Supported Enrichment collections currently are:
   - `GO Biological Process`
   - `GO Molecular Function`
@@ -403,17 +403,17 @@
   - `TEShinyData/orgDB/osa_IRGSP_1.geneInfo.sqlite`
 - Human annotation resources have been staged locally; new code should read local files directly and not reintroduce gzip extraction unless explicitly needed.
 - Local staged human gene set resources currently include:
-  - `new/resources/gene_sets/msigdb/hg38/h.all.v2026.1.Hs.symbols.gmt`
-  - `new/resources/gene_sets/msigdb/hg38/c2.cp.reactome.v2026.1.Hs.symbols.gmt`
-  - `new/resources/gene_sets/msigdb/hg38/c5.go.bp.v2026.1.Hs.symbols.gmt`
-  - `new/resources/gene_sets/msigdb/hg38/c5.go.mf.v2026.1.Hs.symbols.gmt`
-  - `new/resources/gene_sets/msigdb/hg38/c5.go.cc.v2026.1.Hs.symbols.gmt`
-  - `new/resources/gene_sets/msigdb/hg38/c2.cp.kegg_medicus.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/hg38/h.all.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/hg38/c2.cp.reactome.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/hg38/c5.go.bp.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/hg38/c5.go.mf.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/hg38/c5.go.cc.v2026.1.Hs.symbols.gmt`
+  - `new/resources/gene_sets/hg38/c2.cp.kegg_medicus.v2026.1.Hs.symbols.gmt`
 - Local staged rice gene set resources are PlantGSEA-derived, not MSigDB-derived:
-  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.bp.gmt`
-  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.mf.gmt`
-  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.go.cc.gmt`
-  - `new/resources/gene_sets/plantgsea/osa_IRGSP_1/osa_IRGSP_1.kegg.gmt`
+  - `new/resources/gene_sets/osa_IRGSP_1/osa_IRGSP_1.go.bp.gmt`
+  - `new/resources/gene_sets/osa_IRGSP_1/osa_IRGSP_1.go.mf.gmt`
+  - `new/resources/gene_sets/osa_IRGSP_1/osa_IRGSP_1.go.cc.gmt`
+  - `new/resources/gene_sets/osa_IRGSP_1/osa_IRGSP_1.kegg.gmt`
 - Resource provenance is recorded in:
   - `new/resources/gene_set_resource_sources.txt`
 

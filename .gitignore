@@ -24,6 +24,12 @@ Thumbs.db
 
 # Large local reference resources that should be staged on the server separately.
 # GitHub rejects files over 100 MB and warns for files over 50 MB.
+TEShinyData/cds/
+TEShinyData/gff/
+TEShinyData/orgDB/
+TEShinyData/signal/
+TEShinyData/txlens/
+new/resources/gene_sets/
 TEShinyData/orgDB/hsapiens_gene_ensembl__Human.db
 TEShinyData/fa/*.fa
 TEShinyData/txdb/*.sqlite

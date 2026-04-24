@@ -12,6 +12,7 @@ services:
       - "${PUBLIC_BIND_ADDR:-0.0.0.0}:${PUBLIC_PORT:-10802}:8080"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - "${APP_HOST_PATH:-/public/shiny/RiboTE/new}:/public/shiny/RiboTE/new:ro"
     restart: unless-stopped
 
   ribote_app_1:
